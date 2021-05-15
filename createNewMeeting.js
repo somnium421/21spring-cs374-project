@@ -6,9 +6,10 @@ $("#Txt_Date").datepicker({
     format: 'd-M-yyyy',
     inline: false,
     lang: 'en',
-    step: 5,
-    multidate: 5,
-    closeOnDateSelect: true
+    step: 10,
+    multidate: true,
+    closeOnDateSelect: true,
+    todayHighlight: false
 });
 
 var navListItems = $('div.setup-panel div a'),

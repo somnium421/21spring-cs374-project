@@ -38,8 +38,38 @@
   margin-top: 0;
 }
 
-
-.eng-cap{
-  color: gray; 
+.eng-cap {
+  color: gray;
   font-size: smaller;
+}
+
+.datepicker,
+.table-condensed {
+  /* background-color: white; */
+  width: 400px;
+  height: 400px;
+}
+
+/* .datepicker,
+.picker__box .picker__table .picker__day.picker__day--today {
+  color: black;
+}
+
+.datepicker,
+.picker__box .picker__table .picker--focused,
+.picker__box .picker__table .picker__day--selected,
+.picker__box .picker__table .picker__day--selected:hover {
+  background-color: white;
+} */
+.datepicker .table tr td.today {
+  color: #000000;
+
+  background-color: #ffa953;
+
+  border-color: #ffb76f;
+}
+
+.datepicker .ui-datepicker.ea-bootstrap .ui-datepicker .no-slots,
+.ui-datepicker.ea-bootstrap .ui-datepicker .no-slots:hover {
+  background-color: #c9bca8;
 }

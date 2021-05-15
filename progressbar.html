@@ -214,7 +214,7 @@
                     <p class="text-center fs-5 text-secondary">모임 스케줄을 구체화해보세요.<br><span style="font-size: 12pt;">Schedule your meeting.</span></p>
                     <form>
                         <div class="form-group mt-4">
-                            <label class="fw-bold fs-5" for="surveyPeriod">모임 기간 <span style="color: red">*</span> <span style="color: gray" class="fw-light fs-7">Meeting period</span></label>
+                            <label class="fw-bold fs-5" for="surveyPeriod">모임 기간 <span style="color: red">*</span> <span style="color: gray" class="fw-light eng-cap">Meeting period</span></label>
                             <div class="mt-2 row">
                             <div class="input-group" style="width: 33%">
                                 <input id = "day" type="number" class="form-control timefield" min=0 oninput="validity.valid||(value='');">
@@ -238,8 +238,9 @@
                         </div>
     
                         <div class="form-group mt-4">
-                            <label class="fw-bold fs-5" for="privacy">가능한 날짜<span style="color: gray" class="fw-light fs-7">  Available dates and time</span> </label>
-                            <input type="text" id="Txt_Date" placeholder="Choose Date" style="cursor: pointer" class="mt-2">
+                            <label class="fw-bold fs-5" for="privacy">가능한 날짜<span style="color: gray" class="fw-light eng-cap">  Available dates and time</span> </label>
+                            <div class= "mt-2 datepicker" id="Txt_Date"></div>
+                            <!-- <input type="text" id="Txt_Date" placeholder="Choose Date" style="cursor: pointer" class="mt-2"> -->
                         </div>
     
                         <div class="form-inline mt-5">
@@ -259,7 +260,7 @@
                     <form>
                         <div class="form-group mt-4">
                             <label class="fw-bold fs-5" for="surveyPeriod">참가 설문 기간<span style="color: red"> *</span> <span class="fw-light eng-cap">Survey deadline duration</span></label>
-                            <div class="input-group mt-2" style="width: 40%;">
+                            <div class="input-group mt-2" style="width: 50%;">
                                 <input class="form-control" id="surveyPeriod" type="number" min=0 oninput="validity.valid||(value='');">
                                 <div class="input-group-append">
                                     <span class="input-group-text">  일</span>
