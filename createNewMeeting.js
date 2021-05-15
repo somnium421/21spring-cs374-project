@@ -71,18 +71,34 @@ $('.timefield').change(function(){
     var day = $('#day').val();
     var hour = $('#hour').val();
     var min = $('#min').val();
-   
+
+    var textForDays = `<small id="periodHelp" class="form-text text-muted">${Number(day)-1}박 ${Number(day)}일 동안 모임을 진행합니다.</small>`
+    var textForADay = `<small id="periodHelp" class="form-text text-muted">하루종일 모임을 진행합니다.</small>`
+    var text;
+
     if((day) > 0){
         $('#hour').attr('disabled','disabled');
         $('#min').attr('disabled','disabled');
+        if (day === "1") {
+            text = textForADay;
+        }else {
+            text = textForDays;
+        }
+        console.log(text);
+        if ($("#periodHelp").length === 0) $("#period-select").append(text);
+        else $("#periodHelp").replaceWith(text);
     }
+
     else if((hour) > 0){
+        if ($("#periodHelp").length !== 0) $("#periodHelp").hide();
         $('#day').attr('disabled','disabled');
     }
     else if((min) > 0){
+        if ($("#periodHelp").length !== 0) $("#periodHelp").hide();
         $('#day').attr('disabled','disabled');
     }
     else{
+        if ($("#periodHelp").length !== 0) $("#periodHelp").hide();
         $('#day').removeAttr('disabled');
         $('#hour').removeAttr('disabled');
         $('#min').removeAttr('disabled');

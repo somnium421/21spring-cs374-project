@@ -215,25 +215,26 @@
                     <form>
                         <div class="form-group mt-4">
                             <label class="fw-bold fs-5" for="surveyPeriod">모임 기간 <span style="color: red">*</span> <span class="fw-light eng-cap">Meeting period</span></label>
-                            <div class="mt-2 row">
-                            <div class="input-group" style="width: 33%">
-                                <input id = "day" type="number" class="form-control timefield" min=0 oninput="validity.valid||(value='');">
-                                <div class="input-group-append">
-                                  <span class="input-group-text"> 일</span>
+                            <div class="mt-2 row" id="period-select">
+                                <div class="input-group" style="width: 33%">
+                                    <input id = "day" type="number" class="form-control timefield" min=0 oninput="validity.valid||(value='');">
+                                    <div class="input-group-append">
+                                    <span class="input-group-text"> 일</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="input-group timefield" style="width: 33%">
-                                <input id = "hour" type="number" class="form-control" min=0 oninput="validity.valid||(value='');">
-                                <div class="input-group-append">
-                                  <span class="input-group-text">시간</span>
+                                <div class="input-group timefield" style="width: 33%">
+                                    <input id = "hour" type="number" class="form-control" min=0 oninput="validity.valid||(value='');">
+                                    <div class="input-group-append">
+                                    <span class="input-group-text">시간</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="input-group timefield" style="width: 33%">
-                                <input id = "min" type="number" class="form-control" min=0 oninput="validity.valid||(value='');">
-                                <div class="input-group-append">
-                                  <span class="input-group-text"> 분</span>
+                                <div class="input-group timefield" style="width: 33%">
+                                    <input id = "min" type="number" class="form-control" min=0 oninput="validity.valid||(value='');">
+                                    <div class="input-group-append">
+                                    <span class="input-group-text"> 분</span>
+                                    </div>
                                 </div>
-                            </div>
+                                
                             </div>
                         </div>
     
