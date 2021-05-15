@@ -197,14 +197,14 @@ body {
 }
 
 .transfer-double-content-left {
-  display: inline-block;
-  width: 258px;
-  height: 320px;
-  background-color: #fff;
-  border: 1px solid #ddd;
-
-  border-radius: 2px;
-  float: left;
+    display: inline-block;
+    width: 258px;
+    height: 320px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    
+    border-radius: 5px;
+    float: left;
 }
 
 .transfer-double-content-middle {
@@ -222,7 +222,7 @@ body {
   background-color: #fff;
   border: 1px solid #ddd;
 
-  border-radius: 2px;
+    border-radius: 5px;
 }
 
 .transfer-double-content-param {
@@ -408,12 +408,13 @@ body {
 }
 
 .btn-select-arrow {
-  display: inline-block;
-  width: 34px;
-  height: 28px;
-  line-height: 28px;
-  /* color: #bbb; */
-  background: #bbb;
+    display: inline-block;
+    width: 34px;
+    height: 28px;
+    line-height: 28px;
+    /* color: #bbb; */
+    background: #bbb;
+    border-radius: 5px;
 }
 
 .btn-select-arrow + .btn-select-arrow {
