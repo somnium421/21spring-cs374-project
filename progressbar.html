@@ -200,10 +200,10 @@
 
                 <!-- Fourth Step -->
                 <div id="step-4" class="container col-6 row mx-auto mt-5 p-3 setup-content">
-                    <p class="text-center fs-5 text-secondary">모임 스케줄을 구체화해보세요.<br><span style="font-size: 12pt;">Schedule your meeting.</span></p>
+                    <p class="text-center fs-5 text-secondary fw-bold">모임 스케줄을 구체화해보세요.<br><span style="font-size: 12pt;">Schedule your meeting.</span></p>
                     <form>
                         <div class="form-group mt-4">
-                            <label class="fw-bold fs-5" for="surveyPeriod">모임 기간 <span style="color: red">*</span> <span style="color: gray">Meeting period</span></label>
+                            <label class="fw-bold fs-5" for="surveyPeriod">모임 기간 <span style="color: red">*</span> <span style="color: gray" class="fw-light fs-7">Meeting period</span></label>
                             <div class="input-group mt-2">
                                 <select class="form-select" aria-label="Default select example" style="width: 150px">
                                     <option selected>기간 선택</option>
@@ -216,7 +216,7 @@
                         </div>
     
                         <div class="form-group mt-4">
-                            <label class="fw-bold fs-5" for="privacy">모임 날짜 및 시간<span style="color: red">*</span> <span style="color: gray">Meeting dates and time</span> </label>
+                            <label class="fw-bold fs-5" for="privacy">모임 날짜 및 시간<span style="color: red">*</span> <span style="color: gray" class="fw-light fs-7">Meeting dates and time</span> </label>
                             <input type="text" id="Txt_Date" placeholder="Choose Date" style="cursor: pointer" class="mt-2">
                         </div>
     
@@ -229,18 +229,21 @@
 
                 <!-- Fifth Step -->
                 <div id="step-5" class="container col-6 row mx-auto mt-5 p-3 setup-content">
-                    <p class="text-center fs-5 text-secondary">설문 기간과 공개 범위를 설정하세요.<br><span style="font-size: 12pt;">Set survey period and privacy.</span></p>
+                    <p class="text-center fs-5 text-secondary fw-bold">설문 기간과 공개 범위를 설정하세요.<br><span style="font-size: 12pt;">Set survey period and privacy.</span></p>
                     <form>
                         <div class="form-group mt-4">
-                            <label class="fw-bold fs-5" for="surveyPeriod">참가 설문 기간 <span style="color: red">*</span> <span style="color: gray">Survey deadline duration</span></label>
-                            <div class="input-group mt-2">
-                                <input id="surveyPeriod" type="number" class="form-control" style="width: 50px"><span class="ms-2">일 <span style="color: gray">Days</span></span>
+                            <label class="fw-bold fs-5" for="surveyPeriod">참가 설문 기간<span style="color: red">*</span> <span style="color: gray" class="fw-light fs-7">Survey deadline duration</span></label>
+                            <div class="input-group mt-2" style="width: 40%;">
+                                <input class="form-control" id="surveyPeriod" type="number">
+                                <div class="input-group-append mt-2">
+                                    <span class="ms-2 fs-6">  일</span>
+                                </div>
                             </div>
                         </div>
     
                         <div class="form-group mt-4">
-                            <label class="fw-bold fs-5" for="privacy">모임 공개 범위<span style="color: red">*</span> <span style="color: gray">Meeting privacy</span> </label>
-                            <div class="btn-group mt-2" role="group" aria-label="Basic radio toggle button group" style="width: 400px">
+                            <label class="fw-bold fs-5" for="privacy">모임 공개 범위<span style="color: red">*</span> <span style="color: gray" class="fw-light fs-7">Meeting privacy</span> </label>
+                            <div class="btn-group mt-2 col-11" role="group" aria-label="Basic radio toggle button group">
                                 <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
                                 <label class="btn btn-outline-primary" for="btnradio1">공개 Public</label>
                                 <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
