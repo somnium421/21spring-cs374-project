@@ -84,7 +84,7 @@ $('.timefield').change(function(){
         }else {
             text = textForDays;
         }
-        console.log(text);
+        
         if ($("#periodHelp").length === 0) $("#period-select").append(text);
         else $("#periodHelp").replaceWith(text);
     }
