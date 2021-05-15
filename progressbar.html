@@ -204,14 +204,15 @@
                     <form>
                         <div class="form-group mt-4">
                             <label class="fw-bold fs-5" for="surveyPeriod">모임 기간 <span style="color: red">*</span> <span style="color: gray" class="fw-light fs-7">Meeting period</span></label>
-                            <div class="input-group mt-2">
-                                <select class="form-select" aria-label="Default select example" style="width: 150px">
-                                    <option selected>기간 선택</option>
+                            <div class="input-group mt-2" style="width: 54%">    
+                                <input name="workTime" id="workTime" type="number" class="form-control">
+                                <span style="width: 5px"></span>
+                                <select class="form-select form-control" aria-label="Default select example" id="periodType">
+                                    <option selected>시간 단위</option>
                                     <option value="1">일</option>
                                     <option value="2">시간</option>
+                                    <option value="3">분</option>
                                 </select>
-                                <span style="width: 5px"></span>
-                                <input name="workTime" id="workTime" type="number" class="input" style="width: 150px"> 일
                             </div>
                         </div>
     
