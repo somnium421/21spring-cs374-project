@@ -43,3 +43,7 @@
   color: gray; 
   font-size: smaller;
 }
+
+.prevBtn{
+  width: 15%;
+}
