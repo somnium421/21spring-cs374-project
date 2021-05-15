@@ -73,3 +73,6 @@
 .ui-datepicker.ea-bootstrap .ui-datepicker .no-slots:hover {
   background-color: #c9bca8;
 }
+.prevBtn {
+  width: 15%;
+}

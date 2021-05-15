@@ -32,7 +32,7 @@
     </script>
     <script src="./createNewMeeting.js" defer></script>
     <div class="d-flex">
-        <div class="d-flex flex-column flex-shrink-0 p-3 bg-white shadow" style="width: 200px; height:100vh">
+        <div class="d-flex flex-column flex-shrink-0 p-3 bg-white shadow" style="width: 200px; height:100vh;">
             <a href="/" class="d-flex align-items-center mx-auto text-decoration-none">
             <img src="icons/logo.svg" alt="">
             </a>
@@ -127,7 +127,7 @@
                         </div>
         
                         <div class="form-inline mt-5">
-                            <button class="btn btn-lg btn-primary nextBtn col-12 btn-block" type="button">다음</button>
+                            <button class="btn btn-lg btn-primary nextBtn col-12 btn-block" style="width: 100%;" type="button">다음</button>
                         </div>        
                     </form>
                 </div>
@@ -136,23 +136,23 @@
                 <!-- Second Step -->
                 <div id="step-2" class="setup-content">
                     <div class="container col-6 row mx-auto mt-5 p-3">
-                        <p class="text-center fs-5 text-secondary">모임에 초대하고 싶은 사람을 골라주세요.<br><span style="font-size: 12pt;">Select the participants in the meeting</span></p>
+                        <p class="text-center fs-5 text-secondary">모임에 초대하고 싶은 사람을 골라주세요.<br><span style="font-size: 12pt;">Choose the participants in the meeting</span></p>
                         
                     </div>
                     <div>
                         <div id="participants-transfer" style="width: 582px; height: 360px; margin:0 auto">
-                            <p class="fs-5 fw-bold">참가자 선택</p>
+                            <p class="fs-5 fw-bold">참가자 선택 <span class="fw-light eng-cap">Participants selection</span></p>
                         </div>
                     </div>
                     <div class="container col-6 row mx-auto p-3">
                         <form>
                             <div class="form-inline mt-5">
-                                <button class="btn btn-lg btn-outline-primary prevBtn btn-block" type="button" style="width: 29%;">
+                                <button class="btn btn-lg btn-outline-primary prevBtn btn-block" type="button">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
                                         <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
                                     </svg>
                                 </button>
-                                <button class="btn btn-lg btn-primary nextBtn btn-block col-8" type="button" style="width: 70%;">다음</button>
+                                <button class="btn btn-lg btn-primary nextBtn btn-block col-8" style="width: 84%;" type="button">다음</button>
                             </div>
                         </form>
                         
@@ -199,12 +199,12 @@
                         </div>
     
                         <div class="form-inline mt-5">
-                            <button class="btn btn-lg btn-outline-primary prevBtn btn-block" type="button" style="width: 29%;">
+                            <button class="btn btn-lg btn-outline-primary prevBtn btn-block" type="button">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
                                 </svg>
                             </button>
-                            <button class="btn btn-lg btn-primary nextBtn btn-block col-8" type="button" style="width: 70%;">다음</button>
+                            <button class="btn btn-lg btn-primary nextBtn btn-block col-8" style="width: 84%;" type="button">다음</button>
                         </div>
                     </form>           
                 </div>
@@ -214,7 +214,7 @@
                     <p class="text-center fs-5 text-secondary">모임 스케줄을 구체화해보세요.<br><span style="font-size: 12pt;">Schedule your meeting.</span></p>
                     <form>
                         <div class="form-group mt-4">
-                            <label class="fw-bold fs-5" for="surveyPeriod">모임 기간 <span style="color: red">*</span> <span style="color: gray" class="fw-light eng-cap">Meeting period</span></label>
+                            <label class="fw-bold fs-5" for="surveyPeriod">모임 기간 <span style="color: red">*</span> <span class="fw-light eng-cap">Meeting period</span></label>
                             <div class="mt-2 row">
                             <div class="input-group" style="width: 33%">
                                 <input id = "day" type="number" class="form-control timefield" min=0 oninput="validity.valid||(value='');">
@@ -244,12 +244,12 @@
                         </div>
     
                         <div class="form-inline mt-5">
-                            <button class="btn btn-lg btn-outline-primary prevBtn btn-block" type="button" style="width: 29%;">
+                            <button class="btn btn-lg btn-outline-primary prevBtn btn-block" type="button">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
                                 </svg>
                             </button>
-                            <button class="btn btn-lg btn-primary nextBtn btn-block col-8" type="button" style="width: 70%;">다음</button>
+                            <button class="btn btn-lg btn-primary nextBtn btn-block col-8" style="width: 84%;" type="button">다음</button>
                         </div>
                     </form>                    
                 </div>
@@ -279,12 +279,12 @@
                         </div>
     
                         <div class="form-inline mt-5">
-                            <button class="btn btn-lg btn-outline-primary prevBtn btn-block" type="button" style="width: 29%;">
+                            <button class="btn btn-lg btn-outline-primary prevBtn btn-block" type="button">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
                                 </svg>
                             </button>
-                            <button class="btn btn-lg btn-primary btn-block" type="submit" style="width: 70%;">만들기</button>
+                            <button class="btn btn-lg btn-primary btn-block" type="submit" style="width: 84%;">만들기</button>
                         </div>
                     </form>
                 </div>

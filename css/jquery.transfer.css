@@ -4,12 +4,12 @@
 }
 
 body {
-  font-family: "Microsoft YaHei", "SimSun";
-  border: none;
+  /* font-family: "Microsoft YaHei", "SimSun";
+  border: none; */
   font-size: 13px;
   color: rgb(0, 0, 0);
   background: #f5f6fa;
-  padding: 15px 0;
+  /* padding: 15px 0; */
   line-height: 22px;
 }
 
