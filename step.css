@@ -37,3 +37,9 @@
   border-radius: 15px;
   margin-top: 0;
 }
+
+
+.eng-cap{
+  color: gray; 
+  font-size: smaller;
+}
