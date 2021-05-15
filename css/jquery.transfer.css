@@ -202,7 +202,7 @@ body {
     background-color: #fff;
     border: 1px solid #ddd;
     
-    border-radius: 2px;
+    border-radius: 5px;
     float: left;
 }
 
@@ -221,7 +221,7 @@ body {
     background-color: #fff;
     border: 1px solid #ddd;
 
-    border-radius: 2px;
+    border-radius: 5px;
 }
 
 .transfer-double-content-param {
@@ -390,6 +390,7 @@ body {
     line-height: 28px;
     /* color: #bbb; */
     background: #bbb;
+    border-radius: 5px;
 }
 
 .btn-select-arrow + .btn-select-arrow {
