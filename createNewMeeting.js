@@ -24,8 +24,8 @@ navListItems.click(function (e) {
         $item = $(this);
 
     if (!$item.hasClass('disabled')) {
-        navListItems.removeClass('btn-primary').addClass('btn-light');
-        $item.addClass('btn-primary');
+        navListItems.removeClass('btn-light').addClass('btn-primary');
+        $item.addClass('btn-light');
         allWells.hide();
         $target.show();
         $target.find('input:eq(0)').focus();
@@ -59,4 +59,4 @@ allNextBtn.click(function(){
         nextStepWizard.removeAttr('disabled').trigger('click');
 });
 
-$('div.setup-panel div a.btn-primary').trigger('click');
+$('div.setup-panel div a.btn-light').trigger('click');
