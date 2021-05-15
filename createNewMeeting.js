@@ -60,3 +60,30 @@ allNextBtn.click(function(){
 });
 
 $('div.setup-panel div a.btn-light').trigger('click');
+
+
+//일, 시간, 분 input 고르기
+$('.timefield').removeAttr('disabled');
+   
+$('.timefield').change(function(){
+   
+    var day = $('#day').val();
+    var hour = $('#hour').val();
+    var min = $('#min').val();
+   
+    if((day) > 0){
+        $('#hour').attr('disabled','disabled');
+        $('#min').attr('disabled','disabled');
+    }
+    else if((hour) > 0){
+        $('#day').attr('disabled','disabled');
+    }
+    else if((min) > 0){
+        $('#day').attr('disabled','disabled');
+    }
+    else{
+        $('#day').removeAttr('disabled');
+        $('#hour').removeAttr('disabled');
+        $('#min').removeAttr('disabled');
+    }
+});

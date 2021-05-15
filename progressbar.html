@@ -204,20 +204,30 @@
                     <form>
                         <div class="form-group mt-4">
                             <label class="fw-bold fs-5" for="surveyPeriod">모임 기간 <span style="color: red">*</span> <span style="color: gray" class="fw-light fs-7">Meeting period</span></label>
-                            <div class="input-group mt-2" style="width: 54%">    
-                                <input name="workTime" id="workTime" type="number" class="form-control">
-                                <span style="width: 5px"></span>
-                                <select class="form-select form-control" aria-label="Default select example" id="periodType">
-                                    <option selected>시간 단위</option>
-                                    <option value="1">일</option>
-                                    <option value="2">시간</option>
-                                    <option value="3">분</option>
-                                </select>
+                            <div class="mt-2 row">
+                            <div class="input-group" style="width: 33%">
+                                <input id = "day" type="number" class="form-control timefield" min=0 oninput="validity.valid||(value='');">
+                                <div class="input-group-append">
+                                  <span class="input-group-text"> 일</span>
+                                </div>
+                            </div>
+                            <div class="input-group timefield" style="width: 33%">
+                                <input id = "hour" type="number" class="form-control" min=0 oninput="validity.valid||(value='');">
+                                <div class="input-group-append">
+                                  <span class="input-group-text">시간</span>
+                                </div>
+                            </div>
+                            <div class="input-group timefield" style="width: 33%">
+                                <input id = "min" type="number" class="form-control" min=0 oninput="validity.valid||(value='');">
+                                <div class="input-group-append">
+                                  <span class="input-group-text"> 분</span>
+                                </div>
+                            </div>
                             </div>
                         </div>
     
                         <div class="form-group mt-4">
-                            <label class="fw-bold fs-5" for="privacy">모임 날짜 및 시간<span style="color: red">*</span> <span style="color: gray" class="fw-light fs-7">Meeting dates and time</span> </label>
+                            <label class="fw-bold fs-5" for="privacy">가능한 날짜<span style="color: gray" class="fw-light fs-7">  Available dates and time</span> </label>
                             <input type="text" id="Txt_Date" placeholder="Choose Date" style="cursor: pointer" class="mt-2">
                         </div>
     
@@ -235,9 +245,9 @@
                         <div class="form-group mt-4">
                             <label class="fw-bold fs-5" for="surveyPeriod">참가 설문 기간<span style="color: red">*</span> <span style="color: gray" class="fw-light fs-7">Survey deadline duration</span></label>
                             <div class="input-group mt-2" style="width: 40%;">
-                                <input class="form-control" id="surveyPeriod" type="number">
-                                <div class="input-group-append mt-2">
-                                    <span class="ms-2 fs-6">  일</span>
+                                <input class="form-control" id="surveyPeriod" type="number" min=0 oninput="validity.valid||(value='');">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">  일</span>
                                 </div>
                             </div>
                         </div>
@@ -246,9 +256,9 @@
                             <label class="fw-bold fs-5" for="privacy">모임 공개 범위<span style="color: red">*</span> <span style="color: gray" class="fw-light fs-7">Meeting privacy</span> </label>
                             <div class="btn-group mt-2 col-11" role="group" aria-label="Basic radio toggle button group">
                                 <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-                                <label class="btn btn-outline-primary" for="btnradio1">공개 Public</label>
+                                <label class="btn btn-outline-primary col-6" for="btnradio1">공개 Public</label>
                                 <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-                                <label class="btn btn-outline-primary" for="btnradio2">비공개 Private</label>
+                                <label class="btn btn-outline-primary col-6" for="btnradio2">비공개 Private</label>
                             </div>
                         </div>
     
