@@ -10,7 +10,7 @@ $("#Txt_Date").datepicker({
     multidate: 5,
     closeOnDateSelect: true
 });
-
+//
 var navListItems = $('div.setup-panel div a'),
     allWells = $('.setup-content'),
     allNextBtn = $('.nextBtn'),
