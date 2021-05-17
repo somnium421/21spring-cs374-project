@@ -80,6 +80,82 @@
         <div class="container-fluid col" id="grad1">
             <div class="row fs-3 fw-bold mt-5 mb-4 ms-5">새 모임 만들기 New Meeting</div>
             <div id="tree"></div>
+            <div>
+                <span>가족 관계도를 저장할까요?</span>
+            </div>
+            <!-- Button HTML (to Trigger Modal) -->
+<a href="#myModal" class="btn btn-lg btn-primary" data-toggle="modal">Launch Demo Modal</a>
+    
+<!-- Modal HTML -->
+<div id="myModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Do you want to save changes to this document before closing?</p>
+                <p class="text-secondary"><small>If you don't save, your changes will be lost.</small></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+            
+            <!-- Button trigger modal -->
+            <button href="#saveFamilyTree" type="button" class="btn btn-primary" data-toggle="modal">
+                예 Save
+            </button>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cancelFamilyTree">
+                아니오 No
+            </button>
+  
+            <!-- Modal -->
+            <div class="modal fade" id="saveFamilyTree" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">가족 코드</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body" onload="randomNum.printRandom('auth', 5)">
+                        코드를 가족들과 공유해보세요. 코드는 가족 관계도 탭에서도 확인 가능합니다.
+                        <p>코드: <span id="auth">00000</span></p>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">확인</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+  
+            <!-- Modal -->
+            <div class="modal fade" id="cancelFamilyTree" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">! Confirm</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        가족 관계도를 다시 작성하시겠습니까?
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-primary">예</button>
+                    </div>
+                </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>
