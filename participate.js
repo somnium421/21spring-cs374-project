@@ -89,3 +89,4 @@ $('#activity-add-tag').click(function() {
 $('.selectable').click(function(event) {
     toggle($(event.target));
 });
+
