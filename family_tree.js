@@ -1,3 +1,5 @@
+window.newid = 20;
+
 OrgChart.templates.family_template = Object.assign({}, OrgChart.templates.ana);
 OrgChart.templates.family_template.size = [86, 86];
 OrgChart.templates.family_template.plus = "";
@@ -26,6 +28,7 @@ var chart = new OrgChart(document.getElementById("tree"), {
     template: "family_template",
     mouseScrool: OrgChart.action.none,
     enableSearch: false,
+    searchFields: ["name", "id"],
     siblingSeparation: 100,
     nodeBinding: {
         name: "name",
@@ -41,7 +44,8 @@ var chart = new OrgChart(document.getElementById("tree"), {
         add:{text: "Add"},
         edit:{text: "Edit"},
         remove:{text: "Remove"},
-        addPartner: {text:"Add partner", icon:OrgChart.icon.add(24,24, "#7A7A7A"), onClick: addPartner}
+        addPartner: {text:"Add partner", icon:OrgChart.icon.add(24,24, "#7A7A7A"), onClick: addPartner},
+        addChild: {text:"Add child", icon:OrgChart.icon.add(24,24, "#7A7A7A"), onClick: addChild}
     },
 });
 
@@ -52,30 +56,39 @@ chart.on('render-link', function(sender, args){
 });
 
 chart.load([          
-    { id: 1, tags: ["blue"], name: "King George VI", img: "https://cdn.balkan.app/shared/f1.png"},
-    { id: 2, pid: 1, tags: ["partner"], name: "Queen Elizabeth", title: "The Queen Mother", img: "https://cdn.balkan.app/shared/f2.png" },
-    { id: 3, pid: 1, tags: ["blue"],  ppid: 2, name: "Queen Elizabeth II", img: "https://cdn.balkan.app/shared/f5.png"},
-    { id: 4, pid: 3, tags: ["left-partner"], name: "Prince Philip", title: "Duke of Edinburgh", img: "https://cdn.balkan.app/shared/f3.png"},
+    { id: 1, tags: ["blue"], spids: [2], name: "King George VI", img: "https://cdn.balkan.app/shared/f1.png"},
+    { id: 2, pid: 1, tags: ["partner"], partner: 1, name: "Queen Elizabeth", title: "The Queen Mother", img: "https://cdn.balkan.app/shared/f2.png" },
+    { id: 3, pid: 1, tags: ["blue"], partner: 4,  ppid: 2, name: "Queen Elizabeth II", img: "https://cdn.balkan.app/shared/f5.png"},
+    { id: 4, pid: 3, tags: ["left-partner"], spids: [3], name: "Prince Philip", title: "Duke of Edinburgh", img: "https://cdn.balkan.app/shared/f3.png"},
     { id: 5, pid: 1, ppid: 2, name: "Princess Margaret", img: "https://cdn.balkan.app/shared/f6.png"},
-    { id: 6, pid: 3,tags: ["blue"], ppid: 4, name: "Charles", title: "Prince of Wales", img: "https://cdn.balkan.app/shared/f8.png"},
-    { id: 7, pid: 6, tags: ["partner"] , name: "Diana", title: "Princess of Wales", img: "https://cdn.balkan.app/shared/f9.png"},
-    { id: 8, pid: 6, tags: ["partner"], name: "Camila", title: "Duchess of Cornwall", img: "https://cdn.balkan.app/shared/f7.png" },
-    { id: 9, pid: 3, ppid: 4 , name: "Anne", title: "Princess Royal", img: "https://cdn.balkan.app/shared/f10.png"},
-    { id: 10, pid: 3, ppid: 4 , name: "Prince Andrew", title: "Duke of York", img: "https://cdn.balkan.app/shared/f11.png"},
-    { id: 11, pid: 3, ppid: 4, name: "Prince Edward", title: "Earl of Wessex", img: "https://cdn.balkan.app/shared/f12.png"},
-    { id: 12, pid: 6, ppid: 7, tags: ["blue"], name: "Prince William", title: "Duch of Cambridge", img: "https://cdn.balkan.app/shared/f14.png"},
-    { id: 13, pid: 6, ppid: 7, name: "Prince Harry", img: "https://cdn.balkan.app/shared/f15.png"},
-    { id: 14, pid: 12, tags: ["left-partner"], name: "Catherine", title: "Duchess of Cambridge", img: "https://cdn.balkan.app/shared/f13.png"},
-    { id: 15, pid: 13, tags: ["right-partner"], name: "Meghan Markle", img: "https://cdn.balkan.app/shared/f16.png"},
-    { id: 16, pid: 12, ppid: 14, tags: ["blue"], name: "Prince George of Cambridge", img: "https://cdn.balkan.app/shared/f17.png"},
-    { id: 17, pid: 12, ppid: 14, tags: ["blue"], name: "Prince Charlotte of Cambridge", img: "https://cdn.balkan.app/shared/f18.png"},
-    { id: 18, pid: 12, ppid: 14, tags: ["blue"], name: "Prince Louis of Cambridge", img: "https://cdn.balkan.app/shared/f19.png"}
+    { id: 6, pid: 3, tags: ["blue"], ppid: 4, name: "Charles", title: "Prince of Wales", img: "https://cdn.balkan.app/shared/f8.png"},
+    // { id: 7, pid: 6, tags: ["partner"] , partner: 6, name: "Diana", title: "Princess of Wales", img: "https://cdn.balkan.app/shared/f9.png"},
+    // { id: 9, pid: 3, ppid: 4 , name: "Anne", title: "Princess Royal", img: "https://cdn.balkan.app/shared/f10.png"},
+    // { id: 10, pid: 3, ppid: 4 , name: "Prince Andrew", title: "Duke of York", img: "https://cdn.balkan.app/shared/f11.png"},
+    // { id: 11, pid: 3, ppid: 4, name: "Prince Edward", title: "Earl of Wessex", img: "https://cdn.balkan.app/shared/f12.png"},
+    // { id: 12, pid: 6, ppid: 7, tags: ["blue"], partner: 14, name: "Prince William", title: "Duch of Cambridge", img: "https://cdn.balkan.app/shared/f14.png"},
+    // { id: 13, pid: 6, ppid: 7, partner: 15, name: "Prince Harry", img: "https://cdn.balkan.app/shared/f15.png"},
+    // { id: 14, pid: 12, tags: ["left-partner"], partner: 12, name: "Catherine", title: "Duchess of Cambridge", img: "https://cdn.balkan.app/shared/f13.png"},
+    // { id: 15, pid: 13, tags: ["right-partner"], partner: 13, name: "Meghan Markle", img: "https://cdn.balkan.app/shared/f16.png"},
+    // { id: 16, pid: 12, ppid: 14, tags: ["blue"], name: "Prince George of Cambridge", img: "https://cdn.balkan.app/shared/f17.png"},
+    // { id: 17, pid: 12, ppid: 14, tags: ["blue"], name: "Prince Charlotte of Cambridge", img: "https://cdn.balkan.app/shared/f18.png"},
+    // { id: 18, pid: 12, ppid: 14, tags: ["blue"], name: "Prince Louis of Cambridge", img: "https://cdn.balkan.app/shared/f19.png"}
 ]);
 
 function addPartner(nodeId){
-	//var node = chart.getNode(nodeId);
-	var data = {id:OrgChart.randomId(), pid: nodeId, tags: ["partner"]}
+	// var node = chart.getNode(nodeId);
+    // await chart.updateNode({ id: nodeId, pid: node.pid, ppid: node.ppid, tags: node.tags, name: node.name,
+    //     title: node.title, img: node.img});
+	var data = {id:window.newid, pid: nodeId, tags: ["partner"]};
+    chart.addNode(data);
+	window.newid ++;
+}
+function addChild(nodeId){
+	var node = chart.getNode(nodeId);
+    console.log(nodeId, node.partner);
+	var data = {id:window.newid, pid: node.pid, ppid: nodeId};
 	chart.addNode(data);
+    window.newid++;
 }
 
 
