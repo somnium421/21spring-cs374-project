@@ -189,35 +189,33 @@
 
                 <!-- Second Step -->
                 <div id="step-2" class="container col-6 row mx-auto mt-4 p-3 setup-content">
-                    <form>
-                        <div class="form-group">
-                            <label class="fw-bold fs-5 mb-2" for="departure-place">출발 장소<span style="color: red">*</span></label>
-                            <input class="form-control mt-2 mb-3" placeholder="출발 장소를 적어주세요" id="departure-place" type="name">
-                            <div id="map" style="width:100%;height:300px;"></div>
+                    <div class="form-group">
+                        <label class="fw-bold fs-5 mb-2" for="departure-place">출발 장소<span style="color: red">*</span></label>
+                        <input type="text" class="input-group mt-2 mb-3 form-control" placeholder="출발 장소를 적어주세요" id="departure-place" onkeyup="if(window.event.keyCode==13)getAddr()">
+                        <div id="map" class="mx-auto" style="width:500px;height:300px;"></div>
+                    </div>
+                    <div class="form-group mt-4">
+                        <label class="fw-bold fs-5 mb-2" for="transportation">이동 수단<span style="color: red">*</span></label>
+                        <br>
+                        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="btnradio1">대중교통</label>
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="btnradio2">자가용</label>
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="btnradio3">도보</label>
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="btnradio4">자전거</label>
                         </div>
-                        <div class="form-group mt-4">
-                            <label class="fw-bold fs-5 mb-2" for="transportation">이동 수단<span style="color: red">*</span></label>
-                            <br>
-                            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                                <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off">
-                                <label class="btn btn-outline-primary" for="btnradio1">대중교통</label>
-                                <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-                                <label class="btn btn-outline-primary" for="btnradio2">자가용</label>
-                                <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
-                                <label class="btn btn-outline-primary" for="btnradio3">도보</label>
-                                <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off">
-                                <label class="btn btn-outline-primary" for="btnradio4">자전거</label>
-                            </div>
-                        </div>
-                        <div class="form-inline mt-5">
-                            <button class="btn btn-lg btn-outline-primary prevBtn btn-block" type="button" style="width: 29%;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
-                                </svg>
-                            </button>
-                            <button class="btn btn-lg btn-primary nextBtn btn-block col-8" type="button" style="width: 70%;">다음</button>
-                        </div>   
-                    </form>
+                    </div>
+                    <div class="form-inline mt-5">
+                        <button class="btn btn-lg btn-outline-primary prevBtn btn-block" type="button" style="width: 29%;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                            </svg>
+                        </button>
+                        <button class="btn btn-lg btn-primary nextBtn btn-block col-8" type="button" style="width: 70%;">다음</button>
+                    </div>  
                 </div>
 
                 <!-- Third Step -->
