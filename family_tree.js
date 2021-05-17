@@ -107,6 +107,7 @@ function addChild(nodeId){
         data = {id:window.newid, pid: nodeData["partner"], ppid: nodeId, img: "https://cdn.balkan.app/shared/empty-img-white.svg"};
     }	
 	chart.addNode(data);
+    console.log(nodeId);
     window.newid++;
 }
 
