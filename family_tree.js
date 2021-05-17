@@ -28,10 +28,12 @@ var chart = new OrgChart(document.getElementById("tree"), {
     template: "family_template",
     mouseScrool: OrgChart.action.none,
     enableSearch: false,
+    enableDragDrop: false,
     searchFields: ["name", "id"],
     siblingSeparation: 100,
     nodeBinding: {
         name: "name",
+        partner: "partner",
         title: "title",
         img: "img",
     },
@@ -41,11 +43,10 @@ var chart = new OrgChart(document.getElementById("tree"), {
         }
     },
     nodeMenu:{
-        add:{text: "Add"},
-        edit:{text: "Edit"},
-        remove:{text: "Remove"},
         addPartner: {text:"Add partner", icon:OrgChart.icon.add(24,24, "#7A7A7A"), onClick: addPartner},
-        addChild: {text:"Add child", icon:OrgChart.icon.add(24,24, "#7A7A7A"), onClick: addChild}
+        addChild: {text:"Add child", icon:OrgChart.icon.add(24,24, "#7A7A7A"), onClick: addChild},
+        edit:{text: "Edit"},
+        remove:{text: "Remove"}
     },
 });
 
@@ -56,42 +57,42 @@ chart.on('render-link', function(sender, args){
 });
 
 chart.load([          
-    { id: 1, tags: ["blue"], spids: [2], name: "King George VI", img: "https://cdn.balkan.app/shared/f1.png"},
-    { id: 2, pid: 1, tags: ["partner"], partner: 1, name: "Queen Elizabeth", title: "The Queen Mother", img: "https://cdn.balkan.app/shared/f2.png" },
-    { id: 3, pid: 1, tags: ["blue"], partner: 4,  ppid: 2, name: "Queen Elizabeth II", img: "https://cdn.balkan.app/shared/f5.png"},
-    { id: 4, pid: 3, tags: ["left-partner"], spids: [3], name: "Prince Philip", title: "Duke of Edinburgh", img: "https://cdn.balkan.app/shared/f3.png"},
-    { id: 5, pid: 1, ppid: 2, name: "Princess Margaret", img: "https://cdn.balkan.app/shared/f6.png"},
-    { id: 6, pid: 3, tags: ["blue"], ppid: 4, name: "Charles", title: "Prince of Wales", img: "https://cdn.balkan.app/shared/f8.png"},
-    // { id: 7, pid: 6, tags: ["partner"] , partner: 6, name: "Diana", title: "Princess of Wales", img: "https://cdn.balkan.app/shared/f9.png"},
-    // { id: 9, pid: 3, ppid: 4 , name: "Anne", title: "Princess Royal", img: "https://cdn.balkan.app/shared/f10.png"},
-    // { id: 10, pid: 3, ppid: 4 , name: "Prince Andrew", title: "Duke of York", img: "https://cdn.balkan.app/shared/f11.png"},
-    // { id: 11, pid: 3, ppid: 4, name: "Prince Edward", title: "Earl of Wessex", img: "https://cdn.balkan.app/shared/f12.png"},
-    // { id: 12, pid: 6, ppid: 7, tags: ["blue"], partner: 14, name: "Prince William", title: "Duch of Cambridge", img: "https://cdn.balkan.app/shared/f14.png"},
-    // { id: 13, pid: 6, ppid: 7, partner: 15, name: "Prince Harry", img: "https://cdn.balkan.app/shared/f15.png"},
-    // { id: 14, pid: 12, tags: ["left-partner"], partner: 12, name: "Catherine", title: "Duchess of Cambridge", img: "https://cdn.balkan.app/shared/f13.png"},
-    // { id: 15, pid: 13, tags: ["right-partner"], partner: 13, name: "Meghan Markle", img: "https://cdn.balkan.app/shared/f16.png"},
-    // { id: 16, pid: 12, ppid: 14, tags: ["blue"], name: "Prince George of Cambridge", img: "https://cdn.balkan.app/shared/f17.png"},
-    // { id: 17, pid: 12, ppid: 14, tags: ["blue"], name: "Prince Charlotte of Cambridge", img: "https://cdn.balkan.app/shared/f18.png"},
-    // { id: 18, pid: 12, ppid: 14, tags: ["blue"], name: "Prince Louis of Cambridge", img: "https://cdn.balkan.app/shared/f19.png"}
+    { id: 1, tags: ["blue"], partner: 2, name: "김덕수", title: "할아버지", img: "https://cdn.balkan.app/shared/empty-img-white.svg"},
+    { id: 2, pid: 1, tags: ["partner"], partner: 1, name: "문옥주", title: "할머니", img: "https://cdn.balkan.app/shared/empty-img-white.svg" },
 ]);
 
 function addPartner(nodeId){
-	// var node = chart.getNode(nodeId);
-    // await chart.updateNode({ id: nodeId, pid: node.pid, ppid: node.ppid, tags: node.tags, name: node.name,
-    //     title: node.title, img: node.img});
-	var data = {id:window.newid, pid: nodeId, tags: ["partner"]};
+	var node = chart.getNode(nodeId);
+    var nodeData = chart.get(nodeId);
+    chart.updateNode({ id: nodeId, pid: node.pid, ppid: node.ppid, tags: node.tags, name: nodeData["name"],partner: window.newid, img: nodeData["img"], title: nodeData["title"]});
+	var data = {id:window.newid, pid: nodeId, tags: ["partner"], partner: nodeId, img: "https://cdn.balkan.app/shared/empty-img-white.svg"};
     chart.addNode(data);
-	window.newid ++;
+    var children = node.children;
+    for (var i = 0; i < children.length; i ++){
+        var cnode = chart.getNode(children[i].id);
+        var cnodeData = chart.get(children[i].id);
+        chart.updateNode({ id: cnode.id, pid: cnode.pid, ppid: window.newid, tags: cnode.tags, name: cnodeData["name"],partner: cnodeData["partner"], img: cnodeData["img"], title: cnodeData["title"]});
+    }
+    chart.editUI.show(window.newid);
+    window.newid ++;
+    
 }
 function addChild(nodeId){
-	var node = chart.getNode(nodeId);
-    console.log(nodeId, node.partner);
-	var data = {id:window.newid, pid: node.pid, ppid: nodeId};
+    var nodeData = chart.get(nodeId);
+    var data = {};
+    if (!nodeData["partner"]){
+        data = {id:window.newid, pid: nodeId, img: "https://cdn.balkan.app/shared/empty-img-white.svg"};
+    }
+    else if (nodeId < nodeData["partner"]){
+        data = {id:window.newid, pid: nodeId, ppid: nodeData["partner"], img: "https://cdn.balkan.app/shared/empty-img-white.svg"};
+    }
+    else{
+        data = {id:window.newid, pid: nodeData["partner"], ppid: nodeId, img: "https://cdn.balkan.app/shared/empty-img-white.svg"};
+    }	
 	chart.addNode(data);
+    chart.editUI.show(window.newid);
     window.newid++;
 }
-
-
 
 var randomNum = {};
 //0~9까지의 난수
