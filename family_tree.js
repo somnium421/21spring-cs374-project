@@ -28,7 +28,6 @@ var chart = new OrgChart(document.getElementById("tree"), {
     template: "family_template",
     mouseScrool: OrgChart.action.none,
     enableSearch: false,
-    enableDragDrop: false,
     searchFields: ["name", "id"],
     siblingSeparation: 100,
     nodeBinding: {
@@ -111,3 +110,8 @@ randomNum.authNo= function(n) {
 randomNum.printRandom =function(data,num) {
     document.getElementById(data).innerHTML = randomNum.authNo(num);
 };
+
+
+$(document).ready(function(){
+    console.log($("#tree"));
+})
