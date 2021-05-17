@@ -27,6 +27,8 @@ OrgChart.templates.family_template_blue.node = '<circle stroke-width="3" fill="n
 var chart = new OrgChart(document.getElementById("tree"), {
     template: "family_template",
     mouseScrool: OrgChart.action.none,
+    showXScroll: OrgChart.scroll.visible, 
+    showYScroll: OrgChart.scroll.visible, 
     enableSearch: false,
     enableDragDrop: false,
     searchFields: ["name", "id"],
