@@ -28,10 +28,12 @@ var chart = new OrgChart(document.getElementById("tree"), {
     template: "family_template",
     mouseScrool: OrgChart.action.none,
     enableSearch: false,
+    enableDragDrop: false,
     searchFields: ["name", "id"],
     siblingSeparation: 100,
     nodeBinding: {
         name: "name",
+        partner: "partner",
         title: "title",
         img: "img",
     },
@@ -56,12 +58,12 @@ chart.on('render-link', function(sender, args){
 });
 
 chart.load([          
-    { id: 1, tags: ["blue"], spids: [2], name: "King George VI", img: "https://cdn.balkan.app/shared/f1.png"},
-    { id: 2, pid: 1, tags: ["partner"], partner: 1, name: "Queen Elizabeth", title: "The Queen Mother", img: "https://cdn.balkan.app/shared/f2.png" },
-    { id: 3, pid: 1, tags: ["blue"], partner: 4,  ppid: 2, name: "Queen Elizabeth II", img: "https://cdn.balkan.app/shared/f5.png"},
-    { id: 4, pid: 3, tags: ["left-partner"], spids: [3], name: "Prince Philip", title: "Duke of Edinburgh", img: "https://cdn.balkan.app/shared/f3.png"},
-    { id: 5, pid: 1, ppid: 2, name: "Princess Margaret", img: "https://cdn.balkan.app/shared/f6.png"},
-    { id: 6, pid: 3, tags: ["blue"], ppid: 4, name: "Charles", title: "Prince of Wales", img: "https://cdn.balkan.app/shared/f8.png"},
+    { id: 1, tags: ["blue"], partner: 2, name: "김덕수", title: "할아버지", img: "https://cdn.balkan.app/shared/empty-img-white.svg"},
+    { id: 2, pid: 1, tags: ["partner"], partner: 1, name: "문옥주", title: "할머니", img: "https://cdn.balkan.app/shared/empty-img-white.svg" },
+    // { id: 3, pid: 1, tags: ["blue"], partner: 4,  ppid: 2, name: "Queen Elizabeth II", img: "https://cdn.balkan.app/shared/f5.png"},
+    // { id: 4, pid: 3, tags: ["left-partner"], spids: [3], name: "Prince Philip", title: "Duke of Edinburgh", img: "https://cdn.balkan.app/shared/f3.png"},
+    // { id: 5, pid: 1, ppid: 2, name: "Princess Margaret", img: "https://cdn.balkan.app/shared/f6.png"},
+    // { id: 6, pid: 3, tags: ["blue"], ppid: 4, name: "Charles", title: "Prince of Wales", img: "https://cdn.balkan.app/shared/f8.png"},
     // { id: 7, pid: 6, tags: ["partner"] , partner: 6, name: "Diana", title: "Princess of Wales", img: "https://cdn.balkan.app/shared/f9.png"},
     // { id: 9, pid: 3, ppid: 4 , name: "Anne", title: "Princess Royal", img: "https://cdn.balkan.app/shared/f10.png"},
     // { id: 10, pid: 3, ppid: 4 , name: "Prince Andrew", title: "Duke of York", img: "https://cdn.balkan.app/shared/f11.png"},
@@ -76,22 +78,37 @@ chart.load([
 ]);
 
 function addPartner(nodeId){
-	// var node = chart.getNode(nodeId);
-    // await chart.updateNode({ id: nodeId, pid: node.pid, ppid: node.ppid, tags: node.tags, name: node.name,
-    //     title: node.title, img: node.img});
-	var data = {id:window.newid, pid: nodeId, tags: ["partner"]};
+	var node = chart.getNode(nodeId);
+    var nodeData = chart.get(nodeId);
+    chart.updateNode({ id: nodeId, pid: node.pid, ppid: node.ppid, tags: node.tags, name: nodeData["name"],partner: window.newid, img: nodeData["img"], title: nodeData["title"]});
+	var data = {id:window.newid, pid: nodeId, tags: ["partner"], partner: nodeId, img: "https://cdn.balkan.app/shared/empty-img-white.svg"};
     chart.addNode(data);
+    var children = node.children;
+    for (var i = 0; i < children.length; i ++){
+        var cnode = chart.getNode(children[i].id);
+        var cnodeData = chart.get(children[i].id);
+        chart.updateNode({ id: cnode.id, pid: cnode.pid, ppid: window.newid, tags: cnode.tags, name: cnodeData["name"],partner: cnodeData["partner"], img: cnodeData["img"], title: cnodeData["title"]});
+    }
+    console.log(chart.get(window.newid)["partner"]);
 	window.newid ++;
+    
 }
 function addChild(nodeId){
-	var node = chart.getNode(nodeId);
-    console.log(nodeId, node.partner);
-	var data = {id:window.newid, pid: node.pid, ppid: nodeId};
+    var nodeData = chart.get(nodeId);
+    console.log(nodeId, nodeData["partner"]);
+    var data = {};
+    if (!nodeData["partner"]){
+        data = {id:window.newid, pid: nodeId, img: "https://cdn.balkan.app/shared/empty-img-white.svg"};
+    }
+    else if (nodeId < nodeData["partner"]){
+        data = {id:window.newid, pid: nodeId, ppid: nodeData["partner"], img: "https://cdn.balkan.app/shared/empty-img-white.svg"};
+    }
+    else{
+        data = {id:window.newid, pid: nodeData["partner"], ppid: nodeId, img: "https://cdn.balkan.app/shared/empty-img-white.svg"};
+    }	
 	chart.addNode(data);
     window.newid++;
 }
-
-
 
 var randomNum = {};
 //0~9까지의 난수
