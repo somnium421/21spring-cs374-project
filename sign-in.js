@@ -3,7 +3,7 @@ var userPw;
 
 
 $(document).ready(function(){
-    $("#login").click(()=>{
+    $("#sign-in").click(()=>{
         userId = $("#userId").val();
         userPw = $("#userPw").val();
     })
