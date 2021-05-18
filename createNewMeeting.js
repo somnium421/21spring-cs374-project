@@ -103,4 +103,11 @@ $('.timefield').change(function(){
         $('#hour').removeAttr('disabled');
         $('#min').removeAttr('disabled');
     }
+
+    var db_period = [day, hour, min];
+});
+
+//$('#surveyPeriod').val();
+$('#meetingPrivacy').click(function(){
+    console.log($('#meetingPrivacy').prop('checked'));
 });
