@@ -1,4 +1,3 @@
-
 var groupDataArray1 = [
     {
         "groupName": "솔이 이모네",
@@ -48,7 +47,7 @@ var groupDataArray1 = [
     }
 ];
 
-var settings3 = {
+var settings = {
     groupDataArray: groupDataArray1,
     groupItemName: "groupName",
     groupArrayName: "groupData",
@@ -62,5 +61,6 @@ var settings3 = {
     }
 };
 
-var ohoh = $("#participants-transfer").transfer(settings3);
-ohoh.getSelectedItems();
+var participans_transfer = $("#participants-transfer").transfer(settings);
+
+export {participans_transfer};

@@ -32,4 +32,3 @@ $(document).ready(function(){
         else $(e.target).parent().remove();
     })
 })
-

@@ -30,7 +30,7 @@
         const db = firebase.firestore();
         db.settings({timestampsInSnapshots: true});
     </script>
-    <script src="./createNewMeeting.js" defer></script>
+    
     <div class="d-flex">
         <div class="d-flex flex-column flex-shrink-0 p-3 bg-white shadow fixed-bottom" style="width: 200px; height:100vh;">
             <a href="/" class="d-flex align-items-center mx-auto text-decoration-none">
@@ -127,7 +127,7 @@
                         </div>
         
                         <div class="form-inline mt-5">
-                            <button class="btn btn-lg btn-primary nextBtn col-12 btn-block" style="width: 100%;" type="button">다음</button>
+                            <button class="btn btn-lg btn-primary nextBtn col-12 btn-block" style="width: 100%;" type="button" id="step1-submit">다음</button>
                         </div>        
                     </form>
                 </div>
@@ -152,7 +152,7 @@
                                         <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
                                     </svg>
                                 </button>
-                                <button class="btn btn-lg btn-primary nextBtn btn-block col-8" style="width: 84%;" type="button">다음</button>
+                                <button class="btn btn-lg btn-primary nextBtn btn-block col-8" style="width: 84%;" type="button" id="step2-submit">다음</button>
                             </div>
                         </form>
                         
@@ -204,7 +204,7 @@
                                     <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
                                 </svg>
                             </button>
-                            <button class="btn btn-lg btn-primary nextBtn btn-block col-8" style="width: 84%;" type="button">다음</button>
+                            <button class="btn btn-lg btn-primary nextBtn btn-block col-8" style="width: 84%;" type="button" id="step3-submit">다음</button>
                         </div>
                     </form>           
                 </div>
@@ -250,7 +250,7 @@
                                     <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
                                 </svg>
                             </button>
-                            <button class="btn btn-lg btn-primary nextBtn btn-block col-8" style="width: 84%;" type="button">다음</button>
+                            <button class="btn btn-lg btn-primary nextBtn btn-block col-8" style="width: 84%;" type="button" id="step4-submit">다음</button>
                         </div>
                     </form>                    
                 </div>
@@ -285,7 +285,7 @@
                                     <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
                                 </svg>
                             </button>
-                            <button class="btn btn-lg btn-primary btn-block" type="submit" style="width: 84%;">만들기</button>
+                            <button class="btn btn-lg btn-primary btn-block" type="button" style="width: 84%;" id="final-submit">만들기</button>
                         </div>
                     </form>
                 </div>
@@ -293,8 +293,8 @@
         </div>
     </div>
 </body>
-
+    <script type="module" src="./createNewMeeting.js"></script>
     <script src="js/jquery.transfer.js"></script>
-    <script src="participants_transfer.js"></script>
-    <script src="adding_tags.js"></script>
+    <!-- <script src="participants_transfer.js"></script>
+    <script src="adding_tags.js"></script> -->
 </html><!-- MultiStep Form -->
