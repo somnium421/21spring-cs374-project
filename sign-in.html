@@ -50,7 +50,7 @@
             db.settings({timestampsInSnapshots: true});
         </script>
         <main class="form-signin">
-            <form>
+            <form class="needs-validation" novalidate>
                 <img class="mb-4" src="icons/logo.svg" alt="" width="139" height="43">
                 <h1 class="h3 mb-3 fw-normal">회원가입<br> <span class="fw-light eng-cap">Please sign in</span></h1>
 
@@ -59,8 +59,11 @@
                     <label for="userId">Id</label>
                 </div>
                 <div class="form-floating">
-                    <input type="password" class="form-control" id="userPw" placeholder="Password">
+                    <input type="password" class="form-control" id="userPw" placeholder="Password" data-v-message="Please enter minimum 10 characters" required>
                     <label for="userPw">Password</label>
+                    <div class="invalid-feedback">
+                        Valid first name is required.
+                      </div>
                     <div id="passwordHelpBlock" class="form-text">
                         Password must be 8-20 characters long.
                       </div>
