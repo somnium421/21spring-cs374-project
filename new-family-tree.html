@@ -4,7 +4,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="generator" content="Hugo 0.83.1">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous"/> 
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>    
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>   
         <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-app.js"></script>
@@ -82,8 +83,66 @@
             <div class="container-fluid col px-5">
                 <div class="fs-3 fw-bold mt-5 mb-4 ms-1">새로운 가족 관계도 <span class="fw-light eng-cap">New Family Tree</span></div>
                 <div class="container col-6">
-                    <h4>초대 받았나요? Who Invited You? </h4>
+                    <!-- <h4 class="mt-5">초대 받았나요? <span class="fw-light eng-cap">Who Invited You?</span> </h4>
+                    <form class="card p-2">
+                        <div class="input-group">
+                          <input type="text" class="form-control" placeholder="가족 코드">
+                          <button type="submit" class="btn btn-secondary">입력</button>
+                        </div>
+                    </form>
+                    <hr class="my-5">
+                    <h4 class="mt-5">초대 받았나요? <span class="fw-light eng-cap">Who Invited You?</span> </h4>
+                    <form class="card p-2">
+                        <div class="input-group">
+                          <input type="text" class="form-control" placeholder="가족 코드">
+                          <button type="submit" class="btn btn-secondary">입력</button>
+                        </div>
+                    </form> -->
+                    <div class="text-center">
+                        <button type="button" class="btn btn-primary btn-block rounded-pill" data-bs-toggle="modal" data-bs-target="#familyCode" data-bs-whatever="@mdo">가족 관계도 불러오기</button>
+                    </div>
+                    <div class="modal fade" id="familyCode" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel"><b>가족 코드를 입력하세요</b> <span class="fw-light eng-cap">Enter your family code</span> </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form class="mb-4">
+                                    <div class="mb-3">
+                                        <label for="famlily-code-input" class="col-form-label"><h5>가족 코드 입력 <span class="fw-light eng-cap">Family Code :</h5> </span> </label>
+                                        <input type="text" class="form-control" placeholder="가족 코드" id="famlily-code-input">
+                                        <!-- <button type="submit" class="btn btn-secondary">입력</button> -->
+                                    </div>
+                                </form>
+                                <p class="text-muted" style="font-size: smaller;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle-fill" viewBox="0 0 16 16">
+                                        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+                                    </svg> 
+                                    <b>가족 코드란?</b>
+                                </p>
+                                <p class="text-muted" style="font-size: smaller;">
+                                    가족 중 최초로 서비스에 가입했던 사람이 회원가입을 마치고 가족 관계도 생성을 완료하면 받을 수 있는 코드로 알파벳과 숫자의 5자리 조합으로 이루어져 있습니다. 예: 00FF0.
+                                </p>
+
+                                <p><a href="familyTree.html">코드를 받지 못했습니다.</a></p>
+
+
+
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                              <a href="home.html" type="button" class="btn btn-primary">인증</a>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+
                 </div>
+
+                
+                
     
             </div>
 
