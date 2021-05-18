@@ -1,4 +1,4 @@
-window.newid = 20;
+window.newid = 3;
 
 OrgChart.templates.family_template = Object.assign({}, OrgChart.templates.ana);
 OrgChart.templates.family_template.size = [86, 86];
@@ -27,6 +27,9 @@ OrgChart.templates.family_template_blue.node = '<circle stroke-width="3" fill="n
 var chart = new OrgChart(document.getElementById("tree"), {
     template: "family_template",
     mouseScrool: OrgChart.action.none,
+    nodeMouseClick: OrgChart.action.edit,
+    showXScroll: OrgChart.scroll.visible, 
+    showYScroll: OrgChart.scroll.visible, 
     enableSearch: false,
     searchFields: ["name", "id"],
     siblingSeparation: 100,
@@ -55,6 +58,28 @@ chart.on('render-link', function(sender, args){
     }
 });
 
+//hovering 하면 edit 창이 뜨게 하는건데 여기서 뭔가 힌트를 얻을 수 있지 않을까
+// chart.on('redraw', function(){
+//     var nodeElements = document.querySelectorAll('[node-id]');
+//     for(var i = 0; i < nodeElements.length; i++){
+//         nodeElements[i].addEventListener('mouseover', function(e){
+//           e.preventDefault();
+          
+//           if (e.target.tagName != 'text'){
+//               var nodeId = this.getAttribute('node-id');
+//               chart.editUI.show(nodeId, true);                
+//           }
+
+//       });
+
+  
+//     nodeElements[i].addEventListener('mouseleave', function(e){
+//         e.preventDefault();
+//         document.querySelector('.edit-wrapper').style.display = 'none';
+//     });
+//   }
+// });
+
 chart.load([          
     { id: 1, tags: ["blue"], partner: 2, name: "김덕수", title: "할아버지", img: "https://cdn.balkan.app/shared/empty-img-white.svg"},
     { id: 2, pid: 1, tags: ["partner"], partner: 1, name: "문옥주", title: "할머니", img: "https://cdn.balkan.app/shared/empty-img-white.svg" },
@@ -72,7 +97,7 @@ function addPartner(nodeId){
         var cnodeData = chart.get(children[i].id);
         chart.updateNode({ id: cnode.id, pid: cnode.pid, ppid: window.newid, tags: cnode.tags, name: cnodeData["name"],partner: cnodeData["partner"], img: cnodeData["img"], title: cnodeData["title"]});
     }
-    chart.editUI.show(window.newid);
+    // chart.editUI.show(window.newid);
     window.newid ++;
     
 }
@@ -80,17 +105,20 @@ function addChild(nodeId){
     var nodeData = chart.get(nodeId);
     var data = {};
     if (!nodeData["partner"]){
-        data = {id:window.newid, pid: nodeId, img: "https://cdn.balkan.app/shared/empty-img-white.svg"};
+        data = {id:window.newid, pid: nodeId, tags: ["default"], img: "https://cdn.balkan.app/shared/empty-img-white.svg"};
     }
     else if (nodeId < nodeData["partner"]){
-        data = {id:window.newid, pid: nodeId, ppid: nodeData["partner"], img: "https://cdn.balkan.app/shared/empty-img-white.svg"};
+        data = {id:window.newid, pid: nodeId, ppid: nodeData["partner"], tags: ["default"], img: "https://cdn.balkan.app/shared/empty-img-white.svg"};
     }
     else{
-        data = {id:window.newid, pid: nodeData["partner"], ppid: nodeId, img: "https://cdn.balkan.app/shared/empty-img-white.svg"};
+        data = {id:window.newid, pid: nodeData["partner"], ppid: nodeId, tags: ["default"], img: "https://cdn.balkan.app/shared/empty-img-white.svg"};
     }	
 	chart.addNode(data);
-    chart.editUI.show(window.newid);
+    // var tid = window.newid;
     window.newid++;
+    // chart.editUI.show(tid);
+    // chart.editUI.hide(window.newid);
+    
 }
 
 var randomNum = {};
