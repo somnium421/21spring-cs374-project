@@ -45,3 +45,48 @@ function call() {
 }
 
 call();
+
+var map = new naver.maps.Map("map", {
+    center: new naver.maps.LatLng(35.8, 127.51),
+    zoom: 1
+});
+
+const markers = [], infoWindows = [];
+const latlngs = [
+    new naver.maps.LatLng(37.3595704, 127.105399),
+    new naver.maps.LatLng(35.3595704, 128.105399),
+    new naver.maps.LatLng(37.3596704, 127.106399),
+    new naver.maps.LatLng(37.4595704, 127.905399),
+];
+const people = [
+    '나', '누나', '엄마', '할머니'
+];
+
+for (var i=0; i<latlngs.length; i++) {
+    var marker = new naver.maps.Marker({
+        position: latlngs[i],
+        map: map
+    });
+    var infoWindow = new naver.maps.InfoWindow({
+        content: `<p style="padding-top:10px;padding-left:10px;padding-right:10px;">${people[i]}</p>`
+    });
+    markers.push(marker);
+    infoWindows.push(infoWindow);
+    naver.maps.Event.addListener(markers[i], 'mouseover', getClickHandler(i));
+}
+
+function getClickHandler(seq) {
+    return function (e) {
+        var marker = markers[seq], infoWindow = infoWindows[seq];
+        if (infoWindow.getMap()) {
+            infoWindow.close();
+        } else {
+            infoWindow.open(map, marker);
+        }
+    }
+}
+
+var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl);
+});
