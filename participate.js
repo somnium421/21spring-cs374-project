@@ -132,16 +132,31 @@ function searchAddressToCoordinate(address) {
 function getAddr(){
     $.getJSON(`https://www.juso.go.kr/addrlink/addrLinkApi.do?currentPage=1&countPerPage=10&confmKey=devU01TX0FVVEgyMDIxMDUxNzE3MjgzMDExMTE3Mjk=&keyword=${$('#departure-place').val()}&resultType=json`, {format:"json"})
     .done(function(data) {
-        searchAddressToCoordinate(data.results.juso[0].roadAddrPart1);
+        console.log(data.results)
+        if (data.results.common.totalCount == 0) alert('존재하지 않는 주소입니다');
+        else if (data.results.common.totalCount == 1) searchAddressToCoordinate(data.results.juso[0].roadAddr);
+        else {
+            for (var juso of data.results.juso) {
+                $('#list-location').append(`<a class="list-group-item list-group-item-action" onclick="locationClick(event)">${juso.roadAddr}</a>`);
+            }
+        }
     })
     .fail(function() {
         alert('No result');
     });
     // $('#departure-place').val('');
 }
+var prevLocation;
+function locationClick(event) {
+    if (prevLocation) {
+        prevLocation.removeClass('active');
+    }
+    prevLocation = $(event.target);
+    prevLocation.addClass('active');
+    searchAddressToCoordinate(prevLocation.text());
+}
 
 var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-console.log(tooltipTriggerList);
 var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
   return new bootstrap.Tooltip(tooltipTriggerEl)
 })
