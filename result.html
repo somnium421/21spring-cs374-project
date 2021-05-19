@@ -12,6 +12,7 @@
     <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-firestore.js"></script><script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=94j4tbwfjv"></script>
     <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=94j4tbwfjv&submodules=geocoder"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
+    <link rel="stylesheet" href="./chat.css">
     <title>ToGather :: Result</title>
 </head>
 <body style="background-color: #E5E5E5;" onresize="call()">
@@ -77,8 +78,7 @@
             </ul>
             <button type="button" class="btn btn-outline-primary mb-2 mx-4">로그아웃</button>
         </div>
-        <div class="container-fluid col" style="margin-left: 200px;">
-                
+        <div class="container-fluid col" style="margin-left: 200px;">    
             <div class="row fs-3 fw-bold mt-5 mb-4 ms-5">설문 결과 확인하기</div>
             <div class="row card mx-5 mb-3 shadow" style="border-radius: 10px;">
                 <div class="card-body">
@@ -160,6 +160,43 @@
             <div class="row card mx-5 shadow" style="border-radius: 10px;">
                 <div class="card-body">
                     <h5 class="fw-bold card-title">대화</h5>
+                    <div class="mesgs">
+                        <div class="msg_history">
+                          <div class="incoming_msg">
+                            <div class="incoming_msg_img">
+                                <a href="#" class="d-inline-block">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="red" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                                    </svg>
+                                </a>
+                                <p>누나</p>
+                            </div>
+                            <div class="received_msg">
+                              <div class="received_withd_msg">
+                                <p style="float:left">가평이 제일 표가 많네! 가평 ㄱㄱ?</p>
+                                <a href="#" class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="right" title="" data-bs-original-title="동생, 아빠, 엄마">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffc0cb" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+                                      </svg>
+                                </a>
+                                <span class="time_date">어제 오후 8시 48분</span></div>
+                                
+                            </div>
+                          </div>
+                          <div class="outgoing_msg">
+                            <div class="sent_msg">
+                              <p>근데 가평 이번 주에 비 온대ㅠㅜ</p>
+                              <span class="time_date">오늘 오후 4시 32분</span> </div>
+                          </div>
+                        </div>
+                        <div class="type_msg">
+                          <div class="input_msg_write">
+                            <input type="text" class="write_msg" placeholder="Type a message">
+                            <button class="msg_send_btn" type="button"><i class="far fa-paper-plane" aria-hidden="true"></i></button>
+                          </div>
+                        </div>
+                      </div>
                 </div>
             </div>
         </div>
