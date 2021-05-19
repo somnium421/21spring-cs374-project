@@ -31,10 +31,10 @@ var chart = new OrgChart(document.getElementById("tree"), {
     showXScroll: OrgChart.scroll.visible, 
     showYScroll: OrgChart.scroll.visible, 
     enableSearch: false,
-    searchFields: ["name", "id"],
     siblingSeparation: 100,
     nodeBinding: {
         name: "name",
+        gender: "gender",
         partner: "partner",
         title: "title",
         img: "img",
@@ -52,11 +52,38 @@ var chart = new OrgChart(document.getElementById("tree"), {
     },
 });
 
-chart.on('render-link', function(sender, args){
-    if (args.cnode.ppid != undefined){
-        args.html += '<use xlink:href="#baby" x="'+ args.p.xa +'" y="'+ args.p.ya +'"/>';
+chart.editUI.on('field', function(sender, args){
+    if (args.type == 'edit' && args.name == 'gender'){
+
+        var txt = args.field.querySelector('input');
+        var txtVal = txt.value;
+        if (txt){
+            txt.style.color = "red";  
+            
+            var select = document.createElement('select');
+            select.innerHTML = '<option value="gender" selected>성별을 고르시오</option>' 
+            + '<option value="male">남자</option>'
+            + '<option value="female">여자</option>';
+            
+            select.style.width = '100%';                    
+            select.setAttribute('val', '');
+            select.style.fontSize = '16px';
+            select.style.color = 'rgb(122, 122, 122)';
+            select.style.paddingTop = '7px';
+            select.style.paddingBottom = '7px';
+            select.value = txtVal;
+            
+            txt.parentNode.appendChild(select);
+            txt.parentNode.removeChild(txt);
+        }
     }
 });
+
+// chart.on('render-link', function(sender, args){
+//     if (args.cnode.ppid != undefined){
+//         args.html += '<use xlink:href="#circle" x="'+ args.p.xa +'" y="'+ args.p.ya +'"/>';
+//     }
+// });
 
 //hovering 하면 edit 창이 뜨게 하는건데 여기서 뭔가 힌트를 얻을 수 있지 않을까
 // chart.on('redraw', function(){
@@ -80,22 +107,28 @@ chart.on('render-link', function(sender, args){
 //   }
 // });
 
+chart.editUI.on('field', function(sender, args){
+    if (args.name == 'partner' || args.name == 'title' || args.name == 'img'){
+        return false;
+    }
+});
+
 chart.load([          
-    { id: 1, tags: ["blue"], partner: 2, name: "김덕수", title: "할아버지", img: "https://cdn.balkan.app/shared/empty-img-white.svg"},
-    { id: 2, pid: 1, tags: ["partner"], partner: 1, name: "문옥주", title: "할머니", img: "https://cdn.balkan.app/shared/empty-img-white.svg" },
+    { id: 1, tags: ["blue"], partner: 2, name: "김덕수", title: "할아버지", gender: "male", img: "https://cdn.balkan.app/shared/empty-img-white.svg"},
+    { id: 2, pid: 1, tags: ["partner"], partner: 1, name: "문옥주", title: "할머니", gender: "female", img: "https://cdn.balkan.app/shared/empty-img-white.svg" },
 ]);
 
 function addPartner(nodeId){
 	var node = chart.getNode(nodeId);
     var nodeData = chart.get(nodeId);
-    chart.updateNode({ id: nodeId, pid: node.pid, ppid: node.ppid, tags: node.tags, name: nodeData["name"],partner: window.newid, img: nodeData["img"], title: nodeData["title"]});
-	var data = {id:window.newid, pid: nodeId, tags: ["partner"], partner: nodeId, img: "https://cdn.balkan.app/shared/empty-img-white.svg"};
+    chart.updateNode({ id: nodeId, pid: node.pid, ppid: node.ppid, tags: node.tags, name: nodeData["name"],partner: window.newid, img: nodeData["img"], title: nodeData["title"],  gender: nodeData["gender"]});
+	var data = {id:window.newid, pid: nodeId, tags: ["partner"], partner: nodeId, gender: "gender", img: "https://cdn.balkan.app/shared/empty-img-white.svg"};
     chart.addNode(data);
     var children = node.children;
     for (var i = 0; i < children.length; i ++){
         var cnode = chart.getNode(children[i].id);
         var cnodeData = chart.get(children[i].id);
-        chart.updateNode({ id: cnode.id, pid: cnode.pid, ppid: window.newid, tags: cnode.tags, name: cnodeData["name"],partner: cnodeData["partner"], img: cnodeData["img"], title: cnodeData["title"]});
+        chart.updateNode({ id: cnode.id, pid: cnode.pid, ppid: window.newid, tags: cnode.tags, name: cnodeData["name"],partner: cnodeData["partner"], img: cnodeData["img"], title: cnodeData["title"], gender: cnodeData["gender"]});
     }
     // chart.editUI.show(window.newid);
     window.newid ++;
@@ -105,13 +138,13 @@ function addChild(nodeId){
     var nodeData = chart.get(nodeId);
     var data = {};
     if (!nodeData["partner"]){
-        data = {id:window.newid, pid: nodeId, tags: ["default"], img: "https://cdn.balkan.app/shared/empty-img-white.svg"};
+        data = {id:window.newid, pid: nodeId, tags: ["default"], gender: "gender", img: "https://cdn.balkan.app/shared/empty-img-white.svg"};
     }
     else if (nodeId < nodeData["partner"]){
-        data = {id:window.newid, pid: nodeId, ppid: nodeData["partner"], tags: ["default"], img: "https://cdn.balkan.app/shared/empty-img-white.svg"};
+        data = {id:window.newid, pid: nodeId, ppid: nodeData["partner"], tags: ["default"], gender: "gender", img: "https://cdn.balkan.app/shared/empty-img-white.svg"};
     }
     else{
-        data = {id:window.newid, pid: nodeData["partner"], ppid: nodeId, tags: ["default"], img: "https://cdn.balkan.app/shared/empty-img-white.svg"};
+        data = {id:window.newid, pid: nodeData["partner"], ppid: nodeId, tags: ["default"], gender: "gender", img: "https://cdn.balkan.app/shared/empty-img-white.svg"};
     }	
 	chart.addNode(data);
     // var tid = window.newid;
