@@ -107,7 +107,7 @@ $('.timefield').change(function(){
         $('#min').removeAttr('disabled');
     }
 
-    db_period = [Number(day), Number(hour), Number(min)];
+    db_period = {day: Number(day), hr: Number(hour), min: Number(min)};
 });
 
 
@@ -197,5 +197,15 @@ $('#final-submit').click(function(){
     db_log_newMeeting.surveyPeriod = Number($('#surveyPeriod').val());
     db_log_newMeeting.isPrivate = $('#btnradio2').is(':checked');
     
+    db_log_newMeeting.chat = {};
+
+    db_log_newMeeting.isEnd = false;
     console.log(db_log_newMeeting);
+
+
+    db.collection('families').doc().set({
+        code: "00AB8",
+        meetings: [db_log_newMeeting],
+        members: []
+    })
 })
