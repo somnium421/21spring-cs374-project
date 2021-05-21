@@ -1,4 +1,6 @@
 window.newid = 3;
+var familyCode;
+
 
 OrgChart.templates.family_template = Object.assign({}, OrgChart.templates.ana);
 OrgChart.templates.family_template.size = [86, 86];
@@ -113,10 +115,13 @@ chart.editUI.on('field', function(sender, args){
     }
 });
 
-chart.load([          
+
+var familyChart = [          
     { id: 1, tags: ["blue"], partner: 2, name: "김덕수", title: "할아버지", gender: "male", img: "https://cdn.balkan.app/shared/empty-img-white.svg"},
     { id: 2, pid: 1, tags: ["partner"], partner: 1, name: "문옥주", title: "할머니", gender: "female", img: "https://cdn.balkan.app/shared/empty-img-white.svg" },
-]);
+];
+
+chart.load(familyChart);
 
 function addPartner(nodeId){
 	var node = chart.getNode(nodeId);
@@ -157,7 +162,7 @@ function addChild(nodeId){
 var randomNum = {};
 //0~9까지의 난수
 randomNum.random = function() {
-    var int = Math.floor(Math.random()*37);
+    var int = Math.floor(Math.random()*36);
     if (int > 9) return String.fromCharCode(int + 55);
     return String(int);
 };
@@ -172,6 +177,8 @@ randomNum.authNo= function(n) {
 //화면에 번호 출력
 randomNum.printRandom = function(data, num) {
     $(data).append(`<span class="text-primary"> ${randomNum.authNo(num)}</span>`);
+    familyCode = randomNum.authNo(num);
+    
     console.log(randomNum.authNo(num));
 };
 
@@ -179,4 +186,13 @@ randomNum.printRandom("#family-code-auth", 5);
 
 $(document).ready(function(){
     console.log($("#tree"));
+})
+
+
+$('#family-tree-submit').click(()=>{
+    db.collection('families').doc().set({
+        code: familyCode,
+        meetings: [],
+        members: familyChart,
+    })
 })
