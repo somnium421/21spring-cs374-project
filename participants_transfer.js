@@ -1,5 +1,5 @@
 
-var finalChart = main(20);
+var finalChart = main(0);
 
 console.log(finalChart)
 
@@ -160,8 +160,8 @@ function families(chart, finalChart) {
             gpid = chart[i].id;
             
             if (finalChart[i].title !== '나' 
-                || finalChart[i].title !== '남편'
-                || finalChart[i].title !== '아내') gndfamilyGroup.name = finalChart[i].title + " " + finalChart[chart[i].partner].title ;
+                && finalChart[i].title !== '남편'
+                && finalChart[i].title !== '아내') gndfamilyGroup.name = finalChart[i].title + " " + finalChart[chart[i].partner].title ;
             else gndfamilyGroup.name = "우리 부부";
             gndfamilyGroup.data = [chart[i]]
 
@@ -182,14 +182,17 @@ function families(chart, finalChart) {
                         && finalChart[i].title !=='아버지' 
                         && finalChart[i].title !=='아들'
                         && finalChart[i].title !== '딸'
-
+                        && finalChart[i].title !== '아내'
+                        && finalChart[i].title !== '남편'
                         && finalChart[i].title ) familyGroup.name = `${finalChart[i].title}네 가족`;
                 else if (finalChart[i].title === undefined 
                         || finalChart[i].title === '딸' 
                         || finalChart[i].title === '아들' ) familyGroup.name = `${chart[i].name}의 가족`
                 else if (finalChart[i].title === '나' 
                         || finalChart[i].title ==='어머니' 
-                        || finalChart[i].title ==='아버지') familyGroup.name = "우리 가족";
+                        || finalChart[i].title ==='아버지'
+                        || finalChart[i].title !== '아내'
+                        || finalChart[i].title !== '남편') familyGroup.name = "우리 가족";
                 familyGroup.data = parent;
 
                 family.push(familyGroup);
