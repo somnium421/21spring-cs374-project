@@ -1,5 +1,6 @@
 
-var finalChart = main(0);
+var userId = 20; 
+var finalChart = main(20);
 
 console.log(finalChart)
 
@@ -210,10 +211,44 @@ function families(chart, finalChart) {
             }  
         }
     }
+    family.unshift(gndfamilyGroup);
+    console.log(family);
     return family
-};
+}
 
-groupDataArray1 = families(window.nchart, finalChart);
+var familyGroup = families(window.nchart, finalChart);
+
+
+function familyObj(dataObj, finalChart){
+    var resObj = {};
+    resObj.id = dataObj.id;
+    var title = finalChart.filter((el) => el.id === dataObj.id)[0].title;
+    if (title) resObj.name = `${dataObj.name} <span class='family-title'>${title}</span>`;
+    else resObj.name = dataObj.name;
+    return resObj;
+}
+
+
+console.log(familyObj(window.nchart[0], finalChart));
+
+
+
+function arrTransfer (familyGroup, finalChart){
+    var resArr = [];
+    familyGroup.forEach(({name, data})=>{
+        var obj = {
+            groupName: name,
+            groupData: []
+        }
+        data.forEach((el) => { obj.groupData.push(familyObj(el, finalChart)) })
+        resArr.push(obj);
+    })
+    return resArr;
+}
+
+groupDataArray1 = arrTransfer(familyGroup, finalChart);
+
+
 
 
 var settings = {
