@@ -1,7 +1,15 @@
 //import firebase from "firebase";
 
-const familyCode = "00AB8", meetingNumber = 0;
-var meeting;
+const familyCode = "00AB8", meetingNumber = 0, userID = 0;
+var meeting, docID;
+
+var answer = {
+    place: [],
+    activity: [],
+    accommodation: [],
+    departure: undefined,
+    transportation: [],
+};
 
 var navListItems = $('div.setup-panel div a'),
     allWells = $('.setup-content'),
@@ -13,29 +21,36 @@ function toggle(target) {
     if (target.data('selected')) {
         target.removeClass('btn-primary');      
         target.addClass('btn-outline-primary');  
+        if (target.parent().attr('id') == 'place-tags' && target.html() != '+') answer.place.splice(answer.place.indexOf(target.html()));
+        if (target.parent().attr('id') == 'activity-tags' && target.html() != '+') answer.activity.splice(answer.activity.indexOf(target.html()));
     }
     else {
         target.removeClass('btn-outline-primary');
         target.addClass('btn-primary');
+        if (target.parent().attr('id') == 'place-tags' && target.html() != '+') answer.place.push(target.html());
+        if (target.parent().attr('id') == 'activity-tags' && target.html() != '+') answer.activity.push(target.html());
     }
     target.data('selected', !target.data('selected'));
     return !target.data('selected');
 }
 
 $(document).ready(function() {
-    console.log('hello');
     db.collection('families').where('code', '==', familyCode)
     .get()
     .then((snapshot) => {
         snapshot.forEach((doc) => {
-            meeting = doc.data().meetings[meetingNumber];
-            console.log(meeting);
-            for (var place of meeting.place) {
-                console.log(place);
-                $('#place-tags').append(`<button type="tag" class="tag btn btn-primary btn-sm mt-2 mx-1 rounded-pill">${place}</button>`)
+            docID = doc.id;
+            meeting = doc.data().meetings;
+            for (var place of meeting[meetingNumber].place) {
+                $('#place-tags').append(`<button type="button" class="tag btn btn-outline-primary btn-sm mt-2 mx-1 rounded-pill selectable data-selected=false">${place}</button>`)
             }
-            $('#place-tags').append(`<button type="tag" class="tag btn btn-primary btn-sm mt-2 mx-1 rounded-pill">+</button>`)
-            
+            $('#place-tags').append(`<button type="button" id="place-input-reveal" class="tag btn btn-outline-primary btn-sm mt-2 mx-1 rounded-pill data-selected=false">+</button>`);
+            for (var activity of meeting[meetingNumber].activity) {
+                $('#activity-tags').append(`<button type="button" class="tag btn btn-outline-primary btn-sm mt-2 mx-1 rounded-pill selectable data-selected=false">${activity}</button>`)
+            }
+            $('#activity-tags').append(`<button type="button" id="activity-input-reveal" class="tag btn btn-outline-primary btn-sm mt-2 mx-1 rounded-pill data-selected=false">+</button>`);
+           
+            bindEvents();
         });
     });
 });
@@ -76,8 +91,37 @@ function bindEvents() {
                 $(curInputs[i]).closest(".form-group").addClass("has-error");
             }
         }
-        if (isValid)
-            nextStepWizard.removeAttr('disabled').trigger('click');
+        if (isValid) nextStepWizard.removeAttr('disabled').trigger('click');
+        // modify!!!
+        if (answer.accommodation=[]) for (var checked of $("#accommodation input[type='checkbox']:checked")) answer.accommodation.push($(checked).attr('id'));
+        if (answer.transportation=[]) for (var transportation of $("#transportation input[type='radio']:checked")) answer.transportation.push($(transportation).attr('id'));
+        
+        meeting[meetingNumber].participants[userID]['answer']=answer;
+        console.log(meeting);
+        db.collection('families').doc(docID).update({meetings: meeting});
+        
+        /*var update = {};
+        update[`meetings[${meetingNumber}].participants[${userID}].answer`] = answer;
+        console.log(update);*/
+        /*
+        db.collection('families').doc(docID).update({
+            "meetings[0].participants[0].answer": answer
+        });*/
+        /*
+        db.collection('families').where('code', '==', familyCode)
+            .get()
+            .then((snapshot) => {
+                console.log('hello');
+                snapshot.forEach((doc) => {
+                    console.log(doc.id);
+                    update = doc.data().meetings;
+                    update[meetingNumber].participants[userID]['answer'] = answer;
+                    console.log(update);
+                    //update[`meetings[${meetingNumber}].participants[${userID}]`] = doc.data().meetings[meetingNumber].participants[userID];
+                    //update[`meetings[${meetingNumber}].participants[${userID}].answer`] = answer;
+                })
+                //db.collection('families').where('code', '==', familyCode).get().update(update);
+            })*/
     });
 
     $('div.setup-panel div a.btn-light').trigger('click');
@@ -86,37 +130,30 @@ function bindEvents() {
         e.preventDefault();
         if ($('#place-input').val() !== "") {
             var inputText = $('#place-input').val();
-            // arrActivity.push(inputText);
-            $(this).parent().parent().parent().append(`<button type="tag" class="tag btn btn-primary btn-sm mt-2 mx-1 rounded-pill">${inputText}<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x remove-tag" viewBox="0 0 16 16"><path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/></svg></button>`)
+            answer.place.push(inputText);
+            $('#place-input-reveal').before(`<button type="tag" class="tag btn btn-primary btn-sm mt-2 mx-1 rounded-pill" data-place-activity="place">${inputText}<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x remove-tag" viewBox="0 0 16 16"><path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/></svg></button>`);
             $('#place-input').val("");
         }
-        
-    })
-
-    $('#place-add').click(function(event) {
-        console.log('hello');
-        if (toggle($(event.target))) $('#place-input').addClass('d-none');
-        else $('#place-input').removeClass('d-none');
     });
 
-    $('#location-add-tag').click(function() {
-        if ($('#location-input-text').val() != '') {
-            $('#location-add').before(`<button type="button" class="btn btn-primary rounded-pill me-2 selectable" data-selected=true>${$('#location-input-text').val()}</button>`);
-            $('#location-input-text').val('');
+    $('#place-input-reveal').click(function(event) {
+        if (toggle($(event.target))) $('#place-input-div').addClass('d-none');
+        else $('#place-input-div').removeClass('d-none');
+    });
+
+    $("#activity-add").click (function(e){
+        e.preventDefault();
+        if ($('#activity-input').val() !== "") {
+            var inputText = $('#activity-input').val();
+            answer.activity.push(inputText);
+            $('#activity-input-reveal').before(`<button type="tag" class="tag btn btn-primary btn-sm mt-2 mx-1 rounded-pill" data-place-activity="activity">${inputText}<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x remove-tag" viewBox="0 0 16 16"><path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/></svg></button>`);
+            $('#activity-input').val("");
         }
     });
 
-    $('#activity-add').click(function(event) {
-        console.log('hello');
-        if (toggle($(event.target))) $('#activity-input').addClass('d-none');
-        else $('#activity-input').removeClass('d-none');
-    });
-
-    $('#activity-add-tag').click(function() {
-        if ($('#activity-input-text').val() != '') {
-            $('#activity-add').before(`<button type="button" class="btn btn-primary rounded-pill me-2 selectable" data-selected=true>${$('#activity-input-text').val()}</button>`);
-            $('#activity-input-text').val('');
-        }
+    $('#activity-input-reveal').click(function(event) {
+        if (toggle($(event.target))) $('#activity-input-div').addClass('d-none');
+        else $('#activity-input-div').removeClass('d-none');
     });
 
     $('.selectable').click(function(event) {
@@ -127,12 +164,24 @@ function bindEvents() {
         getAddr();
     });
 }
-bindEvents();
     
 $(document).on('click', '.remove-tag', function(e){
     e.preventDefault();
-    if ($(e.target)[0].outerHTML.slice(1,5)==="path") $(e.target).parent().parent().remove();
-    else $(e.target).parent().remove();
+    if ($(e.target)[0].outerHTML.slice(1,5)==="path") {
+        console.log('1')
+        console.log($(e.target).data('place-activity'))
+        if ($(e.target).data('place-activity') == "place") answer.place.splice(answer.place.indexOf($(e.target).text()));
+        if ($(e.target).data('place-activity') == "activity") answer.activity.splice(answer.activity.indexOf($(e.target).text()));    
+        $(e.target).parent().parent().remove();
+        
+    }
+    else {
+        console.log('2')
+        console.log($(e.target).parent().data('place-activity'))
+        if ($(e.target).parent().data('place-activity') == "place") answer.place.splice(answer.place.indexOf($(e.target).parent().text()));
+        if ($(e.target).parent().data('place-activity') == "activity") answer.activity.splice(answer.activity.indexOf($(e.target).parent().text()));
+        $(e.target).parent().remove();
+    }
 })
 
 
@@ -156,6 +205,7 @@ function onErrorGeolocation() {
 }
   
 function searchAddressToCoordinate(address) {
+    answer.departure = address;
     naver.maps.Service.geocode({query: address}, function(status, response) {
         if (status === naver.maps.Service.Status.ERROR) {
             if (!address) return alert('Geocode Error, Please check address');
@@ -185,7 +235,6 @@ function getAddr(){
     .fail(function() {
         alert('No result');
     });
-    // $('#departure-place').val('');
 }
 var prevLocation;
 function locationClick(event) {
