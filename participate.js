@@ -136,6 +136,7 @@ function getAddr(){
         if (data.results.common.totalCount == 0) alert('존재하지 않는 주소입니다');
         else if (data.results.common.totalCount == 1) searchAddressToCoordinate(data.results.juso[0].roadAddr);
         else {
+            $('#list-location').empty();
             for (var juso of data.results.juso) {
                 $('#list-location').append(`<a class="list-group-item list-group-item-action" onclick="locationClick(event)">${juso.roadAddr}</a>`);
             }
