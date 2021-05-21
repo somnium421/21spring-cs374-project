@@ -1,5 +1,4 @@
 import {participans_transfer} from './participants_transfer.js'
-
 //This is for new meeting creation page
 
 console.log("hello world")
@@ -12,7 +11,11 @@ $("#Txt_Date").datepicker({
     multidate: true,
     closeOnDateSelect: true,
     todayHighlight: false
-});
+}).on("changeDate", function(e) {
+    console.log(e.dates);
+    console.log($("#start-time").val(), e.dates[e.dates.length-1])
+});;
+
 
 var navListItems = $('div.setup-panel div a'),
     allWells = $('.setup-content'),
@@ -74,7 +77,7 @@ $('.timefield').change(function(){
     var day = $('#day').val();
     var hour = $('#hour').val();
     var min = $('#min').val();
-
+   
     var textForDays = `<small id="periodHelp" class="form-text text-muted">${Number(day)-1}박 ${Number(day)}일 동안 모임을 진행합니다.</small>`
     var textForADay = `<small id="periodHelp" class="form-text text-muted">하루종일 모임을 진행합니다.</small>`
     var text;
@@ -90,27 +93,27 @@ $('.timefield').change(function(){
         
         if ($("#periodHelp").length === 0) $("#period-select").append(text);
         else $("#periodHelp").replaceWith(text);
+        $('#available-time').hide();
     }
-
     else if((hour) > 0){
         if ($("#periodHelp").length !== 0) $("#periodHelp").hide();
         $('#day').attr('disabled','disabled');
+        $('#available-time').show();
     }
     else if((min) > 0){
         if ($("#periodHelp").length !== 0) $("#periodHelp").hide();
         $('#day').attr('disabled','disabled');
+        $('#available-time').show();
     }
     else{
         if ($("#periodHelp").length !== 0) $("#periodHelp").hide();
         $('#day').removeAttr('disabled');
         $('#hour').removeAttr('disabled');
         $('#min').removeAttr('disabled');
+        $('#available-time').show();
     }
-
     db_period = {day: Number(day), hr: Number(hour), min: Number(min)};
 });
-
-
 
 var db_log_newMeeting={};
 
@@ -242,11 +245,30 @@ $('#final-submit').click(function(){
     })
 })
 
-for (let i=97; i<116; i ++){
-    db.collection('users').doc().set({
-        'id':   String.fromCharCode(i),
-        'pw': String(i-97),
-        'family-code': "00AB8",
-        'family-id': i-97
-    })
-}
+// for (let i=97; i<116; i ++){
+//     db.collection('users').doc().set({
+//         'id':   String.fromCharCode(i),
+//         'pw': String(i-97),
+//         'family-code': "00AB8",
+//         'family-id': i-97
+//     })
+// }
+
+
+
+
+
+mobiscroll.setOptions({
+    locale: mobiscroll.localeEn,  // Specify language like: locale: mobiscroll.localePl or omit setting to use default
+    theme: 'windows',            // More info about themeVariant: https://docs.mobiscroll.com/5-4-0/javascript/datetime#opt-themeVariant
+});
+
+console.log(mobiscroll);
+
+$('#start-time').mobiscroll().datepicker({
+    controls: ['time'],
+    select: 'range',
+    showRangeLabels: true,
+    stepMinute: 60,
+    timeFormat: "hh:00 A"
+});
