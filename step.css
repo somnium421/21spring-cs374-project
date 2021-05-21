@@ -76,3 +76,8 @@
 .prevBtn {
   width: 15%;
 }
+
+td.active{
+  background-image: none!important;
+  background-color: rgb(38,90,255)!important;
+}

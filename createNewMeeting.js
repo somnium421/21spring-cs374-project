@@ -1,7 +1,11 @@
-import {participans_transfer} from './participants_transfer.js'
-//This is for new meeting creation page
+// import {participans_transfer} from './participants_transfer.js'
+// //This is for new meeting creation page
 
-console.log("hello world")
+var familyCode = "00AB8"; // from the local storage
+
+var availableTime = [];
+var availableDates = [];
+
 
 $("#Txt_Date").datepicker({
     format: 'd-M-yyyy',
@@ -12,8 +16,9 @@ $("#Txt_Date").datepicker({
     closeOnDateSelect: true,
     todayHighlight: false
 }).on("changeDate", function(e) {
+
     console.log(e.dates);
-    console.log($("#start-time").val(), e.dates[e.dates.length-1])
+    availableDates = e.dates;
 });;
 
 
@@ -93,26 +98,37 @@ $('.timefield').change(function(){
         
         if ($("#periodHelp").length === 0) $("#period-select").append(text);
         else $("#periodHelp").replaceWith(text);
-        $('#available-time').hide();
+        
+        $('#start-time').attr('disabled',true);
+        $('#start-time').removeAttr('placeholder');
+        $('.mbsc-textfield').css('background', 'rgb(233, 233, 233)');
+        
     }
     else if((hour) > 0){
         if ($("#periodHelp").length !== 0) $("#periodHelp").hide();
         $('#day').attr('disabled','disabled');
-        $('#available-time').show();
+        
+        $('#start-time').removeAttr('disabled');
+        $('#start-time').attr('placeholder', "선택해 주세요");
+        $('.mbsc-textfield').css('background', '#fff');
     }
-    else if((min) > 0){
-        if ($("#periodHelp").length !== 0) $("#periodHelp").hide();
-        $('#day').attr('disabled','disabled');
-        $('#available-time').show();
-    }
+    // else if((min) > 0){
+    //     if ($("#periodHelp").length !== 0) $("#periodHelp").hide();
+    //     $('#day').attr('disabled','disabled');
+    //     $('#start-time').removeAttr('disabled');
+    // }
     else{
         if ($("#periodHelp").length !== 0) $("#periodHelp").hide();
         $('#day').removeAttr('disabled');
         $('#hour').removeAttr('disabled');
         $('#min').removeAttr('disabled');
-        $('#available-time').show();
+
+        $('#start-time').removeAttr('disabled');
+        $('#start-time').attr('placeholder', "선택해 주세요");
+        $('.mbsc-textfield').css('background', '#fff');
     }
-    db_period = {day: Number(day), hr: Number(hour), min: Number(min)};
+    // db_period = {day: Number(day), hr: Number(hour), min: Number(min)};
+    db_period = {day: Number(day), hr: Number(hour)};
 });
 
 var db_log_newMeeting={};
@@ -225,12 +241,16 @@ $('#final-submit').click(function(){
     db_log_newMeeting.activity = arrActivity;
     db_log_newMeeting.noMoreActivity = $('#activity-recommend').is(':checked');
 
+    availableTime.push($("#start-time").val().slice(0,8));
+    availableTime.push($("#start-time").val().slice(11,19));
+
     db_log_newMeeting.meetingPeriod = db_period;
-    db_log_newMeeting.availableDates = []; // I don't know well
-    db_log_newMeeting.availableTimes = [];
+    db_log_newMeeting.availableDates = availableDates; // I don't know well
+    db_log_newMeeting.availableTimes = availableTime;
 
     db_log_newMeeting.surveyPeriod = Number($('#surveyPeriod').val());
     db_log_newMeeting.isPrivate = $('#btnradio2').is(':checked');
+    
     
     db_log_newMeeting.chat = {};
 
