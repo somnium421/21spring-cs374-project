@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-firestore.js"></script>
+    <link rel="stylesheet" href="icon_font/css/icon_font.css">
+    <link rel="stylesheet" href="css/jquery.transfer.css">
+    <link rel="stylesheet" href="./step.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css" rel="stylesheet"/>
+    
+    <title>ToGather :: Create new meeting</title>
+</head>
+<body style="background-color: #E5E5E5;">
+    <script>
+        firebase.initializeApp({
+            apiKey: "AIzaSyAgMEwyhYhxv5Ty75WAHTGP_XdnYLMSpas",
+            authDomain: "id311-project.firebaseapp.com",
+            projectId: "id311-project",
+            storageBucket: "id311-project.appspot.com",
+            messagingSenderId: "325087605761",
+            appId: "1:325087605761:web:b33af9b4d970ad042a7c00"
+        });
+        const db = firebase.firestore();
+        db.settings({timestampsInSnapshots: true});
+    </script>
+    <script src="./createNewMeeting.js" defer></script>
+    <div class="d-flex">
+        <div class="d-flex flex-column flex-shrink-0 p-3 bg-white shadow" style="width: 200px; height:100vh;">
+            <a href="/" class="d-flex align-items-center mx-auto text-decoration-none">
+            <img src="icons/logo.svg" alt="">
+            </a>
+            <div class="my-4">
+                <a href="#" class="d-flex flex-column align-items-center link-dark text-decoration-none" id="user">
+                    <img src="https://github.com/mdo.png" alt="" width="60" height="60" class="rounded-circle mb-2">
+                    <strong>사용자</strong>
+                </a>
+            </div>
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item">
+                    <a href="#" class="nav-link link-dark">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-fill" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6zm5-.793V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
+                            <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
+                        </svg>
+                        홈
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link link-dark">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
+                            <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275zM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/>
+                        </svg>
+                        우리 가족
+                    </a>
+                </li>
+                <li>
+                    <a href="/" class="nav-link active" aria-current="page">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list-ul" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                        </svg>
+                        모임
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link link-dark">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-event" viewBox="0 0 16 16">
+                            <path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z"/>
+                            <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+                        </svg>
+                        캘린더
+                    </a>
+                </li>
+            </ul>
+            <button type="button" class="btn btn-outline-primary mb-2 mx-4">로그아웃</button>
+        </div>
+        <div class="container-fluid col" id="grad1">
+            <div class="row fs-3 fw-bold mt-5 mb-4 ms-5">새 모임 만들기 New Meeting</div>
+            <div class="row"><hr></div>
+            <div></div>
+            
+            <!-- Stepper -->
+            <div class="steps-form mt-5">
+                <div class="steps-row setup-panel">
+                    <div class="steps-step">
+                        <a href="#step-1" type="button" class="btn btn-light btn-circle">1</a>
+                        <p>Step 1</p>
+                    </div>
+                    <div class="steps-step">
+                        <a href="#step-2" type="button" class="btn btn-primary btn-circle" disabled="disabled">2</a>
+                        <p>Step 2</p>
+                    </div>
+                    <div class="steps-step">
+                        <a href="#step-3" type="button" class="btn btn-primary btn-circle" disabled="disabled">3</a>
+                        <p>Step 3</p>
+                    </div>
+                    <div class="steps-step">
+                        <a href="#step-4" type="button" class="btn btn-primary btn-circle" disabled="disabled">4</a>
+                        <p>Step 4</p>
+                    </div>
+                    <div class="steps-step">
+                        <a href="#step-5" type="button" class="btn btn-primary btn-circle" disabled="disabled">5</a>
+                        <p>Step 5</p>
+                    </div>
+                </div>
+            </div>
+
+            <form role="form" action="" method="post">
+                <!-- First Step -->
+                <div id="step-1" class="container col-6 row mx-auto mt-5 p-3 setup-content">
+                    <p class="text-center fs-5 text-secondary">계획하시는 모임을 설명해주세요.<br><span style="font-size: 12pt;">Explain your planning meeting.</span></p>
+                    <form>
+                        <div class="form-group mt-4">
+                            <label class="fw-bold fs-5 mb-2" for="meeting-name">모임명 <span class="fw-light eng-cap">Meeting title</span> </label>
+                            <input class="form-control" placeholder="모임의 이름은?" id="meeting-name" type="name">
+                        </div>
+        
+                        <div class="form-group mt-5">
+                            <label class="fw-bold fs-5 mb-2" for="meeting-description">모임 설명 <span class="fw-light eng-cap">Meeting description</span></label>
+                            <textarea class="form-control" rows="3" id="meeting-description" type="description"></textarea>
+                        </div>
+        
+                        <div class="form-inline mt-5">
+                            <button class="btn btn-lg btn-primary nextBtn col-12 btn-block" style="width: 100%;" type="button">다음</button>
+                        </div>        
+                    </form>
+                </div>
+                
+
+                <!-- Second Step -->
+                <div id="step-2" class="setup-content">
+                    <div class="container col-6 row mx-auto mt-5 p-3">
+                        <p class="text-center fs-5 text-secondary">모임에 초대하고 싶은 사람을 골라주세요.<br><span style="font-size: 12pt;">Choose the participants in the meeting</span></p>
+                        
+                    </div>
+                    <div>
+                        <div id="participants-transfer" style="width: 582px; height: 360px; margin:0 auto">
+                            <p class="fs-5 fw-bold">참가자 선택 <span class="fw-light eng-cap">Participants selection</span></p>
+                        </div>
+                    </div>
+                    <div class="container col-6 row mx-auto p-3">
+                        <form>
+                            <div class="form-inline mt-5">
+                                <button class="btn btn-lg btn-outline-primary prevBtn btn-block" type="button">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                                    </svg>
+                                </button>
+                                <button class="btn btn-lg btn-primary nextBtn btn-block col-8" style="width: 84%;" type="button">다음</button>
+                            </div>
+                        </form>
+                        
+                    </div>          
+                </div>
+
+                <!-- Third Step -->
+                <div id="step-3" class="container col-6 row mx-auto mt-5 p-3 setup-content">
+                    <p class="text-center fs-5 text-secondary">어떤 모임을 하고 싶은가요?<br><span style="font-size: 12pt;">What meeting do you want to do?</span></p>
+                    <form>
+                        <div class="form-group mt-4">
+                            <label class="fw-bold fs-5" for="place">장소 추천 <span class="fw-light eng-cap">Suggest the meeting places</span></label>
+                            <div class="input-group mt-2">
+                                <input class="form-control" placeholder="모이고 싶은 장소는? 태그를 추가하세요" id="place" type="place">
+                                <div class="input-group-append">
+                                    <button id="add-place" type="add-place" class="btn btn-primary">추가</button>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="form-check mt-2">
+                            <input class="form-check-input" type="checkbox" name="place-recommend" id="place-recommend" value="option-place-recommend">
+                            <label class="form-check-label" for="place-recommend">
+                            참여자들에게 장소를 <span style="font-weight: bold;">추천 받지 않음</span>
+                            </label>
+                            <!-- <small id="emailHelp" class="form-text text-muted">참여자들은 선택만 가능합니다</small> -->
+                        </div>
+    
+                        <div class="form-group mt-5">
+                            <label class="fw-bold fs-5" for="activity">할 일 추천 <span class="fw-light eng-cap">Suggest the activities</span> </label>
+                            <div class="input-group mt-2">
+                                <input class="form-control" placeholder="모임에서 하고 싶은 일은? 태그를 추가하세요" id="activity" type="activity">
+                                <div class="input-group-append">
+                                    <button id="add-activity" type="add-activity" class="btn btn-primary">추가</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-check mt-2">
+                            <input class="form-check-input" type="checkbox" name="activity-recommend" id="activity-recommend" value="option-activity-recommend">
+                            <label class="form-check-label" for="activity-recommend">
+                            참여자들에게 할 일을 <span style="font-weight: bold;">추천 받지 않음</span>
+                            </label>
+                        </div>
+    
+                        <div class="form-inline mt-5">
+                            <button class="btn btn-lg btn-outline-primary prevBtn btn-block" type="button">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                                </svg>
+                            </button>
+                            <button class="btn btn-lg btn-primary nextBtn btn-block col-8" style="width: 84%;" type="button">다음</button>
+                        </div>
+                    </form>           
+                </div>
+
+                <!-- Fourth Step -->
+                <div id="step-4" class="container col-6 row mx-auto mt-5 p-3 setup-content">
+                    <p class="text-center fs-5 text-secondary">모임 스케줄을 구체화해보세요.<br><span style="font-size: 12pt;">Schedule your meeting.</span></p>
+                    <form>
+                        <div class="form-group mt-4">
+                            <label class="fw-bold fs-5" for="surveyPeriod">모임 기간 <span style="color: red">*</span> <span class="fw-light eng-cap">Meeting period</span></label>
+                            <div class="mt-2 row">
+                            <div class="input-group" style="width: 33%">
+                                <input id = "day" type="number" class="form-control timefield" min=0 oninput="validity.valid||(value='');">
+                                <div class="input-group-append">
+                                  <span class="input-group-text"> 일</span>
+                                </div>
+                            </div>
+                            <div class="input-group timefield" style="width: 33%">
+                                <input id = "hour" type="number" class="form-control" min=0 oninput="validity.valid||(value='');">
+                                <div class="input-group-append">
+                                  <span class="input-group-text">시간</span>
+                                </div>
+                            </div>
+                            <div class="input-group timefield" style="width: 33%">
+                                <input id = "min" type="number" class="form-control" min=0 oninput="validity.valid||(value='');">
+                                <div class="input-group-append">
+                                  <span class="input-group-text"> 분</span>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+    
+                        <div class="form-group mt-4">
+                            <label class="fw-bold fs-5" for="privacy">가능한 날짜<span style="color: gray" class="fw-light eng-cap">  Available dates and time</span> </label>
+                            <div class= "mt-2 datepicker" id="Txt_Date"></div>
+                            <!-- <input type="text" id="Txt_Date" placeholder="Choose Date" style="cursor: pointer" class="mt-2"> -->
+                        </div>
+    
+                        <div class="form-inline mt-5">
+                            <button class="btn btn-lg btn-outline-primary prevBtn btn-block" type="button">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                                </svg>
+                            </button>
+                            <button class="btn btn-lg btn-primary nextBtn btn-block col-8" style="width: 84%;" type="button">다음</button>
+                        </div>
+                    </form>                    
+                </div>
+
+                <!-- Fifth Step -->
+                <div id="step-5" class="container col-6 row mx-auto mt-5 p-3 setup-content">
+                    <p class="text-center fs-5 text-secondary">설문 기간과 공개 범위를 설정하세요.<br><span style="font-size: 12pt;">Set survey period and privacy.</span></p>
+                    <form>
+                        <div class="form-group mt-4">
+                            <label class="fw-bold fs-5" for="surveyPeriod">참가 설문 기간<span style="color: red"> *</span> <span class="fw-light eng-cap">Survey deadline duration</span></label>
+                            <div class="input-group mt-2" style="width: 50%;">
+                                <input class="form-control" id="surveyPeriod" type="number" min=0 oninput="validity.valid||(value='');">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">  일</span>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="form-group mt-5">
+                            <label class="fw-bold fs-5" for="privacy">모임 공개 범위<span style="color: red"> *</span> <span class="fw-light eng-cap">Meeting privacy</span> </label>
+                            <div class="btn-group mt-2 col-12" role="group" aria-label="Basic radio toggle button group">
+                                <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+                                <label class="btn btn-outline-primary col-6" for="btnradio1">공개 Public</label>
+                                <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+                                <label class="btn btn-outline-primary col-6" for="btnradio2">비공개 Private</label>
+                            </div>
+                        </div>
+    
+                        <div class="form-inline mt-5">
+                            <button class="btn btn-lg btn-outline-primary prevBtn btn-block" type="button">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                                </svg>
+                            </button>
+                            <button class="btn btn-lg btn-primary btn-block" type="submit" style="width: 84%;">만들기</button>
+                        </div>
+                    </form>
+                </div>
+            </form>                                   
+        </div>
+    </div>
+</body>
+    <script src="js/jquery.transfer.js"></script>
+    <script src="participants_transfer.js"></script>
+    <script src="adding_tags.js"></script>
+</html><!-- MultiStep Form -->
