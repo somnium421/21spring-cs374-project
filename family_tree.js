@@ -62,7 +62,7 @@ var chart = new OrgChart(document.getElementById("tree"), {
         blue: {
            template: "family_template_blue"
         },
-        // for group
+        // for group!
         "node_with_subtrees": {
         	template: "group"
         }
