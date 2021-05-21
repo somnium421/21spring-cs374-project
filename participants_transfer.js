@@ -210,9 +210,10 @@ function families(chart, finalChart) {
             }  
         }
     }
-];
+    return family
+};
 
-
+groupDataArray1 = families(window.nchart, finalChart);
 
 
 var settings = {
