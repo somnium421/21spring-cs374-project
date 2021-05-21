@@ -31,7 +31,7 @@ let activityOptions = {
     tag: {
         minFontSize: 12,
         maxFontSize: 20,
-        format: '<a>{tag.name}</a>'
+        format: `<a>{tag.name}</a>`
     },
     data: activityData
 }
@@ -58,6 +58,7 @@ const latlngs = [
     new naver.maps.LatLng(37.3596704, 127.106399),
     new naver.maps.LatLng(37.4595704, 127.905399),
 ];
+
 const people = [
     '나', '누나', '엄마', '할머니'
 ];
