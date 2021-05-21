@@ -1,7 +1,7 @@
 //import firebase from "firebase";
 
 const familyCode = "00AB8", meetingNumber = 0, userID = 0;
-var meeting, docID;
+var meetings, members, docID;
 
 var answer = {
     place: [],
@@ -40,12 +40,23 @@ $(document).ready(function() {
     .then((snapshot) => {
         snapshot.forEach((doc) => {
             docID = doc.id;
-            meeting = doc.data().meetings;
-            for (var place of meeting[meetingNumber].place) {
+            meetings = doc.data().meetings;
+            members = doc.data().members;
+            if (meetings[meetingNumber].isPrivate) $('#is-private').append('<span class="text-muted" style="font-size: smaller;"><i class="fas fa-lock me-1"></i> 비공개</span>')
+            else $('#is-private').append('<span class="text-muted" style="font-size: smaller;"><i class="fas fa-globe-asia me-1"></i> 공개</span>')
+            $('#meeting-name').text(meetings[meetingNumber].name);
+            $('#meeting-description').text(meetings[meetingNumber].description);
+            for (var participant of meetings[meetingNumber].participants) {
+                $('#meeting-participants').append(` <a href="#" class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title=${participant.name}>
+                                                        <img src="${members[participant.id].img}" style="width:30px;height:30px;border-radius:70%;opacity:${(Math.random(1)<0.5)?0.5:1}"></img>
+                                                    </a>`);
+            }
+
+            for (var place of meetings[meetingNumber].place) {
                 $('#place-tags').append(`<button type="button" class="tag btn btn-outline-primary btn-sm mt-2 mx-1 rounded-pill selectable data-selected=false">${place}</button>`)
             }
             $('#place-tags').append(`<button type="button" id="place-input-reveal" class="tag btn btn-outline-primary btn-sm mt-2 mx-1 rounded-pill data-selected=false">+</button>`);
-            for (var activity of meeting[meetingNumber].activity) {
+            for (var activity of meetings[meetingNumber].activity) {
                 $('#activity-tags').append(`<button type="button" class="tag btn btn-outline-primary btn-sm mt-2 mx-1 rounded-pill selectable data-selected=false">${activity}</button>`)
             }
             $('#activity-tags').append(`<button type="button" id="activity-input-reveal" class="tag btn btn-outline-primary btn-sm mt-2 mx-1 rounded-pill data-selected=false">+</button>`);
@@ -92,13 +103,14 @@ function bindEvents() {
             }
         }
         if (isValid) nextStepWizard.removeAttr('disabled').trigger('click');
-        // modify!!!
+        
         if (answer.accommodation=[]) for (var checked of $("#accommodation input[type='checkbox']:checked")) answer.accommodation.push($(checked).attr('id'));
         if (answer.transportation=[]) for (var transportation of $("#transportation input[type='radio']:checked")) answer.transportation.push($(transportation).attr('id'));
         
-        meeting[meetingNumber].participants[userID]['answer']=answer;
-        console.log(meeting);
-        db.collection('families').doc(docID).update({meetings: meeting});
+        //modify!!!!
+        meetings[meetingNumber].participants[userID]['answer']=answer;
+        console.log(meetings);
+        //db.collection('families').doc(docID).update({meetings: meetings});
         
         /*var update = {};
         update[`meetings[${meetingNumber}].participants[${userID}].answer`] = answer;
@@ -163,6 +175,12 @@ function bindEvents() {
     $('#departure-place-button').click(function(event) {
         getAddr();
     });
+
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl)
+});
+
 }
     
 $(document).on('click', '.remove-tag', function(e){
@@ -246,8 +264,4 @@ function locationClick(event) {
     searchAddressToCoordinate(prevLocation.text());
 }
 
-var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-  return new bootstrap.Tooltip(tooltipTriggerEl)
-});
 
