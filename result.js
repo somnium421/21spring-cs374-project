@@ -1,8 +1,8 @@
-const meetingNumber = 0, userID = 0;
+const familyCode = "00AB8", meetingNumber = 0, userID = 0;
 
 const chat = [
-    {id: 3, text: '가평이 제일 표가 많네! 가평 ㄱㄱ?', time: 11341234, like: [2, 5, 7]},
-    {id: 0, text: '근데 가평 이번 주에 비 온대ㅠㅜ', time:12341234123, like: [3, 8]}
+    {id: 3, text: '가평이 제일 표가 많네! 가평 ㄱㄱ?', time: new Date(2021,4,20,17,24,30,0), like: [2, 5, 7]},
+    {id: 7, text: '근데 가평 이번 주에 비 온대ㅠㅜ', time: new Date(2021,4,20,19,24,30,0), like: [3, 8]}
 ]
 
 const locationData = [
@@ -93,36 +93,89 @@ function getClickHandler(seq) {
     }
 }
 
-var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-    return new bootstrap.Tooltip(tooltipTriggerEl);
-});
+function tooltipSet() {
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
 
-chat.sort((a, b) => a.time-b.time);
-for (var chatElem of chat) {
-    if (userID == chatElem.id) {
+}
+
+function bindEvents() {
+    $('#chat-button').click(() => {
+        var newChatElem = {
+            id: userID,
+            text: $('#chat-input').val(),
+            time: new Date(),
+            like: []
+        }
+        chat.push(newChatElem);
+        $('#chat-input').val('')
+        drawChat(chat.length-1);
+    });
+    $(`.bi-heart-fill`).click((event) => {
+        $(event.target).css({fill: '#FF9999'})
+        console.log('hello');
+    });
+
+    tooltipSet();
+}
+
+function timeCalculate(time) {
+    return `${time.getMonth()+1}월 ${time.getDate()}일 ${time.getHours()}시 ${time.getMinutes()}분` 
+}
+
+function drawChat(idx) {
+    var chatElem = chat[idx];
+    if (userID != chatElem.id) {
         $('#chat').append(
         `<div class="incoming_msg">
             <div class="incoming_msg_img">
                 <a href="#" class="d-inline-block">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="red" class="bi bi-person-circle" viewBox="0 0 16 16">
-                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-                    </svg>
+                    <img src="${members[chatElem.id].img}" style="width:30px;height:30px;border-radius:70%;"></img>
                 </a>
-                <p>누나</p>
+                <p>${members[chatElem.id].name}</p>
             </div>
             <div class="received_msg">
                 <div class="received_withd_msg">
-                <p style="float:left">가평이 제일 표가 많네! 가평 ㄱㄱ?</p>
-                <a href="#" style="float:right" class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="right" title="" data-bs-original-title="동생, 아빠, 엄마">
+                    <p style="float:left">${chatElem.text}</p>
+                    <a style="float:right" class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="right" title="" data-bs-original-title="${chatElem.like.map((id) => members[id].name).join(', ')}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffc0cb" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+                        </svg>
+                    </a>
+                    <span class="time_date">${timeCalculate(chatElem.time)}</span></div>
+                </div>
+            </div>
+        </div>`)
+    }
+    else {
+        $('#chat').append(
+        `<div class="outgoing_msg">
+            <div class="sent_msg">
+                <p style="float:left">${chatElem.text}</p>
+                <a style="float:right" class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="left" title="" data-bs-original-title="${chatElem.like.map((id) => members[id].name).join(', ')}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffc0cb" class="bi bi-heart-fill" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
                     </svg>
                 </a>
-                <span class="time_date">어제 오후 8시 48분</span></div>
+                <span class="time_date">${timeCalculate(chatElem.time)}</span> </div>
             </div>
         </div>`)
     }
-    console.log(chatElem);
+    tooltipSet();
 }
+
+$(document).ready(function() {
+    db.collection('families').where('code', '==', familyCode)
+    .get()
+    .then((snapshot) => {
+        snapshot.forEach((doc) => {
+            docID = doc.id;
+            meetings = doc.data().meetings;
+            members = doc.data().members;
+        });
+        for (var i=0; i<chat.length; i++) drawChat(i);
+        bindEvents();
+    });
+});
