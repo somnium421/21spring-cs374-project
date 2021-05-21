@@ -108,9 +108,9 @@ function bindEvents() {
         if (answer.transportation=[]) for (var transportation of $("#transportation input[type='radio']:checked")) answer.transportation.push($(transportation).attr('id'));
         
         //modify!!!!
-        meetings[meetingNumber].participants[userID]['answer']=answer;
+        meetings[meetingNumber].participants[userID]['answer'] = answer;
         console.log(meetings);
-        //db.collection('families').doc(docID).update({meetings: meetings});
+        db.collection('families').doc(docID).update({meetings: meetings});
         
         /*var update = {};
         update[`meetings[${meetingNumber}].participants[${userID}].answer`] = answer;
@@ -132,7 +132,7 @@ function bindEvents() {
                     //update[`meetings[${meetingNumber}].participants[${userID}]`] = doc.data().meetings[meetingNumber].participants[userID];
                     //update[`meetings[${meetingNumber}].participants[${userID}].answer`] = answer;
                 })
-                //db.collection('families').where('code', '==', familyCode).get().update(update);
+                db.collection('families').where('code', '==', familyCode).get().update(update);
             })*/
     });
 
@@ -191,7 +191,6 @@ $(document).on('click', '.remove-tag', function(e){
         if ($(e.target).data('place-activity') == "place") answer.place.splice(answer.place.indexOf($(e.target).text()));
         if ($(e.target).data('place-activity') == "activity") answer.activity.splice(answer.activity.indexOf($(e.target).text()));    
         $(e.target).parent().parent().remove();
-        
     }
     else {
         console.log('2')
