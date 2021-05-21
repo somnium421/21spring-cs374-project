@@ -1,3 +1,8 @@
+//import firebase from "firebase";
+
+const familyCode = "00AB8", meetingNumber = 0;
+var meeting;
+
 var navListItems = $('div.setup-panel div a'),
     allWells = $('.setup-content'),
     allNextBtn = $('.nextBtn'),
@@ -16,6 +21,24 @@ function toggle(target) {
     target.data('selected', !target.data('selected'));
     return !target.data('selected');
 }
+
+$(document).ready(function() {
+    console.log('hello');
+    db.collection('families').where('code', '==', familyCode)
+    .get()
+    .then((snapshot) => {
+        snapshot.forEach((doc) => {
+            meeting = doc.data().meetings[meetingNumber];
+            console.log(meeting);
+            for (var place of meeting.place) {
+                console.log(place);
+                $('#place-tags').append(`<button type="tag" class="tag btn btn-primary btn-sm mt-2 mx-1 rounded-pill">${place}</button>`)
+            }
+            $('#place-tags').append(`<button type="tag" class="tag btn btn-primary btn-sm mt-2 mx-1 rounded-pill">+</button>`)
+            
+        });
+    });
+});
 
 function bindEvents() {
     navListItems.click(function (e) {
@@ -59,10 +82,21 @@ function bindEvents() {
 
     $('div.setup-panel div a.btn-light').trigger('click');
 
-    $('#location-add').click(function(event) {
+    $("#place-add").click (function(e){
+        e.preventDefault();
+        if ($('#place-input').val() !== "") {
+            var inputText = $('#place-input').val();
+            // arrActivity.push(inputText);
+            $(this).parent().parent().parent().append(`<button type="tag" class="tag btn btn-primary btn-sm mt-2 mx-1 rounded-pill">${inputText}<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x remove-tag" viewBox="0 0 16 16"><path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/></svg></button>`)
+            $('#place-input').val("");
+        }
+        
+    })
+
+    $('#place-add').click(function(event) {
         console.log('hello');
-        if (toggle($(event.target))) $('#location-input').addClass('d-none');
-        else $('#location-input').removeClass('d-none');
+        if (toggle($(event.target))) $('#place-input').addClass('d-none');
+        else $('#place-input').removeClass('d-none');
     });
 
     $('#location-add-tag').click(function() {
@@ -94,6 +128,12 @@ function bindEvents() {
     });
 }
 bindEvents();
+    
+$(document).on('click', '.remove-tag', function(e){
+    e.preventDefault();
+    if ($(e.target)[0].outerHTML.slice(1,5)==="path") $(e.target).parent().parent().remove();
+    else $(e.target).parent().remove();
+})
 
 
 var map, marker, currPos;
@@ -160,4 +200,5 @@ function locationClick(event) {
 var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
 var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
   return new bootstrap.Tooltip(tooltipTriggerEl)
-})
+});
+
