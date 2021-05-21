@@ -108,7 +108,7 @@ chart.editUI.on('field', function(sender, args){
 // });
 
 chart.editUI.on('field', function(sender, args){
-    if (args.name == 'partner' || args.name == 'title' || args.name == 'img'){
+    if (args.name == 'partner' || args.name == 'title' || args.name == 'img' || args.name == "ppid"){
         return false;
     }
 });
