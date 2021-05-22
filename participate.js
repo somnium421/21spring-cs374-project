@@ -3,20 +3,8 @@
 const familyCode = "00AB8", meetingNumber = 0, userID = 0;
 var meetings, members, docID;
 
-
-$("#Txt_Date").datepicker({
-    format: 'd-M-yyyy',
-    inline: false,
-    lang: 'en',
-    step: 10,
-    multidate: true,
-    closeOnDateSelect: true,
-    todayHighlight: false
-}).on("changeDate", function(e) {
-
-    console.log(e.dates);
-    availableDates = e.dates;
-});;
+var userAvailableDates = [];
+var userAvailableTime = [];
 
 
 
@@ -87,6 +75,17 @@ $(document).ready(function() {
                 meetingTags += tmp;
             }
             $('#meeting-tags').append(meetingTags);
+            console.log(doc.data().meetings[meetingNumber].availableTimes);
+
+            
+            setDateDisabled(doc.data().meetings[meetingNumber].availableDates);
+
+            if (meetings[meetingNumber].meetingPeriod.day < 1){
+                setTimeDisabled(doc.data().meetings[meetingNumber].availableTimes);
+            } else {
+                $("#available-time-form").remove();
+            }
+            
 
             var placeSet = new Set(meetings[meetingNumber].place), activitySet = new Set(meetings[meetingNumber].activity);
             db.collection('families').doc(docID).collection('answers').where('meetingNumber', '==', meetingNumber)
@@ -105,11 +104,98 @@ $(document).ready(function() {
                     $('#activity-tags').append(`<button type="button" class="tag btn btn-outline-primary btn-sm mt-2 mx-1 rounded-pill selectable data-selected=false">${activity}</button>`)
                 }
                 if (!meetings[meetingNumber].noMoreActivity) $('#activity-tags').append(`<button type="button" id="activity-input-reveal" class="tag btn btn-outline-primary btn-sm mt-2 mx-1 rounded-pill data-selected=false">+</button>`);
+                
+                
                 bindEvents();
             })
         });
     });
 });
+
+
+function find(newArrDates, date){
+    for (let i = 0; i< newArrDates.length; i ++) {
+        if (date.toLocaleString() === newArrDates[i].toLocaleString()) {
+            return false
+        }
+    } 
+    return true;
+}
+
+function setDateDisabled(arrDates){
+    arrDates.sort();
+
+    newArrDates = arrDates.map(({seconds}) => {
+        const millis = seconds * 1000;
+        return new Date(millis);
+        // const len = dataObject.toLocaleString().length
+        // return dataObject.toLocaleString().slice(0,len-12);
+    })
+
+    var arrDatesDisabled = [];
+    var arrLen = newArrDates.length
+    var srt_Date = newArrDates[0].toLocaleString().slice(0,newArrDates[0].toLocaleString().length-12);
+    var end_Date = newArrDates[arrLen-1].toLocaleString().slice(0,newArrDates[arrLen-1].toLocaleString().length-12);
+    
+    let date = new Date(newArrDates[0]);
+
+    const len = newArrDates.length;
+
+    while (date < newArrDates[len-1]){
+
+        date.setDate(date.getDate() + 1);
+        console.log(date.toLocaleString());
+
+        if (find(newArrDates, date)){
+            var strLen = date.toLocaleString().length;
+            arrDatesDisabled.push(date.toLocaleString().slice(0,strLen-12));
+        } 
+    }
+
+
+    $("#Txt_Date").datepicker({
+        format: 'yyyy. m. d.',
+        inline: false,
+        lang: 'en',
+        step: 10,
+        multidate: true,
+        closeOnDateSelect: true,
+        todayHighlight: false,
+        startDate: srt_Date,
+        endDate: end_Date,
+        datesDisabled: arrDatesDisabled,
+    })
+    .on("changeDate", function(e) {
+    
+        console.log(e.dates);
+        userAvailableDates = e.dates;
+    })
+}
+
+function setTimeDisabled(arrTime){
+
+    mobiscroll.setOptions({
+        locale: mobiscroll.localeEn,  // Specify language like: locale: mobiscroll.localePl or omit setting to use default
+        theme: 'windows',            // More info about themeVariant: https://docs.mobiscroll.com/5-4-0/javascript/datetime#opt-themeVariant
+    });
+    
+    if (arrTime[0].slice(6,8) === "AM") var minTime = arrTime[0].slice(0,5);
+    else var minTime = String(Number(arrTime[0].slice(0,2))+12) + arrTime[0].slice(2,5);
+    if (arrTime[1].slice(6,8) === "AM") var maxTime = arrTime[1].slice(0,5);
+    else var maxTime = String(Number(arrTime[1].slice(0,2))+12) + arrTime[1].slice(2,5);
+
+    $('#start-time').mobiscroll().datepicker({
+        controls: ['time'],
+        select: 'range',
+        showRangeLabels: true,
+        stepMinute: 60,
+        timeFormat: "hh:00 A",
+        min: minTime,
+        max: maxTime,
+    });
+
+}
+
 
 function bindEvents() {
     navListItems.click(function (e) {
@@ -194,6 +280,14 @@ function bindEvents() {
     });
 
     $('#submit-button').click(function() {
+
+        if ($("#start-time").length > 0){ //period < 1 인 경우라서 선택자가 이미 사라져있음.
+            userAvailableTime.push($("#start-time").val().slice(0,8));
+            userAvailableTime.push($("#start-time").val().slice(11,19));
+        }
+        // userAvailableDates 는 다른곳에서 받음
+        
+
         db.collection('families').doc(docID).collection('answers').add({
             meetingNumber: meetingNumber,
             userID: userID,
@@ -289,20 +383,9 @@ function locationClick(event) {
     searchAddressToCoordinate(prevLocation.text());
 }
 
-mobiscroll.setOptions({
-    locale: mobiscroll.localeEn,  // Specify language like: locale: mobiscroll.localePl or omit setting to use default
-    theme: 'windows',            // More info about themeVariant: https://docs.mobiscroll.com/5-4-0/javascript/datetime#opt-themeVariant
-});
 
 console.log(mobiscroll);
 
-$('#start-time').mobiscroll().datepicker({
-    controls: ['time'],
-    select: 'range',
-    showRangeLabels: true,
-    stepMinute: 60,
-    timeFormat: "hh:00 A"
-});
 
 
 
