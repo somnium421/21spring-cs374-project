@@ -1,5 +1,5 @@
 window.newid = 21;
-
+node_for_home = [];
 OrgChart.templates.family_template = Object.assign({}, OrgChart.templates.ana);
 OrgChart.templates.family_template.size = [86, 86];
 // OrgChart.templates.family_template.plus = "";
@@ -64,7 +64,13 @@ var chart = new OrgChart(document.getElementById("tree"), {
         },
         // for group!
         "node_with_subtrees": {
-        	template: "group"
+        	template: "group",
+            subTreeConfig: {
+                // siblingSeparation: 10,
+              columns: 1,
+              orientation: OrgChart.orientation.vertical
+
+            }
         }
     },
     nodeMenu:{
@@ -160,14 +166,16 @@ addGroupBox();
 
 function addGroupBox(){
     console.log(window.newid);
-    for(var cnt = 0; cnt < window.newid; cnt ++){
+    var nodenum = window.newid;
+    for(var cnt = 2; cnt < nodenum; cnt ++){
         console.log(cnt);
         var node = chart.getNode(cnt);
         var nodeData = chart.get(cnt);
+        console.log(node);
         if((node.pid ==0 )&& (node.ppid > 0) ){
             chart.updateNode({ id: node.id, stpid : window.newid, pid: node.pid, ppid: node.ppid, tags: node.tags, name: nodeData["name"],partner: node.partner, img: nodeData["img"], title: nodeData["title"],  gender: nodeData["gender"]});
 
-            var data = {id:window.newid, pid: 0 , tags: ["node_with_subtrees"],textWhenTheNodeIsMimized: nodeData["name"]+"네", textWhenTheNodeIsMaximized: nodeData["name"]+"네"};
+            var data = {id:window.newid, pid: 0, ppid:1 , tags: ["node_with_subtrees"],textWhenTheNodeIsMimized: nodeData["name"]+"네", textWhenTheNodeIsMaximized: nodeData["name"]+"네"};
             chart.addNode(data);
             window.newid ++;    
         }
