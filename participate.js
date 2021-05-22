@@ -1,13 +1,13 @@
 //import firebase from "firebase";
 
-const familyCode = "00AB8", meetingNumber = 0, userID = 1;
+const familyCode = "00AB8", meetingNumber = 0, userID = 0;
 var meetings, members, docID;
 
 var answer = {
     place: [],
     activity: [],
     accommodation: [],
-    departure: null,
+    departure: [],
     transportation: [],
 };
 
@@ -230,7 +230,6 @@ function onErrorGeolocation() {
 }
   
 function searchAddressToCoordinate(address) {
-    answer.departure = address;
     naver.maps.Service.geocode({query: address}, function(status, response) {
         if (status === naver.maps.Service.Status.ERROR) {
             if (!address) return alert('Geocode Error, Please check address');
@@ -239,6 +238,7 @@ function searchAddressToCoordinate(address) {
         if (response.v2.meta.totalCount === 0) return alert('No result.');
         var item = response.v2.addresses[0],
             point = new naver.maps.Point(item.x, item.y);
+        answer.departure = [item.x, item.y];
         marker.setPosition(point);
         map.setCenter(point);
     });
