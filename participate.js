@@ -59,13 +59,19 @@ $(document).ready(function() {
                                                         <img src="${members[participant.id].img}" style="width:30px;height:30px;border-radius:70%;opacity:${(Math.random(1)<0.5)?0.5:1}"></img>
                                                     </a>`);
             }
-            console.log(meetings[meetingNumber].availableDates[0]);
+            console.log(meetings[meetingNumber].availableDates[0].toDate());
+            //if (true) {
             if (meetings[meetingNumber].meetingPeriod.day > 1 && meetings[meetingNumber].availableDates.length == meetings[meetingNumber].meetingPeriod.day) {
-
-            }
-            else if (meetings[meetingNumber].meetingPeriod.day <= 1 && meetings[meetingNumber].availableDates.length == 1) {
+                var time1 = meetings[meetingNumber].availableDates[0].toDate(), time2 = meetings[meetingNumber].availableDates[meetings[meetingNumber].availableDates.length-1].toDate();
                 $('#fixed-date').append(`<h4><span class="badge rounded-pill bg-light text-dark"><i class="fa fa-calendar" aria-hidden="true"></i> 
-                    &nbsp; ${1} </span></h4>
+                    &nbsp; ${time1.getYear()+1900}.${time1.getMonth()+1}.${time1.getDate()} ~ ${time2.getYear()+1900}.${time2.getMonth()+1}.${time2.getDate()} </span></h4>
+                `);
+            }
+            //else {
+            else if (meetings[meetingNumber].meetingPeriod.day <= 1 && meetings[meetingNumber].availableDates.length == 1) {
+                var time = meetings[meetingNumber].availableDates[0].toDate()
+                $('#fixed-date').append(`<h4><span class="badge rounded-pill bg-light text-dark"><i class="fa fa-calendar" aria-hidden="true"></i> 
+                    &nbsp; ${time.getYear()+1900}.${time.getMonth()+1}.${time.getDate()} </span></h4>
                 `);
             }
 
