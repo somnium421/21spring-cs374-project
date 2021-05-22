@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css" rel="stylesheet"/>
+    <script src="https://code.jscharting.com/latest/jscharting.js"></script>
+    <script type="text/javascript" src="https://code.jscharting.com/latest/modules/types.js"></script>
     <link rel="stylesheet" href="css/chat.css">
     <link rel="stylesheet" href="css/english-caption.css">
     <link rel="stylesheet" href="css/step.css">
@@ -129,9 +131,9 @@
                             </div>
                         </div>
                         <div class="col">
-                            <div class="card border-0" id="time-card">
+                            <div class="container border-0" id="time-card">
                                 <p class="fw-bold fs-6 card-title">가능한 시간<span style="color: gray" class="fw-light eng-cap">  Available dates and time</span></p>  
-                                <div class="datepicker" id="availableTime"></div>
+                                <div id="chartDiv" style="height: 280px;margin: 0px auto"></div>
                             </div>
                         </div>
                     </div>
@@ -169,5 +171,6 @@
         </div>
     </div>
     <script src="js/result.js"></script>
+    <script src="js/result-date.js"></script>
 </body>
 </html>
