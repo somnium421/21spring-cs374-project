@@ -26,10 +26,11 @@ let activityOptions = {
 
 function resize() {
     placeOptions.container.width = $('#place-card').width();
-    // console.log(placeOptions);
     activityOptions.container.width = $('#activity-card').width();
     $('#placeCloud').tagCloud(placeOptions);
     $('#activityCloud').tagCloud(activityOptions);
+    $('#placeCloud').css("margin-top", ($('#map').height() - $('#placeCloud').height())/2 - 20);
+    $('#activityCloud').css("margin-top", ($('#map').height() - $('#activityCloud').height())/2 - 20);
 }
 
 var map = new naver.maps.Map("map", {
