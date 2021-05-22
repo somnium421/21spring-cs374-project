@@ -191,17 +191,27 @@ function processData() {
                 if (activity in activityDict) activityDict[activity].push(doc.data().userID);
                 else activityDict[activity] = [doc.data().userID];
             }
+            const find = latlngs.find(latlng => latlng.position[0] == doc.data().departure[1] && latlng.position[1] == doc.data().departure[0]);
+            if (find) find.id.push(doc.data().userID);
+            else {
+                latlngs.push({
+                    position: [doc.data().departure[1], doc.data().departure[0]],
+                    id: [doc.data().userID]
+                })
+            }
+        });
+        for (var i=0; i<latlngs.length; i++) {
             var marker = new naver.maps.Marker({
-                position: new naver.maps.LatLng(doc.data().departure[1], doc.data().departure[0]),
+                position: new naver.maps.LatLng(latlngs[i].position[0], latlngs[i].position[1]),
                 map: map
             });
             var infoWindow = new naver.maps.InfoWindow({
-                content: `<p style="padding-top:10px;padding-left:10px;padding-right:10px;">${members[doc.data().userID].name}</p>`
+                content: `<p style="padding-top:10px;padding-left:10px;padding-right:10px;">${latlngs[i].id.map(x => members[x].name).join(', ')}</p>`
             });
             markers.push(marker);
             infoWindows.push(infoWindow);
-        });
-        for (var i=0; i<markers.length; i++) naver.maps.Event.addListener(markers[i], 'mouseover', getClickHandler(i));
+            naver.maps.Event.addListener(markers[i], 'mouseover', getClickHandler(i));
+        }
         for (var place in placeDict) {
             var tooltipTitle = place
             placeData.push({
