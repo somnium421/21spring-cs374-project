@@ -200,13 +200,13 @@
                 <!-- Third Step -->
                 <div id="step-3" class="container col-6 row mx-auto mt-4 p-3 setup-content">
                     <form>
-                        <div class="form-group">
-                            <label class="fw-bold fs-5 mb-2" for="departure-place">모임시간 선택<span style="color: red">*</span></label>
-                            <div id="MainBody" style="background-color: rgb(241, 241, 241);">
+                        <!-- <div class="form-group">
+                            <label class="fw-bold fs-5 mb-2" for="departure-place">모임시간 선택<span style="color: red">*</span></label> -->
+                            <!-- <div id="MainBody" style="background-color: rgb(241, 241, 241);">
                                 <form action="SaveNewEvent.php" method="POST" onsubmit="return PreSubmitCheck();">
                                 <table width="100%" cellpadding="0" cellspacing="0">
                                     <tbody>
-                                <!-- 1박 이상 캘린더자리 -->
+                                // 1박 이상 캘린더자리
                                 <tr>
                                     <td align="center" valign="top">
                                         <div id="WhatDates" style="text-align: center; width: 50%; min-width:305px;">
@@ -234,7 +234,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <!-- 당일치기 시간표 자리  -->
+                                // 당일치기 시간표 자리 
                                 <tr><td align="center" valign="top">
                                     <div id="WhatTimes" style="text-align: center; width: 50%; min-width:305px;"><center>
                                         
@@ -245,8 +245,25 @@
                                 </tbody></table>
                                 </form>
                                 
-                                </div>
+                            </div> -->
+                        <div class="form-group mt-5">
+                            <label class="fw-bold fs-5" for="privacy">가능한 날짜<span style="color: gray" class="fw-light eng-cap">  Available dates and time</span> </label>
+                            <div class= "mt-2 datepicker" id="Txt_Date"></div>
+                            <!-- <input type="text" id="Txt_Date" placeholder="Choose Date" style="cursor: pointer" class="mt-2"> -->
                         </div>
+                        <div class="form-group disabled mt-3">
+                            <label class = "fs-5 mt-1" id="available-time">
+                                가능한 시간대 <span span class="fw-light eng-cap"> Available time</span>
+                                <input class = "form-control" id="start-time" mbsc-input data-input-style="outline" data-label-style="stacked" placeholder="선택해 주세요" />
+                            </label>
+                            <!-- <label>
+                                끝나는 시각 <span span class="fw-light eng-cap">end time</span>
+                                <input id="end-time" mbsc-input data-input-style="outline" data-label-style="stacked" placeholder="Please select..." />
+                            </label> -->
+                                
+                            
+                        </div>
+                        
                         <div class="form-inline mt-5">
                             <button class="btn btn-lg btn-primary nextBtn col-12 btn-block" type="button" id="submit-button">제출</button>
                         </div>     

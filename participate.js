@@ -3,6 +3,23 @@
 const familyCode = "00AB8", meetingNumber = 0, userID = 0;
 var meetings, members, docID;
 
+
+$("#Txt_Date").datepicker({
+    format: 'd-M-yyyy',
+    inline: false,
+    lang: 'en',
+    step: 10,
+    multidate: true,
+    closeOnDateSelect: true,
+    todayHighlight: false
+}).on("changeDate", function(e) {
+
+    console.log(e.dates);
+    availableDates = e.dates;
+});;
+
+
+
 var answer = {
     place: [],
     activity: [],
@@ -271,5 +288,21 @@ function locationClick(event) {
     prevLocation.addClass('active');
     searchAddressToCoordinate(prevLocation.text());
 }
+
+mobiscroll.setOptions({
+    locale: mobiscroll.localeEn,  // Specify language like: locale: mobiscroll.localePl or omit setting to use default
+    theme: 'windows',            // More info about themeVariant: https://docs.mobiscroll.com/5-4-0/javascript/datetime#opt-themeVariant
+});
+
+console.log(mobiscroll);
+
+$('#start-time').mobiscroll().datepicker({
+    controls: ['time'],
+    select: 'range',
+    showRangeLabels: true,
+    stepMinute: 60,
+    timeFormat: "hh:00 A"
+});
+
 
 
