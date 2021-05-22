@@ -281,7 +281,7 @@ function bindEvents() {
 
     $('#submit-button').click(function() {
 
-        if ($("#start-time").length > 0){ //period < 1 인 경우라서 선택자가 이미 사라져있음.
+        if ($("#start-time").length > 0){ //period.day < 1 인 경우에는 선택자가 이미 사라져있음.
             userAvailableTime.push($("#start-time").val().slice(0,8));
             userAvailableTime.push($("#start-time").val().slice(11,19));
         }
