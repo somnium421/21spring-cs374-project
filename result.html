@@ -19,12 +19,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
     <script>
         firebase.initializeApp({
-            apiKey: "AIzaSyAgMEwyhYhxv5Ty75WAHTGP_XdnYLMSpas",
-            authDomain: "id311-project.firebaseapp.com",
-            projectId: "id311-project",
-            storageBucket: "id311-project.appspot.com",
-            messagingSenderId: "325087605761",
-            appId: "1:325087605761:web:b33af9b4d970ad042a7c00"
+            apiKey: "AIzaSyDYdmZ5M79MzjyK_5UYYlfutkKOLYHaf0k",
+            authDomain: "togather-ad530.firebaseapp.com",
+            projectId: "togather-ad530",
+            storageBucket: "togather-ad530.appspot.com",
+            messagingSenderId: "403669469215",
+            appId: "1:403669469215:web:10048cc7cbcb813ddc2d2a"
         });
         const db = firebase.firestore();
         db.settings({timestampsInSnapshots: true});
@@ -80,7 +80,7 @@
         </div>
         <div class="container-fluid col" style="margin-left: 200px;">    
             <div class="row fs-3 fw-bold mt-5 mb-4 ms-5">설문 결과 확인하기</div>
-            <div class="card mx-5 meeting-card shadow" style="border-radius: 10px;">
+            <div class="card mx-5 meeting-card shadow mb-3" style="border-radius: 10px;">
                 <div class="card-header" id="is-private">                        
                 </div>
                 <div class="card-body">
@@ -106,9 +106,9 @@
                     <h5 class="fw-bold card-title">설문결과</h5>
                     <div class="row row-cols-md-3 g-3">
                         <div class="col">
-                            <div class="card border-0" id="location-card">
+                            <div class="card border-0" id="place-card">
                                 <p class="fw-bold fs-6 card-title">장소</p>  
-                                <div class="my-auto" id="locationCloud"></div>
+                                <div class="my-auto" id="placeCloud"></div>
                             </div>
                         </div>
                         <div class="col">
