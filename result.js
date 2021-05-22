@@ -1,9 +1,5 @@
 const familyCode = "00AB8", meetingNumber = 0, userID = 0;
-
-const chat = [
-    {id: 3, text: '가평이 제일 표가 많네! 가평 ㄱㄱ?', time: new Date(2021,4,20,17,24,30,0), like: [2, 5, 7]},
-    {id: 7, text: '근데 가평 이번 주에 비 온대ㅠㅜ', time: new Date(2021,4,20,19,24,30,0), like: [3, 8]}
-]
+var meetings, members, chats, docID, answerID;
 
 const placeData = [], activityData = [];
 
@@ -31,6 +27,7 @@ let activityOptions = {
 
 function resize() {
     placeOptions.container.width = $('#place-card').width();
+    console.log(placeOptions);
     activityOptions.container.width = $('#activity-card').width();
     $('#placeCloud').tagCloud(placeOptions);
     $('#activityCloud').tagCloud(activityOptions);
@@ -86,17 +83,22 @@ function tooltipSet() {
 
 function bindEvents() {
     $('#chat-button').click(() => {
-        var newChatElem = {
+        var chat = {
             id: userID,
             text: $('#chat-input').val(),
             time: new Date(),
             like: []
         }
-        chat.push(newChatElem);
+        chats.chat.push(chat);
+        console.log(chats);
         $('#chat-input').val('')
-        drawChat(chat.length-1);
+        db.collection('families').doc(docID).collection('chats').doc(answerID).update({
+            chat: chats.chat
+        })
+        .then((snapshot) => {
+            drawChat(chats.chat.length-1);
+        });
     });
-
     tooltipSet();
 }
 
@@ -106,56 +108,69 @@ $(document).on('click', '.bi-heart-fill', function(e){
         var idx = $(e.target).parent().data('idx');
         if ($(e.target).css('fill') != "rgb(255, 153, 153)") { // unclicked
             $(e.target).css({fill: 'rgb(255, 153, 153)'});
-            chat[idx].like.push(userID);
-            $(e.target).parent().parent().attr('data-bs-original-title', chat[idx].like.map((id) => members[id].name).join(', '));
+            chats.chat[idx].like.push(userID);
+            $(e.target).parent().parent().attr('data-bs-original-title', chats.chat[idx].like.map((id) => members[id].name).join(', '));
         }
         else { // clicked
             $(e.target).css({fill: 'rgb(255, 192, 203)'});
-            chat[idx].like.splice(chat[idx].like.indexOf(userID), 1);
-            $(e.target).parent().parent().attr('data-bs-original-title', chat[idx].like.map((id) => members[id].name).join(', '));
+            chats.chat[idx].like.splice(chats.chat[idx].like.indexOf(userID), 1);
+            $(e.target).parent().parent().attr('data-bs-original-title', chats.chat[idx].like.map((id) => members[id].name).join(', '));
         }
     }
+    db.collection('families').doc(docID).collection('chats').doc(answerID).update({
+        chat: chats.chat
+    })
 })
 
+$(document).on('click', '.fa-times-circle', function(e){
+    chats.chat.splice($(e.target).data('idx'), 1);
+    db.collection('families').doc(docID).collection('chats').doc(answerID).update({
+        chat: chats.chat
+    })
+    $(e.target).parent().parent().remove();
+});
+
 function timeCalculate(time) {
+    if (!(time instanceof Date)) time = time.toDate();
     return `${time.getMonth()+1}월 ${time.getDate()}일 ${time.getHours()}시 ${time.getMinutes()}분` 
 }
 
 function drawChat(idx) {
-    var chatElem = chat[idx];
-    if (userID != chatElem.id) {
+    var chat = chats.chat[idx];
+    if (userID != chat.id) { // incoming msg
         $('#chat').append(
         `<div class="incoming_msg">
             <div class="incoming_msg_img">
                 <a href="#" class="d-inline-block">
-                    <img src="${members[chatElem.id].img}" style="width:30px;height:30px;border-radius:70%;"></img>
+                    <img src="${members[chat.id].img}" style="width:30px;height:30px;border-radius:70%;"></img>
                 </a>
-                <p>${members[chatElem.id].name}</p>
+                <p>${members[chat.id].name}</p>
             </div>
             <div class="received_msg">
                 <div class="received_withd_msg">
-                    <p style="float:left">${chatElem.text}</p>
-                    <a style="float:right" class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="right" title="" data-bs-original-title="${chatElem.like.map((id) => members[id].name).join(', ')}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffc0cb" class="bi bi-heart-fill" viewBox="0 0 16 16" data-idx="${idx}">
+                    <p style="float:left">${chat.text}</p>
+                    <a style="float:right;" class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="right" title="" data-bs-original-title="${chat.like.map((id) => members[id].name).join(', ')}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="${chat.like.includes(userID)?'#ff9999':'#ffc0cb'}" class="bi bi-heart-fill" viewBox="0 0 16 16" data-idx="${idx}">
                             <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
                         </svg>
                     </a>
-                    <span class="time_date">${timeCalculate(chatElem.time)}</span></div>
+                    <span class="time_date">${timeCalculate(chat.time)}</span></div>
                 </div>
             </div>
         </div>`)
     }
-    else {
+    else { // outgoing msg
         $('#chat').append(
         `<div class="outgoing_msg">
             <div class="sent_msg">
-                <p style="float:left">${chatElem.text}</p>
-                <a style="float:right" class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="left" title="" data-bs-original-title="${chatElem.like.map((id) => members[id].name).join(', ')}">
+                <p style="float:left">${chat.text}</p>
+                <i style="float:right;margin-top:5px;margin-left:3px;color:tomato" class="fas fa-times-circle" data-idx="${idx}"></i>
+                <a style="float:right" class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="left" title="" data-bs-original-title="${chat.like.map((id) => members[id].name).join(', ')}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffc0cb" class="bi bi-heart-fill" viewBox="0 0 16 16" data-idx="${idx}">
                         <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
                     </svg>
                 </a>
-                <span class="time_date">${timeCalculate(chatElem.time)}</span> </div>
+                <span class="time_date">${timeCalculate(chat.time)}</span> </div>
             </div>
         </div>`)
     }
@@ -181,7 +196,7 @@ function processData() {
         for (var place in placeDict) {
             var tooltipTitle = place
             placeData.push({
-                name: `<a data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="${placeDict[place].map((id) => members[id].name).join(', ')}">${place}</a>`,
+                name: `<a style="" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="${placeDict[place].map((id) => members[id].name).join(', ')}">${place}</a>`,
                 weight: placeDict[place].length
             });
         }
@@ -195,7 +210,6 @@ function processData() {
         }
         resize();
         tooltipSet();
-        console.log(placeData, activityData);
     })
 }
 
@@ -206,11 +220,21 @@ $(document).ready(function() {
         snapshot.forEach((doc) => {
             docID = doc.id;
             meetings = doc.data().meetings;
+            //console.log(meetings);
             members = doc.data().members;
 
             processData();
 
-            console.log(meetings);
+            // chat db
+            db.collection('families').doc(docID).collection('chats').where('meetingNumber', '==', meetingNumber)
+            .get().then((snapshot) =>{
+                snapshot.forEach((doc) => {
+                    answerID = doc.id;
+                    chats = doc.data();
+                    console.log(chats);
+                })
+                for (var i=0; i<chats.chat.length; i++) drawChat(i);
+            })
 
             if (meetings[meetingNumber].isPrivate) $('#is-private').append('<span class="text-muted" style="font-size: smaller;"><i class="fas fa-lock me-1"></i> 비공개</span>')
             else $('#is-private').append('<span class="text-muted" style="font-size: smaller;"><i class="fas fa-globe-asia me-1"></i> 공개</span>')
@@ -239,7 +263,6 @@ $(document).ready(function() {
             }
             $('#meeting-tags').append(meetingTags);
         });
-        for (var i=0; i<chat.length; i++) drawChat(i);
         bindEvents();
     });
 });
