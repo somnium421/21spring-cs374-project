@@ -118,12 +118,12 @@
                     <p class="text-center fs-5 text-secondary">계획하시는 모임을 설명해주세요.<br><span style="font-size: 12pt;">Explain your planning meeting.</span></p>
                     <form>
                         <div class="form-group mt-4">
-                            <label class="fw-bold fs-5 mb-2" for="meeting-name">모임명 <span class="fw-light eng-cap">Meeting title</span> </label>
+                            <label class="fw-bold fs-5 mb-2" for="meeting-name">모임명 <span style="color: red">*</span> <span class="fw-light eng-cap">Meeting title</span> </label>
                             <input class="form-control" placeholder="모임의 이름은?" id="meeting-name" type="name">
                         </div>
         
                         <div class="form-group mt-5">
-                            <label class="fw-bold fs-5 mb-2" for="meeting-description">모임 설명 <span class="fw-light eng-cap">Meeting description</span></label>
+                            <label class="fw-bold fs-5 mb-2" for="meeting-description">모임 설명 <span style="color: red">*</span> <span class="fw-light eng-cap">Meeting description</span></label>
                             <textarea class="form-control" rows="3" id="meeting-description" type="description"></textarea>
                         </div>
         
@@ -142,7 +142,7 @@
                     </div>
                     <div>
                         <div id="participants-transfer" style="width: 582px; height: 360px; margin:0 auto">
-                            <p class="fs-5 fw-bold">참가자 선택 <span class="fw-light eng-cap">Participants selection</span></p>
+                            <p class="fs-5 fw-bold">참가자 선택 <span style="color: red">*</span> <span class="fw-light eng-cap">Participants selection</span></p>
                         </div>
                     </div>
                     <div class="container col-6 row mx-auto p-3">
@@ -165,7 +165,7 @@
                     <p class="text-center fs-5 text-secondary">어떤 모임을 하고 싶은가요?<br><span style="font-size: 12pt;">What meeting do you want to do?</span></p>
                     <form>
                         <div class="form-group mt-4">
-                            <label class="fw-bold fs-5" for="place">장소 추천 <span class="fw-light eng-cap">Suggest the meeting places</span></label>
+                            <label class="fw-bold fs-5" for="place">장소 추천 <span style="color: red">*</span> <span class="fw-light eng-cap">Suggest the meeting places</span></label>
                             <div class="input-group mt-2">
                                 <input class="form-control" placeholder="모이고 싶은 장소는? 태그를 추가하세요" id="place" type="place">
                                 <div class="input-group-append">
@@ -183,7 +183,7 @@
                         </div>
     
                         <div class="form-group mt-5">
-                            <label class="fw-bold fs-5" for="activity">할 일 추천 <span class="fw-light eng-cap">Suggest the activities</span> </label>
+                            <label class="fw-bold fs-5" for="activity">할 일 추천 <span style="color: red">*</span> <span class="fw-light eng-cap">Suggest the activities</span> </label>
                             <div class="input-group mt-2">
                                 <input class="form-control" placeholder="모임에서 하고 싶은 일은? 태그를 추가하세요" id="activity" type="activity">
                                 <div class="input-group-append">
@@ -239,13 +239,13 @@
                         </div>
     
                         <div class="form-group mt-5">
-                            <label class="fw-bold fs-5" for="privacy">가능한 날짜<span style="color: gray" class="fw-light eng-cap">  Available dates and time</span> </label>
+                            <label class="fw-bold fs-5" for="privacy">가능한 날짜 <span style="color: red">*</span> <span style="color: gray" class="fw-light eng-cap">  Available dates and time</span> </label>
                             <div class= "mt-2 datepicker" id="Txt_Date"></div>
                             <!-- <input type="text" id="Txt_Date" placeholder="Choose Date" style="cursor: pointer" class="mt-2"> -->
                         </div>
                         <div class="form-group disabled mt-3">
                             <label class = "fs-5 mt-1" id="available-time">
-                                가능한 시간대 <span span class="fw-light eng-cap"> Available time</span>
+                                가능한 시간대 <span style="color: red">*</span> <span span class="fw-light eng-cap"> Available time</span>
                                 <input class = "form-control" id="start-time" mbsc-input data-input-style="outline" data-label-style="stacked" placeholder="선택해 주세요" />
                             </label>
                             <!-- <label>
@@ -306,7 +306,7 @@
         </div>
     </div>
 </body>
-    <script type="module" src="./createNewMeeting.js"></script>
+    <script src="./createNewMeeting.js"></script>
     <script src="js/jquery.transfer.js"></script>
     <script src="participants_transfer.js"></script>
     <script src="adding_tags.js"></script>

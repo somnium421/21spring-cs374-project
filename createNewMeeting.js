@@ -21,6 +21,115 @@ $("#Txt_Date").datepicker({
     availableDates = e.dates;
 });;
 
+function validateinput(id){
+    if (!$("#"+id).val()){
+        var text = `<small id="`+id+`Help" class="form-text" style="color: red">필수입력 사항입니다. </small>`
+        if ($("#"+id+"Help").length === 0) $("#"+id).parent().append(text);
+        document.getElementById(id).style = "border: 2px solid #E8ADAA";
+        return false;
+    }
+    $("#"+id+"Help").remove();
+    document.getElementById(id).style = "border: ''";
+    return true;
+}
+
+function validatenums(id){
+    if (!$("#"+id).val()){
+        var text = `<small id="`+id+`Help" class="form-text" style="color: red">필수입력 사항입니다. </small>`
+        if ($("#"+id+"Help").length === 0) $("#"+id).parent().parent().append(text);
+        else $("#"+id+"Help").replaceWith(text);
+        document.getElementById(id).style = "border: 2px solid #E8ADAA";
+        return false;
+    }
+    else if ($("#"+id).val()==0){
+        var text = `<small id="`+id+`Help" class="form-text" style="color: red">0이 아닌 숫자를 입력해주세요. </small>`
+        if ($("#"+id+"Help").length === 0) $("#"+id).parent().parent().append(text);
+        else $("#"+id+"Help").replaceWith(text);
+        document.getElementById(id).style = "border: 2px solid #E8ADAA";
+        return false;
+    }
+    $("#"+id+"Help").remove();
+    document.getElementById(id).style = "border: ''";
+    return true;
+}
+
+function validateperiod(){
+    if (!$("#day").val() && !$("#hour").val()){
+        var text = `<small id="periodsHelp" class="form-text" style="color: red">필수입력 사항입니다. </small>`
+        if ($("#periodsHelp").length === 0) $("#day").parent().parent().append(text);
+        else $("#periodsHelp").replaceWith(text);
+        document.getElementById("day").style = "border: 2px solid #E8ADAA";
+        document.getElementById("hour").style = "border: 2px solid #E8ADAA";
+        return false;
+    }
+    else if ($("#day").val()==0 && $("#hour").val()==0){
+        var text = `<small id="periodsHelp" class="form-text" style="color: red">0이 아닌 숫자를 입력해주세요. </small>`
+        if ($("#periodsHelp").length === 0) $("#day").parent().parent().append(text);
+        else $("#periodsHelp").replaceWith(text);
+        document.getElementById("day").style = "border: 2px solid #E8ADAA";
+        document.getElementById("hour").style = "border: 2px solid #E8ADAA";
+        return false;
+    }
+    $("#periodsHelp").remove();
+    document.getElementById("day").style = "border: ''";
+    document.getElementById("hour").style = "border: ''";
+    return true;
+}
+
+function validateparticipants(){
+    if (participans_transfer.getSelectedItems().length ==0){
+        var text = `<small id="participantsHelp" class="form-text" style="color: red">필수입력 사항입니다. </small>`
+        if ($("#participantsHelp").length === 0) $("#participants-transfer").append(text);        
+        return false;
+    }
+    $("#participantsHelp").remove();
+    return true;
+}
+
+function validatearr(id, arr, len){
+    if (arr.length != len){
+        $("#"+id+"Help").remove();
+        document.getElementById(id).style = "border: ''";
+        return true; 
+    }
+    var text = `<small id="`+id+`Help" class="form-text" style="color: red">필수입력 사항입니다. </small>`
+    if ($("#"+id+"Help").length === 0) $("#"+id).parent().parent().append(text);
+    document.getElementById(id).style = "border: 2px solid #E8ADAA";
+    return false;
+}
+function validatearr2(id, arr, len){
+    if (arr.length != len){
+        $("#"+id+"Help").remove();
+        document.getElementById(id).style = "border: ''";
+        return true; 
+    }
+    var text = `<small id="`+id+`Help" class="form-text" style="color: red">필수입력 사항입니다. </small>`
+    if ($("#"+id+"Help").length === 0) $("#"+id).parent().append(text);
+    document.getElementById(id).style = "border: 2px solid #E8ADAA";
+    return false;
+}
+function validatearr3(id, arr, len){
+    if (arr.length == len || $("#day").val()> 0){
+        $("#"+id+"Help").remove();
+        
+        document.getElementById(id).style = "border: ''";
+        return true; 
+    }
+    else if (arr.length == 0){
+        var text = `<small id="`+id+`Help" class="form-text" style="color: red">필수입력 사항입니다. </small>`
+        if ($("#"+id+"Help").length === 0) $("#"+id).parent().append(text);
+        else $("#"+id+"Help").replaceWith(text);
+        document.getElementById(id).style = "border: 2px solid #E8ADAA";
+        return false;
+    }
+    else{
+        var text = `<small id="`+id+`Help" class="form-text" style="color: red">시작하는 시간과 끝나는 시간을 모두 입력하세요. </small>`
+        if ($("#"+id+"Help").length === 0) $("#"+id).parent().parent().append(text);
+        else $("#"+id+"Help").replaceWith(text);
+        document.getElementById(id).style = "border: 2px solid #E8ADAA";
+        return false;
+    }
+}
 
 var navListItems = $('div.setup-panel div a'),
     allWells = $('.setup-content'),
@@ -52,6 +161,42 @@ allPrevBtn.click(function(){
 });
 
 allNextBtn.click(function(){
+    curId = $(this).attr('id');
+    switch(curId) {
+        case 'step1-submit':
+            var a = validateinput('meeting-name');
+            var b = validateinput('meeting-description');
+            if (a && b){
+                break;
+            }
+            return;
+
+        case 'step2-submit':
+            if (validateparticipants()){
+                break;
+            }
+            return;
+
+        case 'step3-submit':
+            // code block
+            var a= validatearr('place', arrPlace, 0);
+            var b= validatearr('activity', arrActivity, 0);
+            if (a && b){
+                break;
+            }
+            return;
+        case 'step4-submit':
+            var a = validateperiod();
+            var b = validatearr2('Txt_Date', availableDates, 0);
+            var c = validatearr3('start-time', $('#start-time').val(), 19);
+            
+            if(a && b && c) break;
+            return;
+        default:
+            break;
+    }
+    console.log('hi');
+
     var curStep = $(this).closest(".setup-content"),
         curStepBtn = curStep.attr("id"),
         nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
@@ -242,6 +387,7 @@ var familyChart = [
 // })
 
 $('#final-submit').click(function(){
+    if(!validatenums('surveyPeriod')) return;
     db_log_newMeeting.name = $('#meeting-name').val();
     db_log_newMeeting.description = $('#meeting-description').val();
 
