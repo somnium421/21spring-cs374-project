@@ -17,7 +17,7 @@ let activityOptions = {
     container: {
     },
     tag: {
-        minFontSize: 12,
+        minFontSize: 15,
         maxFontSize: 27,
         format: '{tag.name}'
     },
