@@ -6,7 +6,7 @@ const chat = [
 ]
 
 const locationData = [
-    {name: '가평', weight: 3, tooltip: '엄마, 누나, 나'},
+    {name: '<a data-bs-toggle="tooltip" data-bs-placement="right" title="" data-bs-original-title="아빠, 작은아빠, 누나">가평</a>', weight: 3, tooltip: '엄마, 누나, 나'},
     {name: '홍대', weight: 2, tooltip: '누나, 나'},
     {name: '동해바다', weight: 2, tooltip: '할머니, 아빠'},
     {name: '광안리', weight: 3, tooltip: '아빠, 작은아빠, 누나'},
@@ -22,13 +22,16 @@ const activityData = [
     {name: '간장게장 먹기', weight: 1, tooltip: '나'},
 ]
 
+let a='아빠, 작은아빠, 누나';
+// acitivitiData.filter()
+
 let locationOptions = {
     container: {
     },
     tag: {
         minFontSize: 12,
         maxFontSize: 20,
-        format: '<a>{tag.name}</a>'
+        format: '{tag.name}'
     },
     data: locationData
 }
@@ -114,8 +117,8 @@ function bindEvents() {
         drawChat(chat.length-1);
     });
     $(`.bi-heart-fill`).click((event) => {
-        $(event.target).css({fill: '#FF9999'})
-        console.log('hello');
+        $(event.target).css({fill: '#FF9999'});
+        console.log($(event.target));
     });
 
     tooltipSet();
