@@ -1,4 +1,4 @@
-window.newid = 3;
+window.newid = 2;
 var familyCode;
 
 
@@ -58,6 +58,7 @@ chart.editUI.on('field', function(sender, args){
     if (args.type == 'edit' && args.name == 'gender'){
 
         var txt = args.field.querySelector('input');
+        var line = args.field.querySelector('hr');
         var txtVal = txt.value;
         if (txt){
             txt.style.color = "red";  
@@ -76,38 +77,12 @@ chart.editUI.on('field', function(sender, args){
             select.value = txtVal;
             
             txt.parentNode.appendChild(select);
-            txt.parentNode.removeChild(txt);
+            txt.parentNode.removeChild(line);
+            txt.parentNode.appendChild(line);
+            txt.parentNode.removeChild(txt);           
         }
     }
 });
-
-// chart.on('render-link', function(sender, args){
-//     if (args.cnode.ppid != undefined){
-//         args.html += '<use xlink:href="#circle" x="'+ args.p.xa +'" y="'+ args.p.ya +'"/>';
-//     }
-// });
-
-//hovering 하면 edit 창이 뜨게 하는건데 여기서 뭔가 힌트를 얻을 수 있지 않을까
-// chart.on('redraw', function(){
-//     var nodeElements = document.querySelectorAll('[node-id]');
-//     for(var i = 0; i < nodeElements.length; i++){
-//         nodeElements[i].addEventListener('mouseover', function(e){
-//           e.preventDefault();
-          
-//           if (e.target.tagName != 'text'){
-//               var nodeId = this.getAttribute('node-id');
-//               chart.editUI.show(nodeId, true);                
-//           }
-
-//       });
-
-  
-//     nodeElements[i].addEventListener('mouseleave', function(e){
-//         e.preventDefault();
-//         document.querySelector('.edit-wrapper').style.display = 'none';
-//     });
-//   }
-// });
 
 chart.editUI.on('field', function(sender, args){
     if (args.name == 'partner' || args.name == 'title' || args.name == 'img' || args.name == "ppid"){
@@ -117,8 +92,8 @@ chart.editUI.on('field', function(sender, args){
 
 
 var familyChart = [          
-    { id: 1, tags: ["blue"], partner: 2, name: "김덕수", title: "할아버지", gender: "male", img: "https://cdn.balkan.app/shared/empty-img-white.svg"},
-    { id: 2, pid: 1, tags: ["partner"], partner: 1, name: "문옥주", title: "할머니", gender: "female", img: "https://cdn.balkan.app/shared/empty-img-white.svg" },
+    { id: 0, tags: ["blue"], partner: 1, name: "김덕수", title: "할아버지", gender: "male", img: "https://cdn.balkan.app/shared/empty-img-white.svg"},
+    { id: 1, pid: 0, tags: ["partner"], partner: 0, name: "문옥주", title: "할머니", gender: "female", img: "https://cdn.balkan.app/shared/empty-img-white.svg"},
 ];
 
 chart.load(familyChart);
@@ -158,6 +133,9 @@ function addChild(nodeId){
     // chart.editUI.hide(window.newid);
     
 }
+function addImg(nodeId){
+    console.log('working');
+}
 
 var randomNum = {};
 //0~9까지의 난수
@@ -196,3 +174,26 @@ $('#family-tree-submit').click(()=>{
         members: familyChart,
     })
 })
+
+// $('#getfile').change(()=>{
+//     var storageUpRef = firebase.storage().ref('/profile/');
+//     var file = document.querySelector('#getfile');
+//     var fileList = file.files;
+//     var task = storageUpRef.put(fileList [0]);
+//     task.on('state_changed',
+//         function(snapshot){                                    
+//             console.log('업로드 진행중');  // 업로드 진행시 호출
+//         },
+//         function(error){
+//                              // 업로드 중간에 에러 발생시 호출
+//         },    
+//         function(){                // 업로드 완료시 
+//             console.log('업로드 완료');    
+//             var storageRef = firebase.storage().ref();
+//             storageRef.child('/profile/').getDownloadURL().then(function(url) {
+//                 console.log('url은 이겁니다 : ',url);
+//             }).catch(function(error) {                  
+//             });
+//         }
+//     )
+// })
