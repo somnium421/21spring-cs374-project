@@ -51,7 +51,8 @@ $(document).ready(function() {
                                                         <img src="${members[participant.id].img}" style="width:30px;height:30px;border-radius:70%;opacity:${(Math.random(1)<0.5)?0.5:1}"></img>
                                                     </a>`);
             }
-
+            var meetingTags
+            if (meetings.noMorePlace) 
             for (var place of meetings[meetingNumber].place) {
                 $('#place-tags').append(`<button type="button" class="tag btn btn-outline-primary btn-sm mt-2 mx-1 rounded-pill selectable data-selected=false">${place}</button>`)
             }
