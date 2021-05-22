@@ -46,8 +46,8 @@
 .datepicker,
 .table-condensed {
   /* background-color: white; */
-  width: 400px;
-  height: 400px;
+  width: 220px;
+  height: 280px;
 }
 
 /* .datepicker,
@@ -79,5 +79,5 @@
 
 td.active{
   background-image: none!important;
-  background-color: rgb(38,90,255)!important;
+  background-color: rgba(38,90,255, 10)!important;
 }

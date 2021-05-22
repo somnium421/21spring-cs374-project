@@ -258,7 +258,78 @@ $(document).ready(function() {
                 meetingTags += tmp;
             }
             $('#meeting-tags').append(meetingTags);
+
+            setDateDisabled(meetings[meetingNumber].availableDates)
         });
         bindEvents();
     });
 });
+
+
+
+
+function find(newArrDates, date){
+    for (let i = 0; i< newArrDates.length; i ++) {
+        if (date.toLocaleString() === newArrDates[i].toLocaleString()) {
+            return false
+        }
+    } 
+    return true;
+}
+
+function setDateDisabled(arrDates){
+    arrDates.sort();
+
+    newArrDates = arrDates.map(({seconds}) => {
+        const millis = seconds * 1000;
+        return new Date(millis);
+        // const len = dataObject.toLocaleString().length
+        // return dataObject.toLocaleString().slice(0,len-12);
+    })
+
+    var arrDatesDisabled = [];
+    var arrLen = newArrDates.length
+    var srt_Date = newArrDates[0].toLocaleString().slice(0,newArrDates[0].toLocaleString().length-12);
+    var end_Date = newArrDates[arrLen-1].toLocaleString().slice(0,newArrDates[arrLen-1].toLocaleString().length-12);
+    
+    let date = new Date(newArrDates[0]);
+
+    const len = newArrDates.length;
+
+    while (date < newArrDates[len-1]){
+
+        date.setDate(date.getDate() + 1);
+        console.log(date.toLocaleString());
+
+        if (find(newArrDates, date)){
+            var strLen = date.toLocaleString().length;
+            arrDatesDisabled.push(date.toLocaleString().slice(0,strLen-12));
+        } 
+    }
+
+    $("#availableTime").datepicker('setDates', newArrDates);
+
+    $("#availableTime").datepicker({
+        format: 'yyyy. m. d.',
+        inline: false,
+        lang: 'en',
+        step: 10,
+        multidate: true,
+        closeOnDateSelect: true,
+        todayHighlight: false,
+        startDate: srt_Date,
+        endDate: end_Date,
+        datesDisabled: arrDatesDisabled,
+        date: srt_Date,
+    })
+    .on("changeDate", function(e) {
+    
+        console.log(e.dates);
+        userAvailableDates = e.dates;
+    })
+}
+
+
+$('td[data-date="1624147200000"]').css("background-color", "#222!important");
+
+
