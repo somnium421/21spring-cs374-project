@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+    <link rel="stylesheet" href="./tagcloud/jquery.tagcloud.css"/>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="./tagcloud/jquery.tagcloud.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-firestore.js"></script><script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=94j4tbwfjv"></script>
+    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=94j4tbwfjv&submodules=geocoder"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="css/chat.css">
+    <link rel="stylesheet" href="css/english-caption.css">
+    <link rel="stylesheet" href="css/step.css">
+    <link rel="stylesheet" href="css/datepicker-revise.css">
+    <title>ToGather :: Result</title>
+</head>
+<body style="background-color: #E5E5E5;" onresize="resize()">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+    <script>
+        firebase.initializeApp({
+            apiKey: "AIzaSyDYdmZ5M79MzjyK_5UYYlfutkKOLYHaf0k",
+            authDomain: "togather-ad530.firebaseapp.com",
+            projectId: "togather-ad530",
+            storageBucket: "togather-ad530.appspot.com",
+            messagingSenderId: "403669469215",
+            appId: "1:403669469215:web:10048cc7cbcb813ddc2d2a"
+        });
+        const db = firebase.firestore();
+        db.settings({timestampsInSnapshots: true});
+    </script>
+    <div class="d-flex">
+        <div class="d-flex flex-column flex-shrink-0 p-3 bg-white shadow fixed-bottom" style="width: 200px; height:100vh;">
+            <a href="/" class="d-flex align-items-center mx-auto text-decoration-none">
+            <img src="icons/logo.svg" alt="">
+            </a>
+            <div class="my-4">
+                <a href="#" class="d-flex flex-column align-items-center link-dark text-decoration-none" id="user">
+                    <img src="https://github.com/mdo.png" alt="" width="60" height="60" class="rounded-circle mb-2">
+                    <strong>사용자</strong>
+                </a>
+            </div>
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item">
+                    <a href="#" class="nav-link link-dark">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-fill" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6zm5-.793V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
+                            <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
+                        </svg>
+                        홈
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link link-dark">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
+                            <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275zM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/>
+                        </svg>
+                        우리 가족
+                    </a>
+                </li>
+                <li>
+                    <a href="/" class="nav-link active" aria-current="page">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list-ul" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                        </svg>
+                        모임
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link link-dark">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-event" viewBox="0 0 16 16">
+                            <path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z"/>
+                            <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+                        </svg>
+                        캘린더
+                    </a>
+                </li>
+            </ul>
+            <button type="button" class="btn btn-outline-primary mb-2 mx-4">로그아웃</button>
+        </div>
+        <div class="container-fluid col" style="margin-left: 200px;">    
+            <div class="row fs-3 fw-bold mt-5 mb-4 ms-5">설문 결과 확인하기</div>
+            <div class="card mx-5 meeting-card shadow mb-3" style="border-radius: 10px;">
+                <div class="card-header" id="is-private">                        
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <div>
+                            <h5 class="card-title fw-bold" id="meeting-name"></h5> 
+                        </div>
+                        <div>
+                            <h5 id="meeting-tags"></h5>
+                        </div>
+                    </div>
+                    <p class="card-text" id="meeting-description"></p>
+                    <div id="meeting-participants"></div>
+                    <div class="btn-toolbar justify-content-between mt-4" role="toolbar" aria-label="Toolbar with button groups">
+                        <div class="btn-group" role="group" aria-label="First group">
+                            <h4><span class="badge rounded-pill bg-light text-dark"><i class="fa fa-calendar" aria-hidden="true"></i> &nbsp; 2021.05.19 - 2021.05.20</span></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row card mx-5 shadow mb-3" style="border-radius: 10px;">
+                <div class="card-body">
+                    <h5 class="fw-bold card-title">설문결과 <span style="color: gray" class="fw-light eng-cap">Result</span></h5>
+                    <div class="row g-4">
+                        <div class="col">
+                            <div class="card border-0" id="place-card">
+                                <p class="fw-bold fs-6 card-title">장소<span style="color: gray" class="fw-light eng-cap">  Place</span></p>  
+                                <div id="placeCloud"></div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card border-0" id="activity-card">
+                                <p class="fw-bold fs-6 card-title">활동<span style="color: gray" class="fw-light eng-cap">  Activity</span></p>  
+                                <div id="activityCloud"></div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card border-0" id="map-card">
+                                <p class="fw-bold fs-6 card-title">출발<span style="color: gray" class="fw-light eng-cap">  Departure</span></p>  
+                                <div id="map" style="width:100%;height:300px;"></div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card border-0" id="time-card">
+                                <p class="fw-bold fs-6 card-title">가능한 시간<span style="color: gray" class="fw-light eng-cap">  Available dates and time</span></p>  
+                                <div class="datepicker" id="availableTime"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row card mx-5 shadow" style="border-radius: 10px;">
+                <div class="card-body">
+                    <h5 class="fw-bold card-title">대화<span style="color: gray" class="fw-light eng-cap">  Comments</span></h5>
+                    <div class="mesgs">
+                        <div class="msg_history" id="chat"></div>
+                        <div class="type_msg">
+                            <div class="input_msg_write">
+                                <input type="text" class="write_msg" placeholder="댓글을 작성해보세요" id="chat-input">
+                                <button class="msg_send_btn" type="button"><i class="far fa-paper-plane" aria-hidden="true" id="chat-button"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center">
+                <button type="button" class="btn btn-primary btn-block rounded-pill" data-bs-toggle="modal" data-bs-target="#delete-chat-modal" data-bs-whatever="@mdo">가족 관계도 불러오기</button>
+            </div>
+            <div class="modal fade" id="delete-chat-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel"><b>댓글을 삭제하시겠습니까?</b> <span class="fw-light eng-cap">Delete your comment?</span> </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                            <a type="button" class="btn btn-primary" data-bs-dismiss="modal" id="delete-button">삭제</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/result.js"></script>
+</body>
+</html>
