@@ -17,7 +17,7 @@ let activityOptions = {
     container: {
     },
     tag: {
-        minFontSize: 12,
+        minFontSize: 15,
         maxFontSize: 27,
         format: '{tag.name}'
     },
@@ -98,14 +98,20 @@ $(document).on('click', '.bi-heart-fill', function(e){
         chat: chats.chat
     })
 })
-
+var deleteTarget;
 $(document).on('click', '.fa-times-circle', function(e){
-    chats.chat.splice($(e.target).data('idx'), 1);
+    deleteTarget = e.target;
+    //deleteIdx = $(e.target).data('idx');
+});
+
+
+$('#delete-button').click(() => {
+    chats.chat.splice($(deleteTarget).data('idx'), 1);
     db.collection('families').doc(docID).collection('chats').doc(answerID).update({
         chat: chats.chat
     })
-    $(e.target).parent().parent().remove();
-});
+    $(deleteTarget).parent().parent().remove();
+})
 
 function timeCalculate(time) {
     if (!(time instanceof Date)) time = time.toDate();
@@ -141,7 +147,7 @@ function drawChat(idx) {
         `<div class="outgoing_msg">
             <div class="sent_msg">
                 <p style="float:left">${chat.text}</p>
-                <i style="float:right;margin-top:5px;margin-left:3px;color:tomato" class="fas fa-times-circle" data-idx="${idx}"></i>
+                <i style="float:right;margin-top:5px;margin-left:3px;color:tomato" class="fas fa-times-circle" data-idx="${idx}" data-bs-toggle="modal" data-bs-target="#delete-chat-modal" data-bs-whatever="@mdo"></i>
                 <a style="float:right" class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="left" title="" data-bs-original-title="${chat.like.map((id) => members[id].name).join(', ')}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffc0cb" class="bi bi-heart-fill" viewBox="0 0 16 16" data-idx="${idx}">
                         <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
@@ -200,7 +206,7 @@ function processData() {
         for (var activity in activityDict) {
             var tooltipTitle = place
             activityData.push({
-                name: `<a style="color:white" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="${activityDict[activity].map((id) => members[id].name).join(', ')}">${activity}</a>`,
+                name: `<a data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="${activityDict[activity].map((id) => members[id].name).join(', ')}">${activity}</a>`,
                 weight: activityDict[activity].length
             });
         }
@@ -299,7 +305,7 @@ function setDateDisabled(arrDates){
     while (date < newArrDates[len-1]){
 
         date.setDate(date.getDate() + 1);
-        console.log(date.toLocaleString());
+        // console.log(date.toLocaleString());
 
         if (find(newArrDates, date)){
             var strLen = date.toLocaleString().length;
