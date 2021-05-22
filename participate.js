@@ -6,8 +6,6 @@ var meetings, members, docID;
 var userAvailableDates = [];
 var userAvailableTime = [];
 
-
-
 var answer = {
     place: [],
     activity: [],
@@ -60,6 +58,15 @@ $(document).ready(function() {
                 $('#meeting-participants').append(` <a href="#" class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title=${participant.name}>
                                                         <img src="${members[participant.id].img}" style="width:30px;height:30px;border-radius:70%;opacity:${(Math.random(1)<0.5)?0.5:1}"></img>
                                                     </a>`);
+            }
+            console.log(meetings[meetingNumber].availableDates[0]);
+            if (meetings[meetingNumber].meetingPeriod.day > 1 && meetings[meetingNumber].availableDates.length == meetings[meetingNumber].meetingPeriod.day) {
+
+            }
+            else if (meetings[meetingNumber].meetingPeriod.day <= 1 && meetings[meetingNumber].availableDates.length == 1) {
+                $('#fixed-date').append(`<h4><span class="badge rounded-pill bg-light text-dark"><i class="fa fa-calendar" aria-hidden="true"></i> 
+                    &nbsp; ${1} </span></h4>
+                `);
             }
 
             var meetingTags;
