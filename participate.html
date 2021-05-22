@@ -123,29 +123,36 @@
             <form role="form" action="" method="post">
                 <!-- First Step -->
                 <div id="step-1" class="container col-6 row mx-auto mt-1 p-3 setup-content">
+                    <div class="alert alert-primary" role="alert">
+                        <p class="lh-lg">
+                            <button type="button" class="tag btn btn-outline-primary btn-sm mt-2 mx-1 rounded-pill selectable data-selected=false">태그</button>
+                            는 모임 개설자 혹은 참여자가 작성한 선택지입니다. 클릭을 통해 선택 / 취소하실 수 있습니다. 
+                            <br> 장소 혹은 활동이 정해지지 않은 모임의 경우, +버튼을 눌러 추가하실 수 있습니다.
+                        </p>
+                    </div>
                     <form>
                         <div class="form-group mt-4">
-                            <label class="fw-bold fs-5" for="place">장소 추천 </label>
+                            <label class="fw-bold fs-5" for="place">장소 선택 <span style="color: gray" class="fw-light eng-cap">Place selection</span></label>
                             <div id="place-tags"></div>
                             <div class="d-none input-group mt-2" id="place-input-div">
-                                <input class="form-control" placeholder="모이고 싶은 장소는? 태그를 추가하세요" id="place-input" type="place">
+                                <input class="form-control" placeholder="장소를 추가해보세요" id="place-input" type="place">
                                 <div class="input-group-append">
                                     <button type="add-place" class="btn btn-primary" id="place-add">추가</button>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group mt-4">
-                            <label class="fw-bold fs-5" for="activity">활동 추천 </label>
+                            <label class="fw-bold fs-5" for="activity">활동 선택 <span style="color: gray" class="fw-light eng-cap">Activity selection</span></label>
                             <div id="activity-tags"></div>
                             <div class="d-none input-group mt-2" id="activity-input-div">
-                                <input class="form-control" placeholder="하고 싶은 활동은? 태그를 추가하세요" id="activity-input" type="activity">
+                                <input class="form-control" placeholder="활동을 추가해보세요" id="activity-input" type="activity">
                                 <div class="input-group-append">
                                     <button type="add-activity" class="btn btn-primary" id="activity-add">추가</button>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group mt-4">
-                            <label class="fw-bold fs-5 mb-2" for="accommodation">숙소</label>
+                            <label class="fw-bold fs-5 mb-2" for="accommodation">숙소 <span style="color: gray" class="fw-light eng-cap">Accommodation</span></label>
                             <br>
                             <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group" id="accommodation">
                                 <input type="checkbox" class="btn-check" id="호텔" autocomplete="off">
@@ -167,14 +174,14 @@
                 <!-- Second Step -->
                 <div id="step-2" class="container col-6 row mx-auto mt-4 p-3 setup-content">
                     <div class="form-group">
-                        <label class="fw-bold fs-5" for="departure-place">출발 장소<span style="color: red">*</span></label>
+                        <label class="fw-bold fs-5" for="departure-place">출발 장소 <span style="color: gray" class="fw-light eng-cap">Departure place</span></label>
                         <input type="text" class="input-group mt-2 mb-1 form-control" placeholder="출발 장소를 적어주세요" id="departure-place" onkeyup="if(window.event.keyCode==13)getAddr()">
                         <div class="list-group" id="list-location">
                         </div>
                         <div id="map" class="mx-auto mt-3" style="width:500px;height:300px;"></div>
                     </div>
                     <div class="form-group mt-4">
-                        <label class="fw-bold fs-5 mb-2" for="transportation">이동 수단<span style="color: red">*</span></label>
+                        <label class="fw-bold fs-5 mb-2" for="transportation">이동 수단 <span style="color: gray" class="fw-light eng-cap">Transportation</span></label>
                         <br>
                         <div class="btn-group" role="group" aria-label="Basic radio toggle button group" id="transportation">
                             <input type="radio" class="btn-check" name="btnradio" id="대중교통" autocomplete="off">
@@ -252,7 +259,7 @@
                             <!-- <input type="text" id="Txt_Date" placeholder="Choose Date" style="cursor: pointer" class="mt-2"> -->
                         </div>
                         <div class="form-group disabled mt-3" id="available-time-form">
-                            <label class = "fs-5 mt-1" id="available-time">
+                            <label class = "fw-bold fs-5 mt-1" id="available-time">
                                 가능한 시간대 <span span class="fw-light eng-cap"> Available time</span>
                                 <input class = "form-control" id="start-time" mbsc-input data-input-style="outline" data-label-style="stacked" placeholder="선택해 주세요" />
                             </label>

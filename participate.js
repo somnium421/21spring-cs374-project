@@ -63,7 +63,7 @@ $(document).ready(function() {
             }
 
             var meetingTags;
-            if (meetings[meetingNumber].meetingPeriod.day == 0) meetingTags = `<span class="badge rounded-pill bg-light text-dark">${meetings[meetingNumber].meetingPeriod.hour}시간</span> <span style="font-size: smaller;">동안</span>`;
+            if (meetings[meetingNumber].meetingPeriod.day == 0) meetingTags = `<span class="badge rounded-pill bg-light text-dark">${meetings[meetingNumber].meetingPeriod.hr}시간</span> <span style="font-size: smaller;">동안</span>`;
             else if (meetings[meetingNumber].meetingPeriod.day == 1) meetingTags = `<span class="badge rounded-pill bg-light text-dark">하루</span> <span style="font-size: smaller;">종일</span>`;
             else meetingTags = `<span class="badge rounded-pill bg-light text-dark">${meetings[meetingNumber].meetingPeriod.day-1}박 ${meetings[meetingNumber].meetingPeriod.day}일</span> <span style="font-size: smaller;">동안</span> `
             if (meetings[meetingNumber].noMorePlace) {
@@ -75,7 +75,7 @@ $(document).ready(function() {
                 meetingTags += tmp;
             }
             $('#meeting-tags').append(meetingTags);
-            console.log(doc.data().meetings[meetingNumber].availableTimes);
+            // console.log(doc.data().meetings[meetingNumber].availableTimes);
 
             
             setDateDisabled(doc.data().meetings[meetingNumber].availableDates);
@@ -144,7 +144,7 @@ function setDateDisabled(arrDates){
     while (date < newArrDates[len-1]){
 
         date.setDate(date.getDate() + 1);
-        console.log(date.toLocaleString());
+        // console.log(date.toLocaleString());
 
         if (find(newArrDates, date)){
             var strLen = date.toLocaleString().length;
@@ -167,7 +167,7 @@ function setDateDisabled(arrDates){
     })
     .on("changeDate", function(e) {
     
-        console.log(e.dates);
+        // console.log(e.dates);
         userAvailableDates = e.dates;
     })
 }
@@ -234,9 +234,6 @@ function bindEvents() {
             }
         }
         if (isValid) nextStepWizard.removeAttr('disabled').trigger('click');
-        
-        if (answer.accommodation == []) for (var checked of $("#accommodation input[type='checkbox']:checked")) answer.accommodation.push($(checked).attr('id'));
-        if (answer.transportation == []) for (var transportation of $("#transportation input[type='radio']:checked")) answer.transportation.push($(transportation).attr('id'));
     });
 
     $('div.setup-panel div a.btn-light').trigger('click');
@@ -285,9 +282,12 @@ function bindEvents() {
             userAvailableTime.push($("#start-time").val().slice(0,8));
             userAvailableTime.push($("#start-time").val().slice(11,19));
         }
+        // console.log(userAvailableDates, userAvailableTime);
+        for (var checked of $("#accommodation input[type='checkbox']:checked")) answer.accommodation.push($(checked).attr('id'));
+        for (var transportation of $("#transportation input[type='radio']:checked")) answer.transportation.push($(transportation).attr('id'));
+        console.log(answer);
         // userAvailableDates 는 다른곳에서 받음
         
-
         db.collection('families').doc(docID).collection('answers').add({
             meetingNumber: meetingNumber,
             userID: userID,
@@ -295,7 +295,9 @@ function bindEvents() {
             activity: answer.activity,
             accommodation: answer.accommodation,
             departure: answer.departure,
-            transportation: answer.transportation
+            transportation: answer.transportation,
+            availableDates: userAvailableDates,
+            availableTime: userAvailableTime
         });
     });
 
@@ -358,7 +360,7 @@ function searchAddressToCoordinate(address) {
 function getAddr(){
     $.getJSON(`https://www.juso.go.kr/addrlink/addrLinkApi.do?currentPage=1&countPerPage=10&confmKey=devU01TX0FVVEgyMDIxMDUxNzE3MjgzMDExMTE3Mjk=&keyword=${$('#departure-place').val()}&resultType=json`, {format:"json"})
     .done(function(data) {
-        console.log(data.results)
+        // console.log(data.results)
         if (data.results.common.totalCount == 0) alert('존재하지 않는 주소입니다');
         else if (data.results.common.totalCount == 1) searchAddressToCoordinate(data.results.juso[0].roadAddr);
         else {
@@ -384,7 +386,7 @@ function locationClick(event) {
 }
 
 
-console.log(mobiscroll);
+// console.log(mobiscroll);
 
 
 
