@@ -196,6 +196,76 @@ function setTimeDisabled(arrTime){
 
 }
 
+function validatearr(id, arr, len){
+    if (arr.length != len){
+        $("#"+id+"Help").remove();
+        //document.getElementById(id).style = "border: ''";
+        return true; 
+    }
+    var text = `<small id="`+id+`Help" class="form-text" style="color: red">필수선택 사항입니다. </small>`
+    if ($("#"+id+"Help").length === 0) $("#"+id).parent().append(text);
+    //document.getElementById(id).style = "border: 2px solid #E8ADAA";
+    return false;
+}
+
+function validatearr2(id, arr, len){
+    if (arr.length != len){
+        $("#"+id+"Help").remove();
+        //document.getElementById(id).style = "border: ''";
+        return true; 
+    }
+    var text = `<small id="`+id+`Help" class="form-text" style="color: red">필수선택 사항입니다. </small>`
+    if ($("#"+id+"Help").length === 0) $("#"+id).parent().append(text);
+    //document.getElementById(id).style = "border: 2px solid #E8ADAA";
+    return false;
+}
+
+function validatearr3(id, arr, len){
+    if (arr.length == len || $("#day").val()> 0){
+        $("#"+id+"Help").remove();
+
+        //document.getElementById(id).style = "border: ''";
+        return true; 
+    }
+    else if (arr.length == 0){
+        var text = `<small id="`+id+`Help" class="form-text" style="color: red">필수선택 사항입니다. </small>`
+        if ($("#"+id+"Help").length === 0) $("#"+id).parent().append(text);
+        else $("#"+id+"Help").replaceWith(text);
+        //document.getElementById(id).style = "border: 2px solid #E8ADAA";
+        return false;
+    }
+    else{
+        var text = `<small id="`+id+`Help" class="form-text" style="color: red">시작하는 시간과 끝나는 시간을 모두 선택하세요. </small>`
+        if ($("#"+id+"Help").length === 0) $("#"+id).parent().parent().append(text);
+        else $("#"+id+"Help").replaceWith(text);
+        //document.getElementById(id).style = "border: 2px solid #E8ADAA";
+        return false;
+    }
+}
+
+function isRadioChecked(id){
+    var test1 = document.getElementById("대중교통");
+    var a = $(test1).prop("checked");
+    var test2 = document.getElementById("자가용");
+    var b = $(test2).prop("checked");
+    var test3 = document.getElementById("도보");
+    var c = $(test3).prop("checked");
+    var test4 = document.getElementById("자전거");
+    var d = $(test4).prop("checked");
+    var checked = (a || b || c || d);
+    if (checked){
+        $("#"+id+"Help").remove();
+        //document.getElementById(id).style = "border: ''";
+        return true; 
+    }
+    else{
+        var text = `<small id="`+id+`Help" class="form-text" style="color: red">필수선택 사항입니다. </small>`
+        if ($("#"+id+"Help").length === 0) $("#"+id).parent().append(text);
+        //document.getElementById(id).style = "border: 2px solid #E8ADAA";
+        return false;
+    }
+
+}
 
 function bindEvents() {
     navListItems.click(function (e) {
@@ -221,6 +291,26 @@ function bindEvents() {
     });
 
     allNextBtn.click(function(){
+        curId = $(this).attr('id');
+        switch(curId) {
+            case 'step1-submit':
+                var a= validatearr('place-tags', answer.place, 0);
+                var b= validatearr('activity-tags', answer.activity, 0);
+                var c= validatearr('accommodation-radio', $("#accommodation input[type='checkbox']:checked"), 0);
+                if (a&&b&&c) break;
+                return;
+    
+            case 'step2-submit':
+                var a= validatearr('list-location', answer.departure, 0);
+                var b = isRadioChecked('transportation-radio');
+                if (a&&b) break;
+                return;
+    
+            default:
+                break;
+        }
+        console.log('hi');
+    
         var curStep = $(this).closest(".setup-content"),
             curStepBtn = curStep.attr("id"),
             nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
@@ -280,6 +370,9 @@ function bindEvents() {
     });
 
     $('#submit-button').click(function() {
+        var a = validatearr2('Txt_Date', userAvailableDates, 0);
+        var b = validatearr3('start-time', $('#start-time').val(), 19);
+        if( a && b == false) return; 
 
         if ($("#start-time").length > 0){ //period < 1 인 경우라서 선택자가 이미 사라져있음.
             userAvailableTime.push($("#start-time").val().slice(0,8));
