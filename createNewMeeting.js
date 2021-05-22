@@ -78,7 +78,6 @@ var db_period
 $('.timefield').removeAttr('disabled');
    
 $('.timefield').change(function(){
-   
     var day = $('#day').val();
     var hour = $('#hour').val();
     var min = $('#min').val();
@@ -86,6 +85,8 @@ $('.timefield').change(function(){
     var textForDays = `<small id="periodHelp" class="form-text text-muted">${Number(day)-1}박 ${Number(day)}일 동안 모임을 진행합니다.</small>`
     var textForADay = `<small id="periodHelp" class="form-text text-muted">하루종일 모임을 진행합니다.</small>`
     var text;
+
+    console.log(day)
 
     if((day) > 0){
         $('#hour').attr('disabled','disabled');
@@ -225,9 +226,19 @@ var familyChart = [
 // })
 
 // $('#step4-submit').click(function(){
-//     db_log_newMeeting.meetingPeriod = db_period;
-//     db_log_newMeeting.availableDates = [];
-//     db_log_newMeeting.availableTimes = [];
+//     //db_log_newMeeting.meetingPeriod = db_period;
+
+//     availableTime.push($("#start-time").val().slice(0,8));
+//     availableTime.push($("#start-time").val().slice(11,19));
+
+//     console.log(availableDates, availableTime, availableDates[0]);
+//     db_log_newMeeting.availableDates = availableDates; // I don't know well
+//     db_log_newMeeting.availableTimes = availableTime;
+
+//     db.collection('families').doc().set({
+//         meetings: [db_log_newMeeting],
+//     })
+
 // })
 
 $('#final-submit').click(function(){
