@@ -1,0 +1,24 @@
+.datepicker,
+.table-condensed {
+  /* background-color: white; */
+  width: 400px;
+  height: 400px;
+}
+
+.datepicker .table tr td.today {
+  color: #000000;
+
+  background-color: #ffa953;
+
+  border-color: #ffb76f;
+}
+
+.datepicker .ui-datepicker.ea-bootstrap .ui-datepicker .no-slots,
+.ui-datepicker.ea-bootstrap .ui-datepicker .no-slots:hover {
+  background-color: #c9bca8;
+}
+
+td.active{
+  background-image: none!important;
+  background-color: rgb(38,90,255)!important;
+}
