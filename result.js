@@ -307,7 +307,7 @@ function setDateDisabled(arrDates){
         } 
     }
 
-    $("#availableTime").datepicker('setDates', newArrDates);
+    // $("#availableTime").datepicker('setDates', newArrDates);
 
     $("#availableTime").datepicker({
         format: 'yyyy. m. d.',
