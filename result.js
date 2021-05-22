@@ -27,7 +27,7 @@ let activityOptions = {
 
 function resize() {
     placeOptions.container.width = $('#place-card').width();
-    console.log(placeOptions);
+    // console.log(placeOptions);
     activityOptions.container.width = $('#activity-card').width();
     $('#placeCloud').tagCloud(placeOptions);
     $('#activityCloud').tagCloud(activityOptions);
@@ -39,17 +39,16 @@ var map = new naver.maps.Map("map", {
 });
 
 const markers = [], infoWindows = [];
-const latlngs = [
+const latlngs = [];
+/*
     new naver.maps.LatLng(37.3595704, 127.105399),
     new naver.maps.LatLng(35.3595704, 128.105399),
     new naver.maps.LatLng(37.3596704, 127.106399),
-    new naver.maps.LatLng(37.4595704, 127.905399),
-];
-
+    new naver.maps.LatLng(37.4595704, 127.905399),*/
 const people = [
     '나', '누나', '엄마', '할머니'
 ];
-
+/*
 for (var i=0; i<latlngs.length; i++) {
     var marker = new naver.maps.Marker({
         position: latlngs[i],
@@ -61,7 +60,7 @@ for (var i=0; i<latlngs.length; i++) {
     markers.push(marker);
     infoWindows.push(infoWindow);
     naver.maps.Event.addListener(markers[i], 'mouseover', getClickHandler(i));
-}
+}*/
 
 function getClickHandler(seq) {
     return function (e) {
@@ -90,7 +89,7 @@ function bindEvents() {
             like: []
         }
         chats.chat.push(chat);
-        console.log(chats);
+        // console.log(chats);
         $('#chat-input').val('')
         db.collection('families').doc(docID).collection('chats').doc(answerID).update({
             chat: chats.chat
@@ -182,17 +181,27 @@ function processData() {
     .get()
     .then((snapshot) => {
         var placeDict = {}, activityDict = {};
+        const latlngs = [];
         snapshot.forEach((doc) => {
-            console.log(doc.data());
             for (var place of doc.data().place) {
                 if (place in placeDict) placeDict[place].push(doc.data().userID);
                 else placeDict[place] = [doc.data().userID];
             }
             for (var activity of doc.data().activity) {
-                if (activity in activityDict) activityDict[plactivityace].push(doc.data().userID);
+                if (activity in activityDict) activityDict[activity].push(doc.data().userID);
                 else activityDict[activity] = [doc.data().userID];
             }
+            var marker = new naver.maps.Marker({
+                position: new naver.maps.LatLng(doc.data().departure[1], doc.data().departure[0]),
+                map: map
+            });
+            var infoWindow = new naver.maps.InfoWindow({
+                content: `<p style="padding-top:10px;padding-left:10px;padding-right:10px;">${members[doc.data().userID].name}</p>`
+            });
+            markers.push(marker);
+            infoWindows.push(infoWindow);
         });
+        for (var i=0; i<markers.length; i++) naver.maps.Event.addListener(markers[i], 'mouseover', getClickHandler(i));
         for (var place in placeDict) {
             var tooltipTitle = place
             placeData.push({
@@ -200,7 +209,6 @@ function processData() {
                 weight: placeDict[place].length
             });
         }
-        
         for (var activity in activityDict) {
             var tooltipTitle = place
             activityData.push({
@@ -208,6 +216,7 @@ function processData() {
                 weight: activityDict[activity].length
             });
         }
+
         resize();
         tooltipSet();
     })
@@ -231,7 +240,7 @@ $(document).ready(function() {
                 snapshot.forEach((doc) => {
                     answerID = doc.id;
                     chats = doc.data();
-                    console.log(chats);
+                    //console.log(chats);
                 })
                 for (var i=0; i<chats.chat.length; i++) drawChat(i);
             })
