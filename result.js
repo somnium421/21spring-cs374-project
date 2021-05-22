@@ -200,7 +200,7 @@ function processData() {
         for (var activity in activityDict) {
             var tooltipTitle = place
             activityData.push({
-                name: `<a style="color:white" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="${activityDict[activity].map((id) => members[id].name).join(', ')}">${activity}</a>`,
+                name: `<a data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="${activityDict[activity].map((id) => members[id].name).join(', ')}">${activity}</a>`,
                 weight: activityDict[activity].length
             });
         }
