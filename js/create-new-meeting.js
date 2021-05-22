@@ -1,4 +1,4 @@
-// import {participans_transfer} from './participants_transfer.js'
+// import {participants_transfer} from './js/participants-transfer.js'
 // //This is for new meeting creation page
 
 var familyCode = "00AB8"; // from the local storage
@@ -77,7 +77,7 @@ function validateperiod(){
 }
 
 function validateparticipants(){
-    if (participans_transfer.getSelectedItems().length ==0){
+    if (participants_transfer.getSelectedItems().length ==0){
         var text = `<small id="participantsHelp" class="form-text" style="color: red">필수입력 사항입니다. </small>`
         if ($("#participantsHelp").length === 0) $("#participants-transfer").append(text);        
         return false;
@@ -359,7 +359,7 @@ var familyChart = [
 // })
 
 // $('#step2-submit').click(function(){
-//     db_log_newMeeting.participants = participans_transfer.getSelectedItems();
+//     db_log_newMeeting.participants = participants_transfer.getSelectedItems();
 // })
 
 // $('#step3-submit').click(function(){
@@ -391,7 +391,7 @@ $('#final-submit').click(function(){
     db_log_newMeeting.name = $('#meeting-name').val();
     db_log_newMeeting.description = $('#meeting-description').val();
 
-    db_log_newMeeting.participants = participans_transfer.getSelectedItems();
+    db_log_newMeeting.participants = participants_transfer.getSelectedItems();
 
     db_log_newMeeting.place = arrPlace;
     db_log_newMeeting.noMorePlace = $('#place-recommend').is(':checked');

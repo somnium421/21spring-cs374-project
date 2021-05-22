@@ -265,7 +265,7 @@ var settings = {
     }
 };
 
-var participans_transfer = $("#participants-transfer").transfer(settings);
+var participants_transfer = $("#participants-transfer").transfer(settings);
 
 
 
