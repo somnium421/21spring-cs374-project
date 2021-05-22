@@ -313,7 +313,7 @@ function setDateDisabled(arrDates){
         } 
     }
 
-    $("#availableTime").datepicker('setDates', newArrDates);
+    
 
     $("#availableTime").datepicker({
         format: 'yyyy. m. d.',
@@ -329,10 +329,11 @@ function setDateDisabled(arrDates){
         date: srt_Date,
     })
     .on("changeDate", function(e) {
-    
         console.log(e.dates);
         userAvailableDates = e.dates;
     })
+
+    $("#availableTime").datepicker('update', newArrDates);
 }
 
 
