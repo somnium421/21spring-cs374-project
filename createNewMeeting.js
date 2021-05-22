@@ -245,7 +245,7 @@ $('.timefield').change(function(){
         if ($("#periodHelp").length === 0) $("#period-select").append(text);
         else $("#periodHelp").replaceWith(text);
         
-        $('#start-time').attr('disabled',true);
+        $('#start-time').attr('disabled', true);
         $('#start-time').removeAttr('placeholder');
         $('.mbsc-textfield').css('background', 'rgb(233, 233, 233)');
         
