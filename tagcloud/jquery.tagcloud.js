@@ -134,12 +134,24 @@
                 'data-size="' + size + '"'
             ];
             let style = 'style="font-size: ' + size + 'px;';
-            let bgColor = item.bgColor || item.backgroundColor || options.tag.backgroundColor ||
-                $.fn.tagCloud.defaults.backgroundColors[idx] || $.fn.tagCloud.defaults.defaultTagBackgroundColor;
+            let bgColor, color;
+            if (size < 19) {
+                bgColor = "#a6d0ff";
+                color = "#5f5f5f";
+            }
+            else if (size < 23) {
+                bgColor = "#5ba7fe";
+                color = "#ffffff";
+            }
+            else {
+                bgColor = "#106cff";
+                color = "#ffffff";
+            }
+            //let bgColor = item.bgColor || item.backgroundColor || options.tag.backgroundColor || $.fn.tagCloud.defaults.backgroundColors[idx] || $.fn.tagCloud.defaults.defaultTagBackgroundColor;
             if(bgColor) {
                 style += ' background-color: ' + bgColor + ';';
             }
-            let color = item.color || options.tag.color || $.fn.tagCloud.defaults.defaultTagColor;
+            //let color = item.color || options.tag.color || $.fn.tagCloud.defaults.defaultTagColor;
             if(color != 'auto') {
                 style += ' color: ' + color + ';';
             }
@@ -248,17 +260,10 @@
             textShadow:   false   // text shadow, enable for better visibility
         },
         backgroundColors: [
-            '#db843d', '#92a8cd', '#a47d7c', '#058dc7', '#50b432', '#ed561b', '#24cbe5', '#64e572',
-            '#ff9655', '#d6cb54', '#6af9c4', '#b5ca92', '#2f7ed8', '#5c40de', '#8bbc21', '#910000',
-            '#1aadce', '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a', '#db843d', '#92a8cd',
-            '#a47d7c', '#058dc7', '#50b432', '#ed561b', '#24cbe5', '#64e572', '#ff9655', '#d6cb54',
-            '#6af9c4', '#b5ca92', '#2f7ed8', '#5c40de', '#8bbc21', '#910000', '#1aadce', '#492970',
-            '#f28f43', '#77a1e5', '#c42525', '#a6c96a', '#db843d', '#92a8cd', '#a47d7c', '#058dc7',
-            '#50b432', '#ed561b', '#24cbe5', '#64e572', '#ff9655', '#d6cb54', '#6af9c4', '#b5ca92',
-            '#2f7ed8', '#5c40de', '#8bbc21', '#910000', '#1aadce', '#492970', '#f28f43', '#77a1e5'
+            '#106cff', '#5ba7fe', '#a6d0ff'
         ],
         defaultTagColor:            'auto',   // black or white, based on background color
-        defaultTagBackgroundColor:  '#ff9655' // default background color
+        defaultTagBackgroundColor:  '#106cff' // default background color
     };
 
 })(jQuery);

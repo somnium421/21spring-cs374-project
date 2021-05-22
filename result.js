@@ -1,14 +1,13 @@
 const familyCode = "00AB8", meetingNumber = 0, userID = 0;
+const placeData = [], activityData = [], markers = [], infoWindows = [], latlngs = [];
 var meetings, members, chats, docID, answerID;
-
-const placeData = [], activityData = [];
 
 let placeOptions = {
     container: {
     },
     tag: {
-        minFontSize: 12,
-        maxFontSize: 20,
+        minFontSize: 15,
+        maxFontSize: 27,
         format: '{tag.name}'
     },
     data: placeData
@@ -19,7 +18,7 @@ let activityOptions = {
     },
     tag: {
         minFontSize: 12,
-        maxFontSize: 20,
+        maxFontSize: 27,
         format: '{tag.name}'
     },
     data: activityData
@@ -37,30 +36,6 @@ var map = new naver.maps.Map("map", {
     center: new naver.maps.LatLng(35.8, 127.51),
     zoom: 1
 });
-
-const markers = [], infoWindows = [];
-const latlngs = [];
-/*
-    new naver.maps.LatLng(37.3595704, 127.105399),
-    new naver.maps.LatLng(35.3595704, 128.105399),
-    new naver.maps.LatLng(37.3596704, 127.106399),
-    new naver.maps.LatLng(37.4595704, 127.905399),*/
-const people = [
-    '나', '누나', '엄마', '할머니'
-];
-/*
-for (var i=0; i<latlngs.length; i++) {
-    var marker = new naver.maps.Marker({
-        position: latlngs[i],
-        map: map
-    });
-    var infoWindow = new naver.maps.InfoWindow({
-        content: `<p style="padding-top:10px;padding-left:10px;padding-right:10px;">${people[i]}</p>`
-    });
-    markers.push(marker);
-    infoWindows.push(infoWindow);
-    naver.maps.Event.addListener(markers[i], 'mouseover', getClickHandler(i));
-}*/
 
 function getClickHandler(seq) {
     return function (e) {
@@ -82,21 +57,23 @@ function tooltipSet() {
 
 function bindEvents() {
     $('#chat-button').click(() => {
-        var chat = {
-            id: userID,
-            text: $('#chat-input').val(),
-            time: new Date(),
-            like: []
+        if ($('#chat-input').val() != '') {
+            var chat = {
+                id: userID,
+                text: $('#chat-input').val(),
+                time: new Date(),
+                like: []
+            }
+            chats.chat.push(chat);
+            // console.log(chats);
+            $('#chat-input').val('')
+            db.collection('families').doc(docID).collection('chats').doc(answerID).update({
+                chat: chats.chat
+            })
+            .then((snapshot) => {
+                drawChat(chats.chat.length-1);
+            });
         }
-        chats.chat.push(chat);
-        // console.log(chats);
-        $('#chat-input').val('')
-        db.collection('families').doc(docID).collection('chats').doc(answerID).update({
-            chat: chats.chat
-        })
-        .then((snapshot) => {
-            drawChat(chats.chat.length-1);
-        });
     });
     tooltipSet();
 }
@@ -140,10 +117,10 @@ function drawChat(idx) {
         $('#chat').append(
         `<div class="incoming_msg">
             <div class="incoming_msg_img">
-                <a href="#" class="d-inline-block">
+                <a class="d-inline-block" style="margin-left:3px">
                     <img src="${members[chat.id].img}" style="width:30px;height:30px;border-radius:70%;"></img>
                 </a>
-                <p>${members[chat.id].name}</p>
+                <p style="font-size:12px">${members[chat.id].name}</p>
             </div>
             <div class="received_msg">
                 <div class="received_withd_msg">
@@ -215,14 +192,14 @@ function processData() {
         for (var place in placeDict) {
             var tooltipTitle = place
             placeData.push({
-                name: `<a style="" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="${placeDict[place].map((id) => members[id].name).join(', ')}">${place}</a>`,
+                name: `<a data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="${placeDict[place].map((id) => members[id].name).join(', ')}">${place}</a>`,
                 weight: placeDict[place].length
             });
         }
         for (var activity in activityDict) {
             var tooltipTitle = place
             activityData.push({
-                name: `<a data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="${activityDict[activity].map((id) => members[id].name).join(', ')}">${activity}</a>`,
+                name: `<a style="color:white" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="${activityDict[activity].map((id) => members[id].name).join(', ')}">${activity}</a>`,
                 weight: activityDict[activity].length
             });
         }
@@ -244,7 +221,6 @@ $(document).ready(function() {
 
             processData();
 
-            // chat db
             db.collection('families').doc(docID).collection('chats').where('meetingNumber', '==', meetingNumber)
             .get().then((snapshot) =>{
                 snapshot.forEach((doc) => {
