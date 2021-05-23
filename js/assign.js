@@ -150,7 +150,7 @@ $('#checked').on('hidden.bs.modal ',function(){
     // chart.updateNode({ id: newNode.id, pid: newNode.pid, ppid: newNode.ppid, tags: ["blue", newNode.tags[0]], name: nodeData["name"],partner: nodeData["partner"], img: nodeData["img"], title: nodeData["title"],  gender: nodeData["gender"]});
     location.href = "after-setting-tree.html"
 })
-=======
+
 //db 에 저장. 그런데 familycode를 알아야 할 듯
 $('#assign-submit').click(()=>{
     db.collection('families').where('code', '==', familyCode)
