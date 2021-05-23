@@ -32,22 +32,22 @@ OrgChart.templates.family_template.plus =
 <line x1="4" y1="15" x2="26" y2="15" stroke-width="1" stroke="#aeaeae"></line></g>`
 
 OrgChart.templates.group.min = Object.assign({}, OrgChart.templates.group);
-OrgChart.templates.group.nodeMenuButton = 
-        '<g style="cursor:pointer;" transform="matrix(1,0,0,1,93,15)" control-node-menu-id="{id}">'
-        + '<rect x="-4" y="-10" fill="#000000" fill-opacity="0" width="22" height="22">'
-        + '</rect>'
-        + '<line x1="0" y1="0" x2="0" y2="10" stroke-width="2" stroke="#0890D3" />'
-        + '<line x1="7" y1="0" x2="7" y2="10" stroke-width="2" stroke="#0890D3" />'
-        + '<line x1="14" y1="0" x2="14" y2="10" stroke-width="2" stroke="#0890D3" />'
-        + '</g>';
-OrgChart.templates.group.min.nodeMenuButton = 
-        '<g style="cursor:pointer;" transform="matrix(1,0,0,1,200,15)" control-node-menu-id="{id}">'
-        + '<rect x="-4" y="-10" fill="#000000" fill-opacity="0" width="22" height="22">'
-        + '</rect>'
-        + '<line x1="0" y1="0" x2="0" y2="10" stroke-width="2" stroke="#0890D3" />'
-        + '<line x1="7" y1="0" x2="7" y2="10" stroke-width="2" stroke="#0890D3" />'
-        + '<line x1="14" y1="0" x2="14" y2="10" stroke-width="2" stroke="#0890D3" />'
-        + '</g>';
+OrgChart.templates.group.nodeMenuButton = '';
+        // '<g style="cursor:pointer;" transform="matrix(1,0,0,1,93,15)" control-node-menu-id="{id}">'
+        // + '<rect x="-4" y="-10" fill="#000000" fill-opacity="0" width="22" height="22">'
+        // + '</rect>'
+        // + '<line x1="0" y1="0" x2="0" y2="10" stroke-width="2" stroke="#0890D3" />'
+        // + '<line x1="7" y1="0" x2="7" y2="10" stroke-width="2" stroke="#0890D3" />'
+        // + '<line x1="14" y1="0" x2="14" y2="10" stroke-width="2" stroke="#0890D3" />'
+        // + '</g>';
+OrgChart.templates.group.min.nodeMenuButton = '';
+        // '<g style="cursor:pointer;" transform="matrix(1,0,0,1,200,15)" control-node-menu-id="{id}">'
+        // + '<rect x="-4" y="-10" fill="#000000" fill-opacity="0" width="22" height="22">'
+        // + '</rect>'
+        // + '<line x1="0" y1="0" x2="0" y2="10" stroke-width="2" stroke="#0890D3" />'
+        // + '<line x1="7" y1="0" x2="7" y2="10" stroke-width="2" stroke="#0890D3" />'
+        // + '<line x1="14" y1="0" x2="14" y2="10" stroke-width="2" stroke="#0890D3" />'
+        // + '</g>';
 OrgChart.templates.group.min.node = 
         '<rect rx="30" ry="30" x="50" y="0" height="60" width="150" fill="#f2f2f2" stroke-width="0"></rect>'
 OrgChart.templates.group.min.textFieldWhenTheNodeIsMimized = '<text width="100" style="font-size: 12px;" fill="#aeaeae" x="{cw}" y="35" text-anchor="middle">{val}</text>'
@@ -130,21 +130,21 @@ var chart = new OrgChart(document.getElementById("after-setting-tree"), {
     ]*/
 });
 
-chart.nodeMenuUI.on('show', function(sender, args){
-    var node = chart.getNode(args.firstNodeId);
-  if (node.min && node.templateName == "group"){
-      args.menu = {
-        myMenuItemMax: { text: "Maximize", icon: OrgChart.icon.add(16,16,"#ccc"), onClick: function(id) {chart.maximize(id)} },
-        }
-  }
-  else if (!node.min && node.templateName == "group") {
-      args.menu = {
-        myMenuItemMin: { text: "Minimize", icon: OrgChart.icon.add(16,16,"#ccc"), onClick: function(id) {chart.minimize(id)} },
+// chart.nodeMenuUI.on('show', function(sender, args){
+//     var node = chart.getNode(args.firstNodeId);
+//   if (node.min && node.templateName == "group"){
+//       args.menu = {
+//         myMenuItemMax: { text: "Maximize", icon: OrgChart.icon.add(16,16,"#ccc"), onClick: function(id) {chart.maximize(id)} },
+//         }
+//   }
+//   else if (!node.min && node.templateName == "group") {
+//       args.menu = {
+//         myMenuItemMin: { text: "Minimize", icon: OrgChart.icon.add(16,16,"#ccc"), onClick: function(id) {chart.minimize(id)} },
         
-        }
-  }     
+//         }
+//   }     
   
-});
+// });
 
 chart.editUI.on('field', function(sender, args){
     if (args.name == 'partner' || args.name == 'title' || args.name == 'img'){
