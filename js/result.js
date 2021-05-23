@@ -166,7 +166,7 @@ function processData() {
     db.collection('families').doc(docID).collection('answers').where('meetingNumber', '==', meetingNumber)
     .get()
     .then((snapshot) => {
-        var placeDict = {}, activityDict = {}, availableDatesDict = {};
+        var placeDict = {}, activityDict = {}, availableDatesDict = {}, availableTimeDict = {};
         const latlngs = [];
         snapshot.forEach((doc) => {
             for (var place of doc.data().place) {
@@ -184,6 +184,8 @@ function processData() {
                 if (availableDates in availableDatesDict) availableDatesDict[availableDates].push(doc.data().userID);
                 else availableDatesDict[availableDates] = [doc.data().userID];
             }
+
+            if (doc.data().availableDates !== []) null;
             
             const find = latlngs.find(latlng => latlng.position[0] == doc.data().departure[1] && latlng.position[1] == doc.data().departure[0]);
             if (find) find.id.push(doc.data().userID);
@@ -193,6 +195,7 @@ function processData() {
                     id: [doc.data().userID]
                 })
             }
+        
         });
         for (var i=0; i<latlngs.length; i++) {
             var marker = new naver.maps.Marker({
@@ -230,7 +233,7 @@ function processData() {
             datesChartData[availableDates] = availableDatesDict[availableDates].map((id) => members[id].name)
         }
 
-        chartDraw(datesChartData)
+        dateChartDraw(datesChartData)
         
         resize();
         tooltipSet();
@@ -309,9 +312,9 @@ $(document).ready(function() {
 });
 
 
-function chartDraw(chartData) {
+function dateChartDraw(chartData) {
 
-    var ctx = $('#timeChart');
+    var ctx = $('#dateChart');
     
     var numberData = [];
     var numberToParticipants = { "0":[],"10":["정창식", "김솔"], "5": ["박혜수"], "2":["박종두"]};
@@ -395,3 +398,7 @@ function codeToDate(codeObj) {
 }
 
 
+function timeChartDraw(chartData) {
+
+
+}
