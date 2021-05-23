@@ -185,7 +185,7 @@ function processData() {
                 else availableDatesDict[availableDates] = [doc.data().userID];
             }
 
-            if (doc.data().availableDates !== []) null;
+            if (doc.data().availableTime !== []) null;
             
             const find = latlngs.find(latlng => latlng.position[0] == doc.data().departure[1] && latlng.position[1] == doc.data().departure[0]);
             if (find) find.id.push(doc.data().userID);
@@ -347,6 +347,9 @@ function dateChartDraw(chartData) {
     
         // Configuration options go here
         options: {
+            legendCallback: function(chart) {
+                return ` <span style="-webkit-transform:rotate(90deg);">짱!</span> `
+            },
             tooltips: {
                 custom: function(tooltip) {
                     if (!tooltip) return;
@@ -386,10 +389,13 @@ function dateChartDraw(chartData) {
                 }],
             },
             legend: {
-                display: false
+                // display: false
+                position: "left",
               },
         }
     });
+
+    myBarChart.generateLegend()
 }
 
 
