@@ -317,17 +317,26 @@ function dateChartDraw(chartData) {
     var ctx = $('#dateChart');
     
     var numberData = [];
-    var numberToParticipants = { "0":[],"10":["정창식", "김솔"], "5": ["박혜수"], "2":["박종두"]};
-    var labelData = ['January', 'February', 'March', 'April'];
+    var labelData = [];
+    var newChartData = {}
 
+    for (i in Object.keys(chartData)){
+        var date = new Date(Object.keys(chartData)[i])
+        var str = `${date.getMonth()+1}월 ${date.getDate()}일`
+        newChartData[str] = chartData[Object.keys(chartData)[i]]
+    }
+
+    
     labelData = Object.keys(chartData).map((el) => {
         var date = new Date(el)
+        var str = `${date.getMonth()+1}월 ${date.getDate()}일`
+        chartData[str] = chartData[el]
         return `${date.getMonth()+1}월 ${date.getDate()}일`
     });
     for (date of Object.keys(chartData)){
         // numberData.push(chartData[labelData[i]].length);
         numberData.push(chartData[date].length);
-        numberToParticipants[String(chartData[date].length)] = chartData[date];
+        // numberToParticipants[String(chartData[date].length)] = chartData[date];
     }
 
 
@@ -347,9 +356,9 @@ function dateChartDraw(chartData) {
     
         // Configuration options go here
         options: {
-            legendCallback: function(chart) {
-                return ` <span style="-webkit-transform:rotate(90deg);">짱!</span> `
-            },
+            // legendCallback: function(chart) {
+            //     return ` <span style="-webkit-transform:rotate(90deg);">짱!</span> `
+            // },
             tooltips: {
                 custom: function(tooltip) {
                     if (!tooltip) return;
@@ -363,7 +372,7 @@ function dateChartDraw(chartData) {
                 callbacks: {
                     label: function(tooltipItem) {
                         if (tooltipItem.yLabel > 0){
-                            return numberToParticipants[tooltipItem.yLabel].join(" ,")
+                            return newChartData[tooltipItem.xLabel].join(" ,")
                         }
                         return ""
                     },
@@ -389,13 +398,13 @@ function dateChartDraw(chartData) {
                 }],
             },
             legend: {
-                // display: false
-                position: "left",
+                display: false
+                // position: "left",
               },
         }
     });
-
-    myBarChart.generateLegend()
+    // ctx.html(myBarChart.generateLegend());
+    
 }
 
 
@@ -403,6 +412,27 @@ function codeToDate(codeObj) {
     return new Date(codeObj["seconds"]*1000)
 }
 
+
+function rangeToItems(arr){
+    if (arr[0].slice(6, 8) === "PM")  Number(arr[0].slice(6, 8))+12;
+}
+
+function makingTimeData(arrSrt, arrEnd, arrAnswers, arrAvailable){
+//     // 다 숫자 형식이라고 침 (0 ~ 24)
+//     var inputData = [{
+//         "t" : arrAvailable[0],
+//         "y" : 0
+//     }];
+//     var numberDate = [];
+//     var labelToAnsObj = {};
+//     for (i = 0; i < arrSrt.length*2; i ++){
+//         if (i === 0 && arrSrt.filter((el) => el === arrAvailable[0]).length !== 0) inputData[y] = arrSrt.filter((el) => el === arrAvailable[0]).length;
+//         else {
+//             if arrSrt
+
+//         }
+//     }
+// }
 
 function timeChartDraw(chartData) {
 
