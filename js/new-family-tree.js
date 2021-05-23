@@ -92,8 +92,8 @@ chart.editUI.on('field', function(sender, args){
 
 
 var familyChart = [          
-    { id: 0, tags: ["blue"], partner: 1, name: "김덕수", title: "할아버지", gender: "male", img: "https://firebasestorage.googleapis.com/v0/b/togather-ad530.appspot.com/o/profile?alt=media&token=685d952b-31b6-42c4-bcbc-8f63f0427a75"},
-    { id: 1, pid: 0, tags: ["partner"], partner: 0, name: "문옥주", title: "할머니", gender: "female", img: "https://firebasestorage.googleapis.com/v0/b/togather-ad530.appspot.com/o/profile?alt=media&token=2b9cffe2-601b-4392-9bb1-e06523dcb96d"},
+    { id: 0, tags: ["default"], partner: 1, name: "", title: "할아버지", gender: "male", img: "https://cdn.balkan.app/shared/empty-img-white.svg"},
+    { id: 1, pid: 0, tags: ["partner"], partner: 0, name: "", title: "할머니", gender: "female", img: "https://cdn.balkan.app/shared/empty-img-white.svg"},
 ];
 
 chart.load(familyChart);
@@ -132,9 +132,6 @@ function addChild(nodeId){
     // chart.editUI.show(tid);
     // chart.editUI.hide(window.newid);
     
-}
-function addImg(nodeId){
-    console.log('working');
 }
 
 var randomNum = {};
