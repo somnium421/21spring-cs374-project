@@ -165,9 +165,9 @@ $(document).ready(function(){
 
 
 $('#family-tree-submit').click(()=>{
-    db.collection('families').doc().set({
-        code: familyCode,
-        meetings: [],
-        members: familyChart,
-    })
+    // db.collection('families').doc().set({
+    //     code: familyCode,
+    //     meetings: [],
+    //     members: familyChart,
+    // })
 })
