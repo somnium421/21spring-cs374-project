@@ -39,12 +39,12 @@
     <body class="text-center">
         <script>
             firebase.initializeApp({
-                apiKey: "AIzaSyAgMEwyhYhxv5Ty75WAHTGP_XdnYLMSpas",
-                authDomain: "id311-project.firebaseapp.com",
-                projectId: "id311-project",
-                storageBucket: "id311-project.appspot.com",
-                messagingSenderId: "325087605761",
-                appId: "1:325087605761:web:b33af9b4d970ad042a7c00"
+                apiKey: "AIzaSyDYdmZ5M79MzjyK_5UYYlfutkKOLYHaf0k",
+                authDomain: "togather-ad530.firebaseapp.com",
+                projectId: "togather-ad530",
+                storageBucket: "togather-ad530.appspot.com",
+                messagingSenderId: "403669469215",
+                appId: "1:403669469215:web:10048cc7cbcb813ddc2d2a"
             });
             const db = firebase.firestore();
             db.settings({timestampsInSnapshots: true});
@@ -55,11 +55,11 @@
                 <h1 class="h3 mb-3 fw-normal">회원가입<br> <span class="fw-light eng-cap">Please sign in</span></h1>
 
                 <div class="form-floating">
-                    <input type="id" class="form-control" id="userId" placeholder="Id">
-                    <label for="userId">Id</label>
+                    <input type="id" class="form-control" id="userID" placeholder="ID">
+                    <label for="userId">ID</label>
                 </div>
                 <div class="form-floating">
-                    <input type="password" class="form-control" id="userPw" placeholder="Password" data-v-message="Please enter minimum 10 characters" required>
+                    <input type="password" class="form-control" id="userPW" placeholder="Password" data-v-message="Please enter minimum 10 characters" required>
                     <label for="userPw">Password</label>
                     <div class="invalid-feedback">
                         Valid first name is required.
@@ -70,7 +70,7 @@
                 </div>
                 
 
-                <a href="home.html" class="w-100 btn btn-lg btn-primary mt-4" type="submit" id="sign-in">Sign In</a>
+                <a class="w-100 btn btn-lg btn-primary mt-4" type="submit" id="sign-in">Sign In</a>
                 <p class="mt-5 mb-3 text-muted">&copy; CS374 2021</p>
             </form>
         </main>

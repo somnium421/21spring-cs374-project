@@ -1,6 +1,6 @@
-var userId;
-var userPw;
-
+const dbData = [];
+var userID, userPW;
+const familyCode = '00AB8'
 
 (function () {
     'use strict'
@@ -22,11 +22,32 @@ var userPw;
       })
   })()
   
+$(document).ready(function() {
+  db.collection('users').get()
+    .then((snapshot) => {
+        snapshot.forEach((doc) => {
+          dbData.push(doc.data())
+        });
+        console.log(dbData);
+    });
+})
 
-
-$(document).ready(function(){
-    $("#sign-in").click(()=>{
-        userId = $("#userId").val();
-        userPw = $("#userPw").val();
-    })
+$("#sign-in").click(()=>{
+  userID = $("#userID").val();
+  userPW = $("#userPW").val();
+  var existID = false;
+  for (var user of dbData) {
+    if (user.id == userID) existID = true;
+  }
+  if (existID) alert('이미 존재하는 아이디입니다')
+  else {
+    /*
+    db.collection('users').add({
+      // family-code: familyCode,
+      // family-id: 
+      id: userID,
+      pw: userPW
+    })*/
+    location.href = 'home.html';
+  }
 })
