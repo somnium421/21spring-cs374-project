@@ -142,3 +142,20 @@ $('#getfile').change(()=>{
         }
     )
 })
+
+$('#later').click(function(){
+    // console.log(window.me);
+    // var newNode = window.me;
+    // var nodeData = chart.get(newNode.id);
+    // chart.updateNode({ id: newNode.id, pid: newNode.pid, ppid: newNode.ppid, tags: ["blue", newNode.tags[0]], name: nodeData["name"],partner: nodeData["partner"], img: nodeData["img"], title: nodeData["title"],  gender: nodeData["gender"]});
+    location.href = "after-setting-tree.html"
+})
+
+
+$('#checked').on('hidden.bs.modal ',function(){
+    // console.log(window.me);
+    // var newNode = window.me;
+    // var nodeData = chart.get(newNode.id);
+    // chart.updateNode({ id: newNode.id, pid: newNode.pid, ppid: newNode.ppid, tags: ["blue", newNode.tags[0]], name: nodeData["name"],partner: nodeData["partner"], img: nodeData["img"], title: nodeData["title"],  gender: nodeData["gender"]});
+    location.href = "after-setting-tree.html"
+})
