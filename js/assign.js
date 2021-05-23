@@ -106,14 +106,6 @@ $('#assign-me').click(function(){
     chart.updateNode({ id: newNode.id, pid: newNode.pid, ppid: newNode.ppid, tags: ["blue", newNode.tags[0]], name: nodeData["name"],partner: nodeData["partner"], img: nodeData["img"], title: nodeData["title"],  gender: nodeData["gender"]});
 })
 
-// $('#family-tree-submit').click(()=>{
-//     db.collection('families').doc().set({
-//         code: familyCode,
-//         meetings: [],
-//         members: familyChart,
-//     })
-// })
-
 $('#getfile').change(()=>{
     var myId= window.me.id;
     var storageUpRef = firebase.storage().ref('/'+myId); //profile 대신 user의 가족 내에서의 id 
@@ -135,10 +127,29 @@ $('#getfile').change(()=>{
                 var myNode = window.me;
                 var nodeData = chart.get(myNode.id);
                 chart.updateNode({ id: myId, pid: myNode.pid, ppid: myNode.ppid, tags: ["blue", myNode.tags[0]], name: nodeData["name"],partner: nodeData["partner"], img: url, title: nodeData["title"],  gender: nodeData["gender"]});
-
-                //db 에 url 과 me가 누구인지! 저장하고 싶어요 어떻게 하나요?
             }).catch(function(error) {                  
             });
         }
     )
+})
+
+//db 에 저장. 그런데 familycode를 알아야 할 듯
+$('#assign-submit').click(()=>{
+    db.collection('families').where('code', '==', familyCode)
+        .get()
+        .then((snapshot) => {
+            snapshot.forEach((doc) => {
+                var docID = doc.id;
+                origMemb = doc.data().members;
+                var obj = origMemb.find(mem => mem.id == window.me.id);
+                var idx = origMemb.indexOf(obj);
+                obj.img = members[idx].img;
+                obj.tags = members[idx].tags;
+                console.log(origMemb);
+
+                db.collection('families').doc(docID).update({
+                    members: origMemb,
+                })
+            });
+        });
 })
