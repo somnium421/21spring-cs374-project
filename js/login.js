@@ -8,3 +8,5 @@ $(document).ready(function(){
         userPw = $("#userPw").val();
     })
 })
+
+console.log('hello')
