@@ -89,14 +89,14 @@ chart.on('click',function(sender, arg){
 
     window.me = arg.node;
     console.log(window.me);    
-    $("#assign-check").modal('show');
+    $("#assign-here").modal('show');
 
     // newNode.tags = "blue"
 
 
 })
 
-$('#assign-here').click(function(){
+$('#assign-me').click(function(){
     console.log(window.me);
     var newNode = window.me;
     var nodeData = chart.get(newNode.id);

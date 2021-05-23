@@ -79,25 +79,47 @@
             <button type="button" class="btn btn-outline-primary mb-2 mx-4">로그아웃</button>
         </div>
         <div class="container-fluid col" id="grad1">
-            <div class="row fs-3 fw-bold mt-5 mb-4 ms-5"><p>등록하기 <span class ="eng-cap">Assign</span></p></div>
+            <div class="row fs-3 fw-bold mt-5 ms-5"><p>등록하기 <span class ="eng-cap">Register</span></p>
+            </div>
+            <div class="row mb-1 ms-5">
+                <p>아래 가족 관계도에서 나의 위치를 찾아 선택하세요!<br><span class = "eng-cap">Find and select your position in the family-tree diagram below!</span></p>
+            </div>
             <div id="assign-tree" style="height: 600px;"></div>
             
             
             <div class="row col-4 mx-auto">
             
-                <div class="modal fade" id="assign-check" aria-hidden="true" aria-labelledby="exampleModalToggleLabel_1" tabindex="-1">
+                
+                <div class="modal fade" id="assign-here" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
                     <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalToggleLabel">등록</h5>
+                            <h5 class="modal-title" id="exampleModalToggleLabel">등록 <span class = "eng-cap">Register</span></h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            여기에 등록할까요?
+                            여기에 등록할까요?<br><span class = "eng-cap">Would you like to register here?</span>
                         </div>
                         <div class="modal-footer">
                             <button class="btn btn-secondary" data-bs-dismiss="modal">아니오 No</button>
-                            <button class="btn btn-primary"  data-bs-target="#checked" data-bs-toggle="modal" data-bs-dismiss="modal" id = "assign-here">예 Yes</button>
+                            <button class="btn btn-primary"  data-bs-target="#profile-img" data-bs-toggle="modal" data-bs-dismiss="modal" id="assign-me">예 Yes</button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="profile-img" aria-hidden="true" aria-labelledby="exampleModalToggleLabel_1" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalToggleLabel_1">프로필 설정 <sppan class = "eng-cap">set profile image</sppan></h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            프로필 사진을 업로드 하세요. 가족들이 당신을 더 잘 알아볼 수 있습니다:)<br><span class = "eng-cap">Uplaod your profile image. Your family can reconize you more easily :)</span></br>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary " data-bs-dismiss="modal" >나중에 하기 <span class = "eng-cap">later</span></button>
+                            <button class="btn btn-primary"  data-bs-target="#checked" data-bs-toggle="modal" data-bs-dismiss="modal" >저장<span class=" eng-cap">save</button>
                         </div>
                     </div>
                     </div>
@@ -106,11 +128,11 @@
                     <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalToggleLabel_2">등록 완료</h5>
+                            <h5 class="modal-title" id="exampleModalToggleLabel_2">등록 완료 <span class="eng-cap">Register complete</span></h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            해당 위치에 등록 완료하였습니다.
+                            해당 위치에 등록 완료하였습니다.<span class="eng-cap">You have registered at the location.</span>
                             <!-- <br><p>홈으로 가시겠습니까?</p></br> -->
                         </div>
                         <div class="modal-footer">
