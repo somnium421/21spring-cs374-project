@@ -41,7 +41,7 @@ db.collection('families').where('code', '==', familyCode)
     })
 
     // console.log("fam_mem"+window.family_members)
-    var chart = new OrgChart(document.getElementById("assign-tree"), {
+    chart = new OrgChart(document.getElementById("assign-tree"), {
         template: "family_template",
         mouseScrool: OrgChart.action.none,
         nodeMouseClick: OrgChart.action.none,
@@ -103,10 +103,7 @@ $('#assign-me').click(function(){
     console.log(window.me);
     var newNode = window.me;
     var nodeData = chart.get(newNode.id);
-    chart.updateNode({ id: newNode.id, pid: newNode.pid, ppid: newNode.ppid, tags: ["blue", newNode.tags[0]], name: nodeData["name"],partner: newNode.partner, img: nodeData["img"], title: nodeData["title"],  gender: newNode.gender});
-    
-
-
+    chart.updateNode({ id: newNode.id, pid: newNode.pid, ppid: newNode.ppid, tags: ["blue", newNode.tags[0]], name: nodeData["name"],partner: nodeData["partner"], img: nodeData["img"], title: nodeData["title"],  gender: nodeData["gender"]});
 })
 
 // $('#family-tree-submit').click(()=>{
@@ -135,7 +132,11 @@ $('#getfile').change(()=>{
             var storageRef = firebase.storage().ref();
             storageRef.child('/'+myId).getDownloadURL().then(function(url) { //여기도 user 대신 id
                 console.log('url은 이겁니다 : ',url);
-                //db 에 url 어떻게 저장하지..?
+                var myNode = window.me;
+                var nodeData = chart.get(myNode.id);
+                chart.updateNode({ id: myId, pid: myNode.pid, ppid: myNode.ppid, tags: ["blue", myNode.tags[0]], name: nodeData["name"],partner: nodeData["partner"], img: url, title: nodeData["title"],  gender: nodeData["gender"]});
+
+                //db 에 url 과 me가 누구인지! 저장하고 싶어요 어떻게 하나요?
             }).catch(function(error) {                  
             });
         }
