@@ -24,7 +24,7 @@ $('#login').click(() => {
             if (user.id == userID) {
                 noSuchID = false;
                 if (user.pw == userPW) {
-                    alert('OK')
+                    location.href = 'home.html'
                 }
                 else {
                     $('#userPW').val('')
