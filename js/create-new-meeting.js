@@ -100,18 +100,23 @@ function validatearr(id, arr, len){
 function validatearr2(id, arr, len){
     if (arr.length != len){
         $("#"+id+"Help").remove();
-        document.getElementById(id).style = "border: ''";
         return true; 
     }
     var text = `<small id="`+id+`Help" class="form-text" style="color: red">필수입력 사항입니다. </small>`
     if ($("#"+id+"Help").length === 0) $("#"+id).parent().append(text);
-    document.getElementById(id).style = "border: 2px solid #E8ADAA";
     return false;
 }
 function validatearr3(id, arr, len){
-    if (arr.length == len || $("#day").val()> 0){
+    if (arr.length == len){
         $("#"+id+"Help").remove();
-        
+        document.getElementById(id).style = "border: ''";
+        return true; 
+    }
+    else if($("#day").val()> 0){
+        console.log("여기로 나와야 함");
+        $("#"+id+"Help").remove();
+        $('.mbsc-textfield').style('background', 'rgb(233, 233, 233)');
+
         document.getElementById(id).style = "border: ''";
         return true; 
     }
@@ -178,7 +183,6 @@ allNextBtn.click(function(){
             return;
 
         case 'step3-submit':
-            // code block
             var a= validatearr('place', arrPlace, 0);
             var b= validatearr('activity', arrActivity, 0);
             if (a && b){
@@ -234,6 +238,11 @@ $('.timefield').change(function(){
     console.log(day)
 
     if((day) > 0){
+        document.getElementById("day").style = "border: ''";
+        document.getElementById("hour").style = "border: ''";
+        $("#periodsHelp").remove();
+        $("#start-timeHelp").remove();
+
         $('#hour').attr('disabled','disabled');
         $('#min').attr('disabled','disabled');
         if (day === "1") {
@@ -251,6 +260,10 @@ $('.timefield').change(function(){
         
     }
     else if((hour) > 0){
+        document.getElementById("day").style = "border: ''";
+        document.getElementById("hour").style = "border: ''";
+        $("#periodsHelp").remove();
+
         if ($("#periodHelp").length !== 0) $("#periodHelp").hide();
         $('#day').attr('disabled','disabled');
         
