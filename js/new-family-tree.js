@@ -174,26 +174,3 @@ $('#family-tree-submit').click(()=>{
         members: familyChart,
     })
 })
-
-$('#getfile').change(()=>{
-     var storageUpRef = firebase.storage().ref('/profile/');
-     var file = document.querySelector('#getfile');
-     var fileList = file.files;
-     var task = storageUpRef.put(fileList [0]);
-     task.on('state_changed',
-         function(snapshot){                                    
-             console.log('업로드 진행중');  // 업로드 진행시 호출
-         },
-         function(error){
-                              // 업로드 중간에 에러 발생시 호출
-         },    
-         function(){                // 업로드 완료시 
-             console.log('업로드 완료');    
-             var storageRef = firebase.storage().ref();
-             storageRef.child('/profile/').getDownloadURL().then(function(url) {
-                 console.log('url은 이겁니다 : ',url);
-             }).catch(function(error) {                  
-             });
-         }
-     )
- })
