@@ -1,5 +1,6 @@
 const dbData = [];
 var userID, userPw;
+storage = window.localStorage;
 
 $(document).ready(function(){
     db.collection('users').get()
@@ -7,7 +8,6 @@ $(document).ready(function(){
         snapshot.forEach((doc) => {
             dbData.push(doc.data());
         });
-        console.log(dbData);
     });
 })
 
@@ -24,7 +24,8 @@ $('#login').click(() => {
             if (user.id == userID) {
                 noSuchID = false;
                 if (user.pw == userPW) {
-                    location.href = 'home.html'
+                    localStorage.setItem('userID', user["family-id"]);
+                    location.href = 'home.html';
                 }
                 else {
                     $('#userPW').val('')

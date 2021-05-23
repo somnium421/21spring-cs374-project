@@ -9,3 +9,5 @@ $(document).ready(function () {
 
     if ($('.meeting-card').css("display") === "none") $('.meeting-card').show();
 });
+
+console.log(localStorage.getItem('userID'));
