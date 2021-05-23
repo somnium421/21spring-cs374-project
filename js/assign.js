@@ -1,5 +1,9 @@
-window.newid = 2;
-var familyCode;
+
+// import firebase  from "firebase";
+
+// var familyCode = "4NAF0";
+var familyCode = "00AB8";
+var members=[], docID ;
 window.me;
 
 OrgChart.templates.family_template = Object.assign({}, OrgChart.templates.ana);
@@ -26,75 +30,74 @@ OrgChart.templates.family_template_blue.node = '<circle stroke-width="3" fill="n
 
 
 
-var chart = new OrgChart(document.getElementById("assign-tree"), {
-    template: "family_template",
-    mouseScrool: OrgChart.action.none,
-    nodeMouseClick: OrgChart.action.none,
-    showXScroll: OrgChart.scroll.visible, 
-    showYScroll: OrgChart.scroll.visible, 
-    enableSearch: false,
-    siblingSeparation: 100,
-    nodeBinding: {
-        name: "name",
-        gender: "gender",
-        partner: "partner",
-        title: "title",
-        img: "img",
-    },
-    tags: {
-        blue: {
-            template: "family_template_blue"
-        }
-    },
-    // nodeMenu:{
-    //     //   edit:{text: "Assign"},
-       
-    // },
-    nodes: [          
-        { id: 0, tags: ["blue"], partner: 1, name: "김덕수", gender: "male", img: "https://cdn.balkan.app/shared/empty-img-white.svg"},
-        { id: 1, pid: 0, tags: ["partner"], partner: 0, name: "문옥주", gender: "female", img: "https://cdn.balkan.app/shared/empty-img-white.svg" },
-        { id: 2, pid: 0, ppid: 1, tags: ["default"], partner: 3, name: "m", gender: "male", img: "https://cdn.balkan.app/shared/empty-img-white.svg" },
-        { id: 3, pid: 2, tags: ["partner"], partner: 2, name: "f", gender: "female", img: "https://cdn.balkan.app/shared/empty-img-white.svg" },
-        { id: 4, pid: 0, ppid: 1, tags: ["default"], partner: 5, name: "f", gender: "female", img: "https://cdn.balkan.app/shared/empty-img-white.svg" },
-        { id: 5, pid: 4, tags: ["partner"], partner: 4, name: "m", gender: "male", img: "https://cdn.balkan.app/shared/empty-img-white.svg" },
-        { id: 6, pid: 0, ppid: 1, tags: ["default"], partner: 7, name: "m", gender: "male", img: "https://cdn.balkan.app/shared/empty-img-white.svg" },
-        { id: 7, pid: 6, tags: ["partner"], partner: 6, name: "f", gender: "female", img: "https://cdn.balkan.app/shared/empty-img-white.svg" },
-        { id: 8, pid: 2, ppid: 3, tags: ["default"], name: "m", gender: "male", img: "https://cdn.balkan.app/shared/empty-img-white.svg" },
-        { id: 9, pid: 4, ppid: 5, tags: ["default"], name: "m", gender: "male", img: "https://cdn.balkan.app/shared/empty-img-white.svg" },
-        { id: 10, pid: 6, ppid:7, tags: ["default"], name: "m", gender: "male", img: "https://cdn.balkan.app/shared/empty-img-white.svg" },
-    ],
-});
 
+db.collection('families').where('code', '==', familyCode)
+.get()
+.then((snapshot) => {
+    snapshot.forEach((doc) => {
+        console.log("hi");
+        docID = doc.id;
+        members = doc.data().members;        
+    })
 
-chart.editUI.on('field', function(sender, args){
-    if (args.name == 'partner' || args.name == 'title' || args.name == 'img' || args.name == "ppid"){
-        return false;
-    }
-});
-
-chart.on('update', function (sender, oldNode, newNode) {
-    console.log("upddfdfate");
-    console.log(newNode);
-    console.log(oldNode);
-
-        console.log(chart.getNode(id));
-          $('#assign-check').show();
-        chart.load();
+    // console.log("fam_mem"+window.family_members)
+    var chart = new OrgChart(document.getElementById("assign-tree"), {
+        template: "family_template",
+        mouseScrool: OrgChart.action.none,
+        nodeMouseClick: OrgChart.action.none,
+        showXScroll: OrgChart.scroll.visible, 
+        showYScroll: OrgChart.scroll.visible, 
+        enableSearch: false,
+        siblingSeparation: 80,
+        nodeBinding: {
+            name: "name",
+            gender: "gender",
+            partner: "partner",
+            title: "title",
+            img: "img",
+        },
+        tags: {
+            blue: {
+                template: "family_template_blue"
+            }
+        },
     
-    // }
-});  
-chart.on('click',function(sender, arg){
-    console.log("click");
-    console.log(arg.node);
-
-    window.me = arg.node;
-    console.log(window.me);    
-    $("#assign-here").modal('show');
-
-    // newNode.tags = "blue"
-
-
+        nodes: members,
+    
+    });
+    
+    
+    chart.editUI.on('field', function(sender, args){
+        if (args.name == 'partner' || args.name == 'title' || args.name == 'img' || args.name == "ppid"){
+            return false;
+        }
+    });
+    
+    chart.on('update', function (sender, oldNode, newNode) {
+        console.log("upddfdfate");
+        console.log(newNode);
+        console.log(oldNode);
+    
+        console.log(chart.getNode(id));
+        $('#assign-check').show();
+        chart.load();
+        
+    });  
+    chart.on('click',function(sender, arg){
+        console.log("click");
+        console.log(arg.node);
+    
+        window.me = arg.node;
+        console.log(window.me);    
+        $("#assign-here").modal('show');
+    
+    })
 })
+// console.log("fam_mem2"+window.family_members)
+
+
+
+
 
 $('#assign-me').click(function(){
     console.log(window.me);
@@ -119,4 +122,3 @@ $('#family-tree-submit').click(()=>{
         members: familyChart,
     })
 })
-
