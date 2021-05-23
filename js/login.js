@@ -1,12 +1,21 @@
-var userId;
-var userPw;
-
+const dbIDPW = [];
+var userID, userPw;
 
 $(document).ready(function(){
-    $("#login").click(()=>{
-        userId = $("#userId").val();
-        userPw = $("#userPw").val();
-    })
+    db.collection('users').get()
+    .then((snapshot) => {
+        snapshot.forEach((doc) => {
+            dbIDPW.push({
+                id: doc.data().id,
+                pw: doc.data().pw
+            })
+        });
+        console.log(dbIDPW);
+    });
 })
 
-console.log('hello')
+$('#login').click(() => {
+    userId = $("#userId").val();
+    userPw = $("#userPw").val();
+    userID = 'hyehye';
+})
