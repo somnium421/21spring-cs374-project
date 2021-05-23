@@ -1,6 +1,6 @@
 const dbData = [];
 var userID, userPW;
-const familyCode = '00AB8'
+// const familyCode = '00AB8'
 
 (function () {
     'use strict'
