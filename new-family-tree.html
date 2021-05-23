@@ -78,7 +78,10 @@
             <button type="button" class="btn btn-outline-primary mb-2 mx-4">로그아웃</button>
         </div>
         <div class="container-fluid col" id="grad1">
-            <div class="row fs-3 fw-bold mt-5 mb-4 ms-5">새로운 가족 관계도 만들기 Create New Family Tree</div>
+            <div class="col fs-3 fw-bold mt-5 mb-4 ms-5">
+                새로운 가족 관계도 만들기 Create New Family Tree
+                <a class="btn btn-primary rounded-pill ms-5 col-3" data-bs-toggle="modal" href="#submitTree" role="button"> 등록하기 </a>
+            </div>
             <div class="row mb-1 ms-5">
                 <p>1세대를 중심으로 자손, 부부를 추가하여 우리 가족의 관계도를 작성해보세요.<br><span class = "eng-cap">From 1st generation, add their children and partners to make your family tree.</span></p>
             </div>
@@ -89,8 +92,7 @@
             <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
                 Launch demo modal
               </button> -->
-            <div class="row col-4 mx-auto">
-                <a class="btn btn-primary rounded-pill" data-bs-toggle="modal" href="#submitTree" role="button">등록하기</a>
+                
             <!-- Button trigger modal -->
             
                 <div class="modal fade" id="submitTree" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
