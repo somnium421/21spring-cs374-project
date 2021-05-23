@@ -1,7 +1,8 @@
 // import {participants_transfer} from './js/participants-transfer.js'
 // //This is for new meeting creation page
 
-var familyCode = "00AB8"; // from the local storage
+const familyCode = "00AB8"; // from the local storage
+const userID = 20;// from the local storage
 
 var availableTime = [];
 var availableDates = [];
@@ -430,18 +431,34 @@ $('#final-submit').click(function(){
     db_log_newMeeting.surveyPeriod = Number($('#surveyPeriod').val());
     db_log_newMeeting.isPrivate = $('#btnradio2').is(':checked');
     
-    
-    db_log_newMeeting.chat = {};
 
     db_log_newMeeting.isEnd = false;
+
+    var now = new Date();
+    db_log_newMeeting.dueDate = Date(now.setDate(now.getDate() + Number($('#surveyPeriod').val())));
+    db_log_newMeeting.hostID = userID;
+
     console.log(db_log_newMeeting);
 
+    db.collection('families').where('code', '==', familyCode)
+        .get()
+        .then((snapshot) => {
+            snapshot.forEach((doc) => {
+                var docID = doc.id;
+                var origMeetings = doc.data().meetings;
+                
+                origMeetings.push(db_log_newMeeting)
+                // console.log(db_log_newMeeting);
 
-    db.collection('families').doc().set({
-        code: "00AB8",
-        meetings: [db_log_newMeeting],
-        members: familyChart,
-    })
+                db.collection('families').doc(docID).update({
+                    meetings: origMeetings,
+                })
+            });
+        });
+    
+    // db.collection('families').doc().update({
+    //     meetings: [db_log_newMeeting],
+    // })
 })
 
 // for (let i=97; i<116; i ++){
