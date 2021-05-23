@@ -1,6 +1,8 @@
 const familyCode = "00AB8", meetingNumber = 0, userID = 0;
-const placeData = [], activityData = [], markers = [], infoWindows = [], latlngs = [];
-var meetings, members, chats, docID, answerID;
+const placeData = [], activityData = [], markers = [], infoWindows = [], latlngs = []
+var meetings, members, chats,  docID, answerID;
+var hostAvailableDates = {};
+var datesChartData = {};
 
 let placeOptions = {
     container: {
@@ -164,7 +166,7 @@ function processData() {
     db.collection('families').doc(docID).collection('answers').where('meetingNumber', '==', meetingNumber)
     .get()
     .then((snapshot) => {
-        var placeDict = {}, activityDict = {};
+        var placeDict = {}, activityDict = {}, availableDatesDict = {};
         const latlngs = [];
         snapshot.forEach((doc) => {
             for (var place of doc.data().place) {
@@ -175,6 +177,14 @@ function processData() {
                 if (activity in activityDict) activityDict[activity].push(doc.data().userID);
                 else activityDict[activity] = [doc.data().userID];
             }
+            
+                
+            for (var availableDates of doc.data().availableDates){
+                availableDates = codeToDate(availableDates);
+                if (availableDates in availableDatesDict) availableDatesDict[availableDates].push(doc.data().userID);
+                else availableDatesDict[availableDates] = [doc.data().userID];
+            }
+            
             const find = latlngs.find(latlng => latlng.position[0] == doc.data().departure[1] && latlng.position[1] == doc.data().departure[0]);
             if (find) find.id.push(doc.data().userID);
             else {
@@ -210,7 +220,12 @@ function processData() {
                 weight: activityDict[activity].length
             });
         }
+        for (var availableDates in availableDatesDict){
+            datesChartData[availableDates] = availableDatesDict[availableDates].map((id) => members[id].name)
+        }
 
+        chartDraw(datesChartData)
+        
         resize();
         tooltipSet();
     })
@@ -223,11 +238,16 @@ $(document).ready(function() {
         snapshot.forEach((doc) => {
             docID = doc.id;
             meetings = doc.data().meetings;
-            //console.log(meetings);
             members = doc.data().members;
+            var availableDates = meetings[meetingNumber].availableDates.map((el) => codeToDate(el));
+            
+            for (date in availableDates) {
+                datesChartData[availableDates[date]] = []
+            }
+            
 
             processData();
-
+            
             db.collection('families').doc(docID).collection('chats').where('meetingNumber', '==', meetingNumber)
             .get().then((snapshot) =>{
                 snapshot.forEach((doc) => {
@@ -265,8 +285,199 @@ $(document).ready(function() {
             }
             $('#meeting-tags').append(meetingTags);
 
-            setDateDisabled(meetings[meetingNumber].availableDates)
+            // setDateDisabled(meetings[meetingNumber].availableDates)
         });
         bindEvents();
     });
 });
+
+
+function chartDraw(chartData) {
+
+    var ctx = $('#timeChart');
+    
+    var numberData = [];
+    var numberToParticipants = { "0":[],"10":["정창식", "김솔"], "5": ["박혜수"], "2":["박종두"]};
+    var labelData = ['January', 'February', 'March', 'April'];
+
+    labelData = Object.keys(chartData).map((el) => {
+        var date = new Date(el)
+        return `${date.getMonth()+1}/${date.getDate()}`
+    });
+    for (date of Object.keys(chartData)){
+        // numberData.push(chartData[labelData[i]].length);
+        numberData.push(chartData[date].length);
+        numberToParticipants[String(chartData[date].length)] = chartData[date];
+    }
+
+
+
+    // // draws a rectangle with a rounded top
+    // Chart.helpers.drawRoundedTopRectangle = function(ctx, x, y, width, height, radius) {
+    //     ctx.beginPath();
+    //     ctx.moveTo(x + radius, y);
+    //     // top right corner
+    //     ctx.lineTo(x + width - radius, y);
+    //     ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+    //     // bottom right   corner
+    //     ctx.lineTo(x + width, y + height);
+    //     // bottom left corner
+    //     ctx.lineTo(x, y + height);
+    //     // top left   
+    //     ctx.lineTo(x, y + radius);
+    //     ctx.quadraticCurveTo(x, y, x + radius, y);
+    //     ctx.closePath();
+    // };
+    
+    // Chart.elements.RoundedTopRectangle = Chart.elements.Rectangle.extend({
+    //     draw: function() {
+    //     var ctx = this._chart.ctx;
+    //     var vm = this._view;
+    //     var left, right, top, bottom, signX, signY, borderSkipped;
+    //     var borderWidth = vm.borderWidth;
+    
+    //     if (!vm.horizontal) {
+    //         // bar
+    //         left = vm.x - vm.width / 2;
+    //         right = vm.x + vm.width / 2;
+    //         top = vm.y;
+    //         bottom = vm.base;
+    //         signX = 1;
+    //         signY = bottom > top? 1: -1;
+    //         borderSkipped = vm.borderSkipped || 'bottom';
+    //     } else {
+    //         // horizontal bar
+    //         left = vm.base;
+    //         right = vm.x;
+    //         top = vm.y - vm.height / 2;
+    //         bottom = vm.y + vm.height / 2;
+    //         signX = right > left? 1: -1;
+    //         signY = 1;
+    //         borderSkipped = vm.borderSkipped || 'left';
+    //     }
+    
+    //     // Canvas doesn't allow us to stroke inside the width so we can
+    //     // adjust the sizes to fit if we're setting a stroke on the line
+    //     if (borderWidth) {
+    //         // borderWidth shold be less than bar width and bar height.
+    //         var barSize = Math.min(Math.abs(left - right), Math.abs(top - bottom));
+    //         borderWidth = borderWidth > barSize? barSize: borderWidth;
+    //         var halfStroke = borderWidth / 2;
+    //         // Adjust borderWidth when bar top position is near vm.base(zero).
+    //         var borderLeft = left + (borderSkipped !== 'left'? halfStroke * signX: 0);
+    //         var borderRight = right + (borderSkipped !== 'right'? -halfStroke * signX: 0);
+    //         var borderTop = top + (borderSkipped !== 'top'? halfStroke * signY: 0);
+    //         var borderBottom = bottom + (borderSkipped !== 'bottom'? -halfStroke * signY: 0);
+    //         // not become a vertical line?
+    //         if (borderLeft !== borderRight) {
+    //         top = borderTop;
+    //         bottom = borderBottom;
+    //         }
+    //         // not become a horizontal line?
+    //         if (borderTop !== borderBottom) {
+    //         left = borderLeft;
+    //         right = borderRight;
+    //         }
+    //     }
+    
+    //     // calculate the bar width and roundess
+    //     var barWidth = Math.abs(left - right);
+    //     var roundness = this._chart.config.options.barRoundness || 0.5;
+    //     var radius = barWidth * roundness * 0.5;
+    
+    //     // keep track of the original top of the bar
+    //     var prevTop = top;
+    
+    //     // move the top down so there is room to draw the rounded top
+    //     top = prevTop + radius;
+    //     var barRadius = top - prevTop;
+    
+    //     ctx.beginPath();
+    //     ctx.fillStyle = vm.backgroundColor;
+    //     ctx.strokeStyle = vm.borderColor;
+    //     ctx.lineWidth = borderWidth;
+    
+    //     // draw the rounded top rectangle
+    //     Chart.helpers.drawRoundedTopRectangle(ctx, left, (top - barRadius + 1), barWidth, bottom - prevTop, barRadius);
+    
+    //     ctx.fill();
+    //     if (borderWidth) {
+    //         ctx.stroke();
+    //     }
+    
+    //     // restore the original top value so tooltips and scales still work
+    //     top = prevTop;
+    //     },
+    // });
+
+    // Chart.defaults.roundedBar = Chart.helpers.clone(Chart.defaults.bar);
+
+    // Chart.controllers.roundedBar = Chart.controllers.bar.extend({
+    // dataElementType: Chart.elements.RoundedTopRectangle
+    // });
+
+
+    var myBarChart = new Chart(ctx, {
+        responsive: true,
+        type: 'bar',
+        data: {
+            labels: labelData,
+            datasets: [{
+                label: 'available',
+                backgroundColor: 'rgb(160, 207, 255)',
+                borderColor: 'rgb(160, 207, 255)',
+                data: numberData
+            }]
+        },
+    
+        // Configuration options go here
+        options: {
+            tooltips: {
+                custom: function(tooltip) {
+                    if (!tooltip) return;
+                    // disable displaying the color box;
+                    tooltip.displayColors = false;
+                  },
+                bodyAlign: "center",
+                titleAlign: "center",
+                yPadding: 10,
+                bodyFontSize: 14,
+                callbacks: {
+                    label: function(tooltipItem) {
+                        if (tooltipItem.yLabel > 0){
+                            return numberToParticipants[tooltipItem.yLabel].join(" ,")
+                        }
+                        return ""
+                    },
+                }
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true,
+                        display: false
+                    },
+                    gridLines: {
+                        display:false
+                    }
+                }],
+                xAxes: [{
+                    ticks:{
+                        fontSize: 13
+                    },
+                    gridLines: {
+                        display:false
+                    }
+                }],
+            },
+            legend: {
+                display: false
+              },
+        }
+    });
+}
+
+
+function codeToDate(codeObj) {
+    return new Date(codeObj["seconds"]*1000)
+}
