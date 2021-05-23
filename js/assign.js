@@ -133,42 +133,11 @@ $('#getfile').change(()=>{
     )
 })
 
-<<<<<<< HEAD
 $('#later').click(function(){
-    // console.log(window.me);
-    // var newNode = window.me;
-    // var nodeData = chart.get(newNode.id);
-    // chart.updateNode({ id: newNode.id, pid: newNode.pid, ppid: newNode.ppid, tags: ["blue", newNode.tags[0]], name: nodeData["name"],partner: nodeData["partner"], img: nodeData["img"], title: nodeData["title"],  gender: nodeData["gender"]});
     location.href = "after-setting-tree.html"
 })
 
 
 $('#checked').on('hidden.bs.modal ',function(){
-    // console.log(window.me);
-    // var newNode = window.me;
-    // var nodeData = chart.get(newNode.id);
-    // chart.updateNode({ id: newNode.id, pid: newNode.pid, ppid: newNode.ppid, tags: ["blue", newNode.tags[0]], name: nodeData["name"],partner: nodeData["partner"], img: nodeData["img"], title: nodeData["title"],  gender: nodeData["gender"]});
     location.href = "after-setting-tree.html"
 })
-
-//db 에 저장. 그런데 familycode를 알아야 할 듯
-$('#assign-submit').click(()=>{
-    db.collection('families').where('code', '==', familyCode)
-        .get()
-        .then((snapshot) => {
-            snapshot.forEach((doc) => {
-                var docID = doc.id;
-                origMemb = doc.data().members;
-                var obj = origMemb.find(mem => mem.id == window.me.id);
-                var idx = origMemb.indexOf(obj);
-                obj.img = members[idx].img;
-                obj.tags = members[idx].tags;
-                console.log(origMemb);
-
-                db.collection('families').doc(docID).update({
-                    members: origMemb,
-                })
-            });
-        });
-})
->>>>>>> de03b2c0cd0d4a53d497c470dbf372c5466ad3aa
