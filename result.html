@@ -112,32 +112,39 @@
             <div class="row card mx-5 shadow mb-3" style="border-radius: 10px;">
                 <div class="card-body">
                     <h5 class="fw-bold card-title">설문결과 <span style="color: gray" class="fw-light eng-cap">Result</span></h5>
-                    <div class="row g-4">
-                        <div class="col">
-                            <div class="card border-0" id="place-card">
-                                <p class="fw-bold fs-6 card-title">장소<span style="color: gray" class="fw-light eng-cap">  Place</span></p>  
-                                <div id="placeCloud" style="border-radius: 5px; border-width: 1px; border-color: black;"></div>
+                    <div class="container-fluid">
+                        <div class="row g-4 flex-row flex-nowrap overflow-scroll">
+                            <div class="col-3">
+                                <div class="card border-0" id="place-card">
+                                    <p class="fw-bold fs-6 card-title">장소<span style="color: gray" class="fw-light eng-cap">  Place</span></p>  
+                                    <div id="placeCloud" style="border-radius: 5px; border-width: 1px; border-color: black;"></div>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="card border-0" id="activity-card">
+                                    <p class="fw-bold fs-6 card-title">활동<span style="color: gray" class="fw-light eng-cap">  Activity</span></p>  
+                                    <div id="activityCloud"></div>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="card border-0" id="map-card">
+                                    <p class="fw-bold fs-6 card-title">출발<span style="color: gray" class="fw-light eng-cap">  Departure</span></p>  
+                                    <div id="map" style="width:100%;height:280px;"></div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="card border-0" id="time-card">
+                                    <p class="fw-bold fs-6 card-title mb-2">가능한 시간<span style="color: gray" class="fw-light eng-cap">  Available dates and time</span></p>  
+                                    <div class="container">
+                                        <canvas id="timeChart" style="height: 280px; width:100%; margin: 0px auto"></canvas>
+                                    </div>
+    
+                                </div>
                             </div>
                         </div>
-                        <div class="col">
-                            <div class="card border-0" id="activity-card">
-                                <p class="fw-bold fs-6 card-title">활동<span style="color: gray" class="fw-light eng-cap">  Activity</span></p>  
-                                <div id="activityCloud"></div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="card border-0" id="map-card">
-                                <p class="fw-bold fs-6 card-title">출발<span style="color: gray" class="fw-light eng-cap">  Departure</span></p>  
-                                <div id="map" style="width:100%;height:280px;"></div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="container border-0" id="time-card">
-                                <p class="fw-bold fs-6 card-title mb-2">가능한 시간<span style="color: gray" class="fw-light eng-cap">  Available dates and time</span></p>  
-                                <canvas id="timeChart" style="height: 280px; width:100%; margin: 0px auto"></canvas>
-                            </div>
-                        </div>
+
                     </div>
+                    
                 </div>
             </div>
             <div class="row card mx-5 shadow" style="border-radius: 10px;">
@@ -172,6 +179,5 @@
         </div>
     </div>
     <script src="js/result.js"></script>
-    <script src="js/result-date.js"></script>
 </body>
 </html>
