@@ -133,23 +133,11 @@ $('#getfile').change(()=>{
     )
 })
 
-//db 에 저장. 그런데 familycode를 알아야 할 듯
-$('#assign-submit').click(()=>{
-    db.collection('families').where('code', '==', familyCode)
-        .get()
-        .then((snapshot) => {
-            snapshot.forEach((doc) => {
-                var docID = doc.id;
-                origMemb = doc.data().members;
-                var obj = origMemb.find(mem => mem.id == window.me.id);
-                var idx = origMemb.indexOf(obj);
-                obj.img = members[idx].img;
-                obj.tags = members[idx].tags;
-                console.log(origMemb);
+$('#later').click(function(){
+    location.href = "after-setting-tree.html"
+})
 
-                db.collection('families').doc(docID).update({
-                    members: origMemb,
-                })
-            });
-        });
+
+$('#checked').on('hidden.bs.modal ',function(){
+    location.href = "after-setting-tree.html"
 })
