@@ -167,6 +167,7 @@ allPrevBtn.click(function(){
 
 allNextBtn.click(function(){
     curId = $(this).attr('id');
+    //validation
     switch(curId) {
         case 'step1-submit':
             var a = validateinput('meeting-name');
@@ -305,6 +306,10 @@ $('#meetingPrivacy').click(function(){
 $("#add-place").click (function(e){
     e.preventDefault();
     if ($('#place').val() !== ""){
+        //for validation removed style
+        $("#placeHelp").remove();
+        document.getElementById("place").style = "border: ''";
+
         console.log($('#place').val());
         var inputText = $('#place').val();
         arrPlace.push(inputText);
@@ -316,6 +321,10 @@ $("#add-place").click (function(e){
 $("#add-activity").click (function(e){
     e.preventDefault();
     if ($('#activity').val() !== ""){
+        //for validation removed style
+        $("#activityHelp").remove();
+        document.getElementById("activity").style = "border: ''";
+
         console.log($('#activity').val());
         var inputText = $('#activity').val();
         arrActivity.push(inputText);
