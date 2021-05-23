@@ -10,4 +10,6 @@ $(document).ready(function () {
     if ($('.meeting-card').css("display") === "none") $('.meeting-card').show();
 });
 
+console.log('hello');
+console.log(localStorage.getItem('familyCode'));
 console.log(localStorage.getItem('userID'));

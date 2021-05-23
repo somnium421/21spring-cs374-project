@@ -24,7 +24,8 @@ $('#login').click(() => {
             if (user.id == userID) {
                 noSuchID = false;
                 if (user.pw == userPW) {
-                    localStorage.setItem('userID', user["family-id"]);
+                    localStorage.setItem('familyCode', user["family-code"]);
+                    localStorage.setItem('familyID', user["id"]);
                     location.href = 'home.html';
                 }
                 else {
