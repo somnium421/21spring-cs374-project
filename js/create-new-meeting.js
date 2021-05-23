@@ -122,14 +122,14 @@ function validatearr3(id, arr, len){
     }
     else if (arr.length == 0){
         var text = `<small id="`+id+`Help" class="form-text" style="color: red">필수입력 사항입니다. </small>`
-        if ($("#"+id+"Help").length === 0) $("#"+id).parent().append(text);
+        if ($("#"+id+"Help").length === 0) $("#available-time-form").append(text);
         else $("#"+id+"Help").replaceWith(text);
         document.getElementById(id).style = "border: 2px solid #E8ADAA";
         return false;
     }
     else{
         var text = `<small id="`+id+`Help" class="form-text" style="color: red">시작하는 시간과 끝나는 시간을 모두 입력하세요. </small>`
-        if ($("#"+id+"Help").length === 0) $("#"+id).parent().parent().append(text);
+        if ($("#"+id+"Help").length === 0) $("#available-time-form").append(text);
         else $("#"+id+"Help").replaceWith(text);
         document.getElementById(id).style = "border: 2px solid #E8ADAA";
         return false;
