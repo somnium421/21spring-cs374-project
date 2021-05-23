@@ -1,7 +1,9 @@
-const familyCode = "00AB8", meetingNumber = 0, userID = 0;
+const familyCode = "00AB8", userID = 0;
 const placeData = [], activityData = [], markers = [], infoWindows = [], latlngs = [];
 var meetings, members, chats, docID, answerID;
 
+// duedate 지나면 결과확인 되기, 그 전에는 duedate 남은거 받아서 표시, userID가 참가자중 없는데 private이면 안보여야함. private 이면 색깔 다르게.
+// tag 중에는 제일 인기가 많은거 나오게??
 
 
 // $(document).ready(function () {
@@ -17,12 +19,12 @@ var meetings, members, chats, docID, answerID;
 // });
 
 
-function processData() {
+function processData(meetingNumber) {
+    // db.collection('families').doc(docID).collection('answers').where('meetingNumber', '==', meetingNumber)
     db.collection('families').doc(docID).collection('answers').where('meetingNumber', '==', meetingNumber)
     .get()
     .then((snapshot) => {
         var placeDict = {}, activityDict = {};
-        const latlngs = [];
         snapshot.forEach((doc) => {
             for (var place of doc.data().place) {
                 if (place in placeDict) placeDict[place].push(doc.data().userID);
@@ -32,14 +34,7 @@ function processData() {
                 if (activity in activityDict) activityDict[activity].push(doc.data().userID);
                 else activityDict[activity] = [doc.data().userID];
             }
-            const find = latlngs.find(latlng => latlng.position[0] == doc.data().departure[1] && latlng.position[1] == doc.data().departure[0]);
-            if (find) find.id.push(doc.data().userID);
-            else {
-                latlngs.push({
-                    position: [doc.data().departure[1], doc.data().departure[0]],
-                    id: [doc.data().userID]
-                })
-            }
+            
         });
         
 
