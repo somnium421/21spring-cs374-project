@@ -92,11 +92,9 @@ db.collection('families').where('code', '==', familyCode)
 
     
     })
-    
+    setFamilyCode();
 })
 // console.log("fam_mem2"+window.family_members)
-
-$("#family-code").innerHTML = "가족코드: "+familyCode + '<br><span class = "eng-cap>family code</span>';
 
 function setFamilyCode()  {
     const code = document.getElementById('family-code');
