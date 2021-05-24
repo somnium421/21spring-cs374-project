@@ -24,7 +24,7 @@ var meetings, members, chats, docID, answerID;
 
 
 
-function processData(meetingNumber, html_isPrivate, html_dueDate, html_meetingName, html_meetingDescription, html_meetingParticipants, html_meetingTags, html_button) {
+function processData(meetingNumber, html_isPrivate, html_dueDate, html_meetingName, html_meetingDescription, html_meetingParticipants, html_meetingDates, html_meetingTags, html_button) {
     // db.collection('families').doc(docID).collection('answers').where('meetingNumber', '==', meetingNumber)
     console.log(docID);
     db.collection('families').doc(docID).collection("answers").where('meetingNumber', '==', meetingNumber)
@@ -82,7 +82,7 @@ function processData(meetingNumber, html_isPrivate, html_dueDate, html_meetingNa
                                         <div>${html_meetingParticipants}</div>
                                         <div class="btn-toolbar justify-content-between mt-4" role="toolbar" aria-label="Toolbar with button groups">
                                             <div class="btn-group" role="group" aria-label="First group">
-                                                <h4><span class="badge rounded-pill bg-light text-dark"><i class="fa fa-calendar" aria-hidden="true"></i> &nbsp; 2021.05.19 - 2021.05.20</span></h4>
+                                                <h4>${html_meetingDates}</h4>
                                             </div>
                                             <div>
                                                 ${html_button}
@@ -115,7 +115,7 @@ $(document).ready(function() {
                 // if private and userID is not in the participants list, ignore.
                 if (meetings[meetingNumber].isPrivate && meetings[meetingNumber].participants.filter(({id}) => id === userID).length === 0) continue;
 
-                var html_isPrivate, html_dueDate, html_meetingName, html_meetingDescription, html_meetingParticipants, html_meetingTags, html_button;
+                var html_isPrivate, html_dueDate, html_meetingName, html_meetingDescription, html_meetingParticipants, html_meetingTags, html_button, html_meetingDates;
 
                 if (meetings[meetingNumber].isPrivate) html_isPrivate = '<span class="text-muted" style="font-size: smaller;"><i class="fas fa-lock me-1"></i> 비공개</span>'
                 else html_isPrivate = '<span class="text-muted" style="font-size: smaller;"><i class="fas fa-globe-asia me-1"></i> 공개</span>'
@@ -133,6 +133,21 @@ $(document).ready(function() {
                     html_button = `<button class="btn btn-primary rounded-pill result" id="${meetingNumber}" > 결과 확인 &nbsp; <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`
                 }
 
+                html_meetingDates =``
+
+
+                if (meetings[meetingNumber].meetingPeriod.day > 1 && meetings[meetingNumber].availableDates.length == meetings[meetingNumber].meetingPeriod.day) {
+                    var time1 = meetings[meetingNumber].availableDates[0].toDate(), time2 = meetings[meetingNumber].availableDates[meetings[meetingNumber].availableDates.length-1].toDate();
+                    html_meetingDates = `<h4><span class="badge rounded-pill bg-light text-dark"><i class="fa fa-calendar" aria-hidden="true"></i> 
+                        &nbsp; ${time1.getYear()+1900}.${time1.getMonth()+1}.${time1.getDate()} ~ ${time2.getYear()+1900}.${time2.getMonth()+1}.${time2.getDate()} </span></h4>`;
+                }
+                //else {
+                else if (meetings[meetingNumber].meetingPeriod.day <= 1 && meetings[meetingNumber].availableDates.length == 1) {
+                    var time = meetings[meetingNumber].availableDates[0].toDate()
+                    html_meetingDates  =`<h4><span class="badge rounded-pill bg-light text-dark"><i class="fa fa-calendar" aria-hidden="true"></i> 
+                        &nbsp; ${time.getYear()+1900}.${time.getMonth()+1}.${time.getDate()} </span></h4>`;
+                }
+
                 html_meetingName = meetings[meetingNumber].name;
     
                 html_meetingDescription = meetings[meetingNumber].description;
@@ -140,7 +155,9 @@ $(document).ready(function() {
                 html_meetingParticipants = ``;
                 
                 var meetingTags;
-                if (meetings[meetingNumber].meetingPeriod.day == 0) meetingTags = `<span class="badge rounded-pill bg-light text-dark">${meetings[meetingNumber].meetingPeriod.hour}시간</span> <span style="font-size: smaller;">동안</span>`;
+                
+
+                if (meetings[meetingNumber].meetingPeriod.day == 0) meetingTags = `<span class="badge rounded-pill bg-light text-dark">${meetings[meetingNumber].meetingPeriod.hr}시간</span> <span style="font-size: smaller;">동안</span>`;
                 else if (meetings[meetingNumber].meetingPeriod.day == 1) meetingTags = `<span class="badge rounded-pill bg-light text-dark">하루</span> <span style="font-size: smaller;">종일</span>`;
                 else meetingTags = `<span class="badge rounded-pill bg-light text-dark">${meetings[meetingNumber].meetingPeriod.day-1}박 ${meetings[meetingNumber].meetingPeriod.day}일</span> <span style="font-size: smaller;">동안</span> `
                 if (meetings[meetingNumber].noMorePlace) {
@@ -153,10 +170,10 @@ $(document).ready(function() {
                 }
                 html_meetingTags = meetingTags;
 
-
-                processData(meetingNumber, html_isPrivate, html_dueDate, html_meetingName, html_meetingDescription, html_meetingParticipants, html_meetingTags, html_button);
-
                 
+                processData(meetingNumber, html_isPrivate, html_dueDate, html_meetingName, html_meetingDescription, 
+                    html_meetingParticipants, html_meetingDates, html_meetingTags, html_button);
+
             }
         
         });
