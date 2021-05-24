@@ -116,7 +116,7 @@ function validatearr3(id, arr, len){
     else if($("#day").val()> 0){
         console.log("여기로 나와야 함");
         $("#"+id+"Help").remove();
-        $('.mbsc-textfield').style('background', 'rgb(233, 233, 233)');
+        $('.mbsc-textfield').css('background', 'rgb(233, 233, 233)');
 
         document.getElementById(id).style = "border: ''";
         return true; 
