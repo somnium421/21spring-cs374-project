@@ -45,6 +45,8 @@ function processData(meetingNumber, html_isPrivate, html_dueDate, html_meetingNa
             if (doc.data().userID === userID) meetingUserPart.push(meetingNumber);
             
         });
+
+       
         const answered = [];
         for (var participant of meetings[meetingNumber].participants) {
             for (var answer of answers) {
@@ -95,6 +97,12 @@ function processData(meetingNumber, html_isPrivate, html_dueDate, html_meetingNa
 
         if (meetingUserPart.filter((el) => el === meetingNumber).length === 0) $("#meeting-list-not-part").append(htmlStr);
         else $("#meeting-list-part").append(htmlStr);
+
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+            })
+
     })
 }
 
