@@ -435,7 +435,8 @@ $('#final-submit').click(function(){
     db_log_newMeeting.isEnd = false;
 
     var now = new Date();
-    db_log_newMeeting.dueDate = Date(now.setDate(now.getDate() + Number($('#surveyPeriod').val())));
+    var due = new Date(now.setDate(now.getDate() + Number($('#surveyPeriod').val())));
+    db_log_newMeeting.dueDate = due
     db_log_newMeeting.hostID = userID;
 
     console.log(db_log_newMeeting);
