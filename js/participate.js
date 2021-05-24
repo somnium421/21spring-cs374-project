@@ -1,10 +1,7 @@
-const familyCode = localStorage.getItem('family-code') == null ? '00AB8' : localStorage.getItem('family-code')
-// const familyID = localStorage.getItem('family-id') == null ? '00AB8' : localStorage.getItem('family-id')
-const meetingNumber = localStorage.getItem('meeting-number') == null ? 0 : localStorage.getItem('meeting-number')
-const userID = localStorage.getItem('id') == null ? 0 : localStorage.getItem('id')
-
+const familyCode = !localStorage.getItem('family-code') ? '00AB8' : localStorage.getItem('family-code')
+const meetingNumber = !localStorage.getItem('meeting-number') ? 0 : localStorage.getItem('meeting-number')
+const userID = !localStorage.getItem('id') ? 0 : localStorage.getItem('id')
 var meetings, members, docID;
-
 var userAvailableDates = [];
 var userAvailableTime = [];
 
@@ -414,6 +411,14 @@ function bindEvents() {
             availableTime: userAvailableTime
         });
     });
+
+    $('#logout-button').click(() => {
+        localStorage.removeItem('family-code');
+        localStorage.removeItem('family-id');
+        localStorage.removeItem('id');
+        localStorage.removeItem('pw');
+        location.href = "login.html";
+    })
 
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
