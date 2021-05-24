@@ -1,3 +1,6 @@
+localStorage.removeItem("family-code");
+localStorage.removeItem("family-id");
+
 const dbData = [];
 var userID, userPW;
 // const familyCode = '00AB8'
@@ -32,7 +35,7 @@ $(document).ready(function() {
     });
 })
 
-$("#sign-in").click(()=>{
+$("#sign-in").click(async function() {
   userID = $("#userID").val();
   userPW = $("#userPW").val();
   var existID = false;
@@ -95,13 +98,13 @@ $("#sign-in").click(()=>{
     document.getElementById('userID').style = "border: ''";
     document.getElementById('userPW').style = "border: ''";
     $("#signinHelp").remove();
-    /*
-    db.collection('users').add({
+    
+    await db.collection('users').add({
       // family-code: familyCode,
       // family-id: 
       id: userID,
       pw: userPW
-    })*/
+    })
     location.href = 'home.html';
   }
 })

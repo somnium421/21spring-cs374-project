@@ -135,12 +135,12 @@ $('#getfile').change(()=>{
 })
 
 $('#later').click(function(){
-    location.href = "after-setting-tree.html"
+    location.href = "home.html"
 })
 
 
 $('#checked').on('hidden.bs.modal ',function(){
-    location.href = "after-setting-tree.html"
+    location.href = "home.html"
 })
 
 //db 에 저장. 그런데 familycode를 알아야 할 듯

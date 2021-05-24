@@ -1,10 +1,8 @@
-var userId = 20; 
-
 
 var groupDataArray1 ;
 
 
-
+var participants_transfer
 
 
 // window.nchart = [
@@ -188,7 +186,9 @@ $(document).ready(function(){
         snapshot.forEach((doc) => {
             chart = doc.data().members;
         })
-        window.nchart = chart;
+
+        console.log(chart);
+
         for (let i = 0; i < chart.length; i++){
             if (chart[i].pid == 0 && chart[i].ppid == 1){
                 snd.push(i);
@@ -199,14 +199,14 @@ $(document).ready(function(){
         for (let j = 0; j<snd.length; j++){
             var children = [];
             for (let i = 0; i<chart.length; i++){
-                if (chart[i].pid == snd[j] && chart[i].ppid == snd_2[j]){
+                if (chart[i].pid == snd[j] || chart[i].ppid == snd_2[j]){
                     children.push(i);
                 }
             }
             thrd.push(children? children: []);
         }
     
-        var me = userId; // id 숫자
+        var me = userID; // id 숫자
         chart[me].title = "나";
     
         console.log("fst:" + fst);
@@ -264,10 +264,11 @@ $(document).ready(function(){
         else{
             var menum = -1;
             for (let i = 0; i< thrd.length; i++){
-                if (thrd[i].includes(me)){
+                if (thrd[i].includes(Number(me))){
                     menum = i;
                 }
             }
+            console.log(menum);
             var father = (chart[snd[menum]].gender == "male")
             if (father){
                 if (chart[0].gender == "male"){
@@ -323,7 +324,7 @@ $(document).ready(function(){
 
         
         var finalChart = chart;
-        var familyGroup = families(window.nchart, finalChart);
+        var familyGroup = families( chart, finalChart);
 
 
         groupDataArray1 = arrTransfer(familyGroup, finalChart);
@@ -344,7 +345,7 @@ $(document).ready(function(){
             }
         };
 
-        var participants_transfer = $("#participants-transfer").transfer(settings);
+        participants_transfer = $("#participants-transfer").transfer(settings);
 
 
 

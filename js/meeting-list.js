@@ -5,7 +5,7 @@ const placeData = [], activityData = [], markers = [], infoWindows = [], latlngs
 var meetings, members, chats, docID, answerID, isAssign;
 
 isAssign = (familyCode !== null);
-console.log(familyCode)
+console.log(isAssign);
 // duedate 지나면 결과확인 되기 -> 됨. 생성에 문제가근데, 그 전에는 duedate 남은거 받아서 표시 -> 됨. , userID가 참가자중 없는데 private이면 안보여야함. private 이면 색깔 다르게.
 // tag 중에는 제일 인기가 많은거 나오게??
 // host가 들어가면 보이는 화면이 다른가?
@@ -219,3 +219,6 @@ $(document).ready(function() {
 console.log('hello');
 console.log(localStorage.getItem('familyCode'));
 console.log(localStorage.getItem('userID'));
+
+
+///없어도 뭔가 뜨게!!!!!!!!
