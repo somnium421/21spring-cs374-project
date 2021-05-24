@@ -1,6 +1,5 @@
 const familyCode = localStorage.getItem("family-code") //"00AB8"
 const userID = localStorage.getItem("family-id") // "0"
-
 console.log(familyCode, userID);
 
 localStorage.removeItem("meeting-number");
