@@ -81,8 +81,7 @@
                     </a>
                 </li>
             </ul>
-            <button type="button" class="btn btn-outline-primary mb-2 mx-4">로그아웃</button>
-        </div>
+            <button type="button" class="btn btn-outline-primary mb-2 mx-4" data-bs-toggle="modal" data-bs-target="#logout-modal" data-bs-whatever="@mdo">로그아웃</button>        </div>
         <div class="container-fluid col" style="margin-left: 200px">
             <div class="row fs-3 fw-bold mt-5 mb-4 ms-5">모임 참여 신청하기</div>
             <div class="card mx-5 meeting-card shadow" style="border-radius: 10px;">
@@ -280,6 +279,20 @@
                     </form>
                 </div>
             </form>
+        </div>
+        <div class="modal fade" id="logout-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel"><b>로그아웃 하시겠습니까?</b> <span class="fw-light eng-cap">Log out?</span> </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                        <a type="button" class="btn btn-primary" data-bs-dismiss="modal" id="logout-button">로그아웃</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>
