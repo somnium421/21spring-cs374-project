@@ -1,5 +1,5 @@
 const familyCode = "00AB8", meetingNumber = 0, userID = 0;
-const placeData = [], activityData = [], markers = [], infoWindows = [], latlngs = []
+const placeData = [], activityData = [], markers = [], infoWindows = [], latlngs = [], answers = [];
 var meetings, members, chats,  docID, answerID;
 var hostAvailableDates = {};
 var datesChartData = {};
@@ -312,11 +312,29 @@ $(document).ready(function() {
 
             $('#meeting-description').text(meetings[meetingNumber].description);
 
-            for (var participant of meetings[meetingNumber].participants) {
-                $('#meeting-participants').append(` <a href="#" class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title=${participant.name}>
-                                                        <img src="${members[participant.id].img}" style="width:30px;height:30px;border-radius:70%;opacity:${(Math.random(1)<0.5)?0.5:1}"></img>
-                                                    </a>`);
-            }
+            db.collection('families').doc(docID).collection('answers').where('meetingNumber', '==', meetingNumber).get()
+            .then((snapshot) => {
+                snapshot.forEach((doc) => {
+                    answers.push(doc.data());
+                })
+                // console.log(answers);
+                const answered = [];
+                for (var participant of meetings[meetingNumber].participants) {
+                    for (var answer of answers) {
+                        if (answer.userID == participant.id) {
+                            answered.push(answer.userID);
+                            $('#meeting-participants').append(` <a class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title=${participant.name}>
+                                                            <img src="${members[participant.id].img}" style="width:30px;height:30px;border-radius:70%;margin-bottom:2px;"></img>
+                                                        </a>`);
+                        }
+                    }
+                }
+                for (var participant of meetings[meetingNumber].participants) {
+                    if (!(participant.id in answered)) $('#meeting-participants').append(` <a class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title=${participant.name}>
+                                                            <img src="${members[participant.id].img}" style="width:30px;height:30px;border-radius:70%;margin-bottom:2px;filter:brightness(0.3);opacity:0.4;"></img>
+                                                        </a>`);
+                }
+            })
 
             var meetingTags;
             if (meetings[meetingNumber].meetingPeriod.day == 0) meetingTags = `<span class="badge rounded-pill bg-light text-dark">${meetings[meetingNumber].meetingPeriod.hour}시간</span> <span style="font-size: smaller;">동안</span>`;
