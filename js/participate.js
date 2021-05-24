@@ -1,6 +1,6 @@
 //import firebase from "firebase";
 
-const familyCode = "00AB8", meetingNumber = 0, userID = 0;
+const familyCode = "00AB8", meetingNumber = 0, userID = 0, answers = [];
 var meetings, members, docID;
 
 var userAvailableDates = [];
@@ -45,7 +45,30 @@ $(document).ready(function() {
             docID = doc.id;
             meetings = doc.data().meetings;
             members = doc.data().members;
-            console.log(meetings);
+
+            db.collection('families').doc(docID).collection('answers').where('meetingNumber', '==', meetingNumber).get()
+            .then((snapshot) => {
+                snapshot.forEach((doc) => {
+                    answers.push(doc.data());
+                })
+                console.log(answers);
+                const answered = [];
+                for (var participant of meetings[meetingNumber].participants) {
+                    for (var answer of answers) {
+                        if (answer.userID == participant.id) {
+                            answered.push(answer.userID);
+                            $('#meeting-participants').append(` <a class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title=${participant.name}>
+                                                            <img src="${members[participant.id].img}" style="width:30px;height:30px;border-radius:70%;margin-bottom:2px;"></img>
+                                                        </a>`);
+                        }
+                    }
+                }
+                for (var participant of meetings[meetingNumber].participants) {
+                    if (!(participant.id in answered)) $('#meeting-participants').append(` <a class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title=${participant.name}>
+                                                            <img src="${members[participant.id].img}" style="width:30px;height:30px;border-radius:70%;margin-bottom:2px;filter:brightness(0.3);opacity:0.4;"></img>
+                                                        </a>`);
+                }
+            })
 
             if (meetings[meetingNumber].isPrivate) $('#is-private').append('<span class="text-muted" style="font-size: smaller;"><i class="fas fa-lock me-1"></i> 비공개</span>')
             else $('#is-private').append('<span class="text-muted" style="font-size: smaller;"><i class="fas fa-globe-asia me-1"></i> 공개</span>')
@@ -53,13 +76,7 @@ $(document).ready(function() {
             $('#meeting-name').text(meetings[meetingNumber].name);
 
             $('#meeting-description').text(meetings[meetingNumber].description);
-
-            for (var participant of meetings[meetingNumber].participants) {
-                $('#meeting-participants').append(` <a href="#" class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title=${participant.name}>
-                                                        <img src="${members[participant.id].img}" style="width:30px;height:30px;border-radius:70%;opacity:${(Math.random(1)<0.5)?0.5:1}"></img>
-                                                    </a>`);
-            }
-            console.log(meetings[meetingNumber].availableDates[0].toDate());
+            // console.log(meetings[meetingNumber].availableDates[0].toDate());
             //if (true) {
             if (meetings[meetingNumber].meetingPeriod.day > 1 && meetings[meetingNumber].availableDates.length == meetings[meetingNumber].meetingPeriod.day) {
                 var time1 = meetings[meetingNumber].availableDates[0].toDate(), time2 = meetings[meetingNumber].availableDates[meetings[meetingNumber].availableDates.length-1].toDate();
