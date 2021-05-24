@@ -1,9 +1,10 @@
 
 // import firebase  from "firebase";
 
-localStorage.setItem('family-code', "4NAF0");
+localStorage.setItem('family-code', "00AB8");
 //var familyCode = "00AB8";
 var familyCode = localStorage.getItem('family-code');
+var userID = localStorage.getItem('family-id');
 var members=[], docID ;
 var me;
 
@@ -38,7 +39,13 @@ db.collection('families').where('code', '==', familyCode)
     snapshot.forEach((doc) => {
         console.log("hi");
         docID = doc.id;
-        members = doc.data().members;        
+        members = doc.data().members;    
+        for (var member of members) {
+            if (member.id == userID) {
+                $('#user-name').text(member.name);
+                $('#user-img').attr('src', member.img);
+            }
+        }    
     })
 
     console.log(members);
@@ -174,4 +181,12 @@ $('#assign-submit').click(async ()=>{
                 })
             });
         });
+})
+
+$('#logout-button').click(() => {
+    localStorage.removeItem('family-code');
+    localStorage.removeItem('family-id');
+    localStorage.removeItem('id');
+    localStorage.removeItem('pw');
+    location.href = "login.html";
 })

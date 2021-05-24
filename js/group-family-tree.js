@@ -1,5 +1,5 @@
-// const familyCode = localStorage.getItem("family-code") //"00AB8"
-// const userID = localStorage.getItem("family-id") // "0"
+//var familyCode = localStorage.getItem("family-code"); //"00AB8"
+// var userID = localStorage.getItem("family-id"); // "0"
 
 $(document).ready(() => {
     if (familyCode !== null){
@@ -69,8 +69,7 @@ $(document).ready(() => {
                 console.log("hi");
                 docID = doc.id;
                 members = doc.data().members;    
-                window.newid = members.length;    
-    
+                window.newid = members.length;   
     
             })
             
@@ -376,3 +375,11 @@ function main(getme){
     }
     return window.nchart;
 } 
+
+$('#logout-button').click(() => {
+    localStorage.removeItem('family-code');
+    localStorage.removeItem('family-id');
+    localStorage.removeItem('id');
+    localStorage.removeItem('pw');
+    location.href = "login.html";
+})

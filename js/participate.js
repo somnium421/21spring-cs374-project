@@ -48,6 +48,13 @@ $(document).ready(function() {
             docID = doc.id;
             meetings = doc.data().meetings;
             members = doc.data().members;
+            for (var member of members) {
+                if (member.id == userID) {
+                    $('#user-name').text(member.name);
+                    $('#user-img').attr('src', member.img);
+                }
+            }
+
 
             db.collection('families').doc(docID).collection('answers').where('meetingNumber', '==', meetingNumber).get()
             .then((snapshot) => {
@@ -422,6 +429,13 @@ function bindEvents() {
             availableTime: userAvailableTime
         });
     });
+    $('#logout-button').click(() => {
+        localStorage.removeItem('family-code');
+        localStorage.removeItem('family-id');
+        localStorage.removeItem('id');
+        localStorage.removeItem('pw');
+        location.href = "login.html";
+    })
 
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {

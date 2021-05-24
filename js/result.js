@@ -83,6 +83,13 @@ function bindEvents() {
             });
         }
     });
+    $('#logout-button').click(() => {
+        localStorage.removeItem('family-code');
+        localStorage.removeItem('family-id');
+        localStorage.removeItem('id');
+        localStorage.removeItem('pw');
+        location.href = "login.html";
+    })
     tooltipSet();
 }
 
@@ -288,6 +295,13 @@ $(document).ready(function() {
             docID = doc.id;
             meetings = doc.data().meetings;
             members = doc.data().members;
+            for (var member of members) {
+                if (member.id == userID) {
+                    $('#user-name').text(member.name);
+                    $('#user-img').attr('src', member.img);
+                }
+            }
+
             var availableDates = meetings[meetingNumber].availableDates.map((el) => codeToDate(el));
             
             for (date in availableDates) {
@@ -306,9 +320,7 @@ $(document).ready(function() {
                     chats = doc.data();
                     console.log(chats);
                 })
-                if (chats != undefined) {
-                    for (var i=0; i<chats.chat.length; i++) drawChat(i);
-                }
+                for (var i=0; i<chats.chat.length; i++) drawChat(i);
             })
 
             if (meetings[meetingNumber].isPrivate) $('#is-private').append('<span class="text-muted" style="font-size: smaller;"><i class="fas fa-lock me-1"></i> 비공개</span>')
@@ -337,11 +349,12 @@ $(document).ready(function() {
                 }
                 for (var participant of meetings[meetingNumber].participants) {
                     if (!(Number(participant.id) in answered)) {
-                        $('#meeting-participants').append(` <a class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title=${participant.name}>
+                        $('#meeting-participants').append(` <a class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="${participant.name}">
                                                             <img src="${members[participant.id].img}" style="width:30px;height:30px;border-radius:70%;margin-bottom:2px;filter:brightness(0.3);opacity:0.4;"></img>
                                                         </a>`);
                     }
                 }
+                tooltipSet();
             })
 
             var meetingTags;
