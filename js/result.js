@@ -3,6 +3,7 @@ const placeData = [], activityData = [], markers = [], infoWindows = [], latlngs
 var meetings, members, chats,  docID, answerID;
 var hostAvailableDates = {};
 var datesChartData = {};
+var hostAvailableTime = [];
 
 let placeOptions = {
     container: {
@@ -166,7 +167,7 @@ function processData() {
     db.collection('families').doc(docID).collection('answers').where('meetingNumber', '==', meetingNumber)
     .get()
     .then((snapshot) => {
-        var placeDict = {}, activityDict = {}, availableDatesDict = {}, availableTimeDict = {};
+        var placeDict = {}, activityDict = {}, availableDatesDict = {}, availableTimeArr = [];
         const latlngs = [];
         snapshot.forEach((doc) => {
             for (var place of doc.data().place) {
@@ -185,7 +186,16 @@ function processData() {
                 else availableDatesDict[availableDates] = [doc.data().userID];
             }
 
-            if (doc.data().availableTime !== []) null;
+            if (doc.data().availableTime !== undefined && doc.data().availableTime.length !== 0) {
+                availableTime = doc.data().availableTime;
+                availableTime = rangeToItems(availableTime);
+                availableTimeArr.push({
+                    "name": doc.data().userID,
+                    "arrTime": availableTime,
+                })
+                
+                
+            };
             
             const find = latlngs.find(latlng => latlng.position[0] == doc.data().departure[1] && latlng.position[1] == doc.data().departure[0]);
             if (find) find.id.push(doc.data().userID);
@@ -233,7 +243,22 @@ function processData() {
             datesChartData[availableDates] = availableDatesDict[availableDates].map((id) => members[id].name)
         }
 
-        dateChartDraw(datesChartData)
+        dateChartDraw(datesChartData);
+        
+        if (availableTimeArr.length !== 0){
+            console.log(availableTimeArr);
+            availableTimeArr = availableTimeArr.map(({name, arrTime})=> {return {"name":members[name].name , "arrTime" : arrTime}})
+            console.log(availableTimeArr);
+            hostAvailableTime = rangeToItems (hostAvailableTime);
+            timeChartDraw(availableTimeArr, hostAvailableTime)
+        }
+        
+        // if (availableTimeArr){
+        //     var IDtoTime = [{name: "박종두", arrTime: [10, 21]}, {name: "박혜수", arrTime: [13, 19]}];
+        //     var arrAvailable = [10,22];
+            
+        // }
+        
         
         resize();
         tooltipSet();
@@ -264,7 +289,9 @@ $(document).ready(function() {
             for (date in availableDates) {
                 datesChartData[availableDates[date]] = []
             }
-            
+
+            hostAvailableTime = meetings[meetingNumber].availableTimes;
+            console.log(hostAvailableTime);
 
             processData();
             
@@ -356,6 +383,8 @@ function dateChartDraw(chartData) {
     
         // Configuration options go here
         options: {
+            responsive: true,
+            maintainAspectRatio: false,
             // legendCallback: function(chart) {
             //     return ` <span style="-webkit-transform:rotate(90deg);">짱!</span> `
             // },
@@ -412,29 +441,192 @@ function codeToDate(codeObj) {
     return new Date(codeObj["seconds"]*1000)
 }
 
+// var arrEx = ["12:00 AM", "09:00 PM"];
+// rangeToItems(arrEx);
 
 function rangeToItems(arr){
-    if (arr[0].slice(6, 8) === "PM")  Number(arr[0].slice(6, 8))+12;
+    var resArr = [];
+    if (arr[0] === "12:00 AM") resArr[0] = 0;
+    else if (arr[0].slice(6, 8) === "AM") resArr[0] = Number(arr[0].slice(0, 2))
+    else if (arr[0].slice(6, 8) === "PM") resArr[0] = Number(arr[0].slice(0, 2)) + 12;
+
+    if (arr[1] === "12:00 AM") resArr[1] = 0;
+    else if (arr[1].slice(6, 8) === "AM") resArr[1] = Number(arr[1].slice(0, 2))
+    else if (arr[1].slice(6, 8) === "PM") resArr[1] = Number(arr[1].slice(0, 2)) + 12;
+
+    return resArr;
 }
 
-function makingTimeData(arrSrt, arrEnd, arrAnswers, arrAvailable){
-//     // 다 숫자 형식이라고 침 (0 ~ 24)
-//     var inputData = [{
-//         "t" : arrAvailable[0],
-//         "y" : 0
-//     }];
-//     var numberDate = [];
-//     var labelToAnsObj = {};
-//     for (i = 0; i < arrSrt.length*2; i ++){
-//         if (i === 0 && arrSrt.filter((el) => el === arrAvailable[0]).length !== 0) inputData[y] = arrSrt.filter((el) => el === arrAvailable[0]).length;
-//         else {
-//             if arrSrt
-
-//         }
-//     }
-// }
-
-function timeChartDraw(chartData) {
 
 
+function makingTimeData(IDtoTime, arrAvailable){
+        // returns inputData, dictToAns (t label to answer list)
+       // IDtoTime = [{name: "박종두", arrTime: [10, 21]}, {name: "박혜수", arrTime: [13, 19]}]
+
+
+       // arrAvailable = [10,22];
+       // dictToAns = {10: ["박종두"], 13: ["박종두", "박혜수"], 19:["박종두"], 20:["박종두"], 21:[], 22:[]}
+///     // 다 숫자 형식이라고 침 (0 ~ 23)
+
+    // var inputData = [{
+    //     "t" : arrAvailable[0],
+    //     "y" : 0
+    // }];
+
+    var inputData = [];
+
+    var dictToAns = {};
+
+    var arrSrt = IDtoTime.map(({name, arrTime}) => arrTime[0]);
+    var arrEnd = IDtoTime.map(({name, arrTime}) => arrTime[1]);
+
+    if (arrSrt.filter((el)=> el === arrAvailable[0]).length !== 0) {
+        const obj = {};
+        obj.t = arrAvailable[0];
+        obj.y = arrSrt.filter((el)=> el === arrAvailable[0]).length;
+        inputData.push(obj);
+        var arrName = IDtoTime.filter(({name, arrTime}) => arrTime[0] === arrAvailable[0])
+                            .map((el)=>el.name)
+                            // .join(', ');
+        dictToAns[String(arrAvailable[0])] = arrName; 
+    } else {
+        const obj = {};
+        obj.t = arrAvailable[0];
+        obj.y = 0;
+        inputData.push(obj);
+        dictToAns[String(arrAvailable[0])] = []
+    }
+    
+    for (let i = arrAvailable[0] + 1; i < arrAvailable[1]+1 ; i ++){
+
+        var numberPeople = inputData.filter(({t})=> t === i-1)[0].y;
+    
+        var arrName = dictToAns[String(i-1)];
+        console.log(dictToAns)
+        if (arrSrt.filter((el) => el === i).length !== 0){
+            numberPeople += arrSrt.filter((el)=> el === i).length;
+            arrName = arrName.concat(IDtoTime.filter(({name, arrTime}) => arrTime[0] === i)
+                            .map((el)=>el.name));
+        }
+
+        if (arrEnd.filter((el) => el === i).length !== 0){
+            numberPeople -= arrEnd.filter((el)=> el === i).length;
+            var newArrName = IDtoTime.filter(({name, arrTime}) => arrTime[1] === i)
+                            .map((el)=>el.name)
+            
+            arrName = arrName.filter((el) => newArrName.filter((element) => element === el).length !== 0);
+        }
+        
+        inputData.push({
+            "t" : i,
+            "y" : numberPeople, 
+        })
+        console.log(inputData)
+        dictToAns[String(i)] = arrName;
+    }
+
+    inputData = inputData.map(function({t,y}){
+        var date = new Date();
+        date.setHours(t);
+        
+        return {"t":date.setMinutes(0), "y":y}
+    })
+    return [inputData, dictToAns]
+}
+
+function timeChartDraw(IDtoTime, arrAvailable) {
+    var ctx = $('#timeChart');
+    ctx.height = 280;
+
+    // var IDtoTime = [{name: "박종두", arrTime: [10, 21]}, {name: "박혜수", arrTime: [13, 19]}];
+    // var arrAvailable = [10,22];
+
+    srtTime = new Date() 
+    srtTime.setHours(arrAvailable[0]-2);
+    srtTime.setMinutes(0);
+    endTime = new Date() 
+    endTime.setHours(arrAvailable[1]);
+    endTime.setMinutes(0);
+    
+    var inputData = {
+        datasets: [{
+            label: 'Demo',
+            data: makingTimeData(IDtoTime, arrAvailable)[0],
+            lineTension: 0,
+            backgroundColor: 'rgba(163, 206, 255, 0.5)',
+            borderColor: 'rgb(153, 206, 255)',
+        }]
+      }
+
+    console.log(inputData);
+    var dictToAns = makingTimeData(IDtoTime, arrAvailable)[1];
+
+    var chart = new Chart(ctx, {
+        type: 'line',
+        data: inputData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            tooltips: {
+                custom: function(tooltip) {
+                    if (!tooltip) return;
+                    // disable displaying the color box;
+                    tooltip.displayColors = false;
+                  },
+                bodyAlign: "center",
+                titleAlign: "center",
+                yPadding: 10,
+                bodyFontSize: 14,
+                callbacks: {
+                    title: function(tooltipItem, data) {
+                        return "";
+                        if (tooltipItem.yLabel > 0){
+                            return tooltipItem.xLabel;
+                        }
+                        // var date = new Date(tooltipItem.xLabel);
+                        // var hrs = date.getHours()
+                        
+                        // if (hrs < 12) return `${hrs} AM`;
+                        // else if (hrs === 12) return `12 PM`;
+                        // else return `${hrs-12} PM`;
+                    },
+                    label: function(tooltipItem, data) {
+                        if (tooltipItem.yLabel > 0){
+                            var date = new Date(tooltipItem.xLabel);
+                            return dictToAns[date.getHours()].join(", ");
+                            // return dictToAns[data.datasets.data[tooltipItem.datasetIndex].t.getHours()].join(" ,")
+                        }
+                    },
+                }
+            },
+            scales: {
+                xAxes: [{
+                    type: 'time',
+                    time: {
+                        unit: 'hour',
+                        stepSize: 2,
+                    },
+                    ticks:{
+                        min: srtTime,
+                        max: endTime,
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true,
+                        display: false,
+                        stepSize : 5,
+                    },
+                    gridLines: {
+                        display: false
+                    },
+                }]
+            },
+            legend: {
+                display: false
+                // position: "left",
+            },
+            
+        }
+    });
 }
