@@ -2,7 +2,7 @@
 // //This is for new meeting creation page
 
 const familyCode = localStorage.getItem("family-code"); // from the local storage
-const userID = localStorage.getItem("family-id");// from the local storage
+const userID = Number(localStorage.getItem("family-id"));// from the local storage
 
 var availableTime = [];
 var availableDates = [];
