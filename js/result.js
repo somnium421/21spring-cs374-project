@@ -288,6 +288,13 @@ $(document).ready(function() {
             docID = doc.id;
             meetings = doc.data().meetings;
             members = doc.data().members;
+            for (var member of members) {
+                if (member.id == userID) {
+                    $('#user-name').text(member.name);
+                    $('#user-img').attr('src', member.img);
+                }
+            }
+
             var availableDates = meetings[meetingNumber].availableDates.map((el) => codeToDate(el));
             
             for (date in availableDates) {
