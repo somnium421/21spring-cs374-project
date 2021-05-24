@@ -68,7 +68,7 @@ function families(chart, finalChart) {
                         && finalChart[i].title !== '아내'
                         && finalChart[i].title !== '남편'
                         && finalChart[i].title ) familyGroup.name = `${finalChart[i].title}네 가족`;
-                else if (finalChart[i].title === undefined 
+                else if (finalChart[i].title === undefined
                         || finalChart[i].title === '딸' 
                         || finalChart[i].title === '아들' ) familyGroup.name = `${chart[i].name}의 가족`
                 else if (finalChart[i].title === '나' 
@@ -143,6 +143,7 @@ function mypartner(me, chart){
 }
 
 function myparent(me, chart){
+    
     if(chart[chart[me].pid].gender == "male"){
         chart[chart[me].pid].title = "아버지";
         chart[chart[me].ppid].title = "어머니";
@@ -155,6 +156,7 @@ function myparent(me, chart){
 
 function mychild(chld, chart){
     child = chart[chld];
+    
     if (child.gender == "male"){
         child.title = "아들";
     }
@@ -199,8 +201,9 @@ $(document).ready(function(){
         for (let j = 0; j<snd.length; j++){
             var children = [];
             for (let i = 0; i<chart.length; i++){
-                if (chart[i].pid == snd[j] || chart[i].ppid == snd_2[j]){
+                if (chart[i].pid == snd[j] && chart[i].ppid == snd_2[j]){
                     children.push(i);
+                    console.log(i)
                 }
             }
             thrd.push(children? children: []);
@@ -219,6 +222,7 @@ $(document).ready(function(){
     
             for (let i = 0; i<snd.length; i++){
                 mychild(snd[i], chart);
+                console.log(snd[i]);
                 mychildpt(snd_2[i], chart);
     
                 for (let j = 0; j< thrd[i].length; j++){
@@ -264,7 +268,7 @@ $(document).ready(function(){
         else{
             var menum = -1;
             for (let i = 0; i< thrd.length; i++){
-                if (thrd[i].includes(Number(me))){
+                if (thrd[i].includes(me)){
                     menum = i;
                 }
             }
@@ -324,6 +328,7 @@ $(document).ready(function(){
 
         
         var finalChart = chart;
+        console.log(finalChart);
         var familyGroup = families( chart, finalChart);
 
 

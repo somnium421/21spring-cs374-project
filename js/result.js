@@ -1,6 +1,6 @@
 //import firebase from "firebase";
 const familyCode = !localStorage.getItem('family-code') ? '00AB8' : localStorage.getItem('family-code');
-const meetingNumber = !localStorage.getItem('meeting-number') ? 0 : Number(localStorage.getItem('meeting-number'));
+const meetingNumber = !localStorage.getItem('meeting-number') ? 1 : Number(localStorage.getItem('meeting-number'));
 const userID = !localStorage.getItem('family-id') ? 0 : Number(localStorage.getItem('family-id'));
 
 const placeData = [], activityData = [], markers = [], infoWindows = [], latlngs = [], answers = [];
@@ -306,7 +306,9 @@ $(document).ready(function() {
                     chats = doc.data();
                     console.log(chats);
                 })
-                for (var i=0; i<chats.chat.length; i++) drawChat(i);
+                if (chats != undefined) {
+                    for (var i=0; i<chats.chat.length; i++) drawChat(i);
+                }
             })
 
             if (meetings[meetingNumber].isPrivate) $('#is-private').append('<span class="text-muted" style="font-size: smaller;"><i class="fas fa-lock me-1"></i> 비공개</span>')
@@ -334,14 +336,16 @@ $(document).ready(function() {
                     }
                 }
                 for (var participant of meetings[meetingNumber].participants) {
-                    if (!(participant.id in answered)) $('#meeting-participants').append(` <a class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title=${participant.name}>
+                    if (!(Number(participant.id) in answered)) {
+                        $('#meeting-participants').append(` <a class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title=${participant.name}>
                                                             <img src="${members[participant.id].img}" style="width:30px;height:30px;border-radius:70%;margin-bottom:2px;filter:brightness(0.3);opacity:0.4;"></img>
                                                         </a>`);
+                    }
                 }
             })
 
             var meetingTags;
-            if (meetings[meetingNumber].meetingPeriod.day == 0) meetingTags = `<span class="badge rounded-pill bg-light text-dark">${meetings[meetingNumber].meetingPeriod.hour}시간</span> <span style="font-size: smaller;">동안</span>`;
+            if (meetings[meetingNumber].meetingPeriod.day == 0) meetingTags = `<span class="badge rounded-pill bg-light text-dark">${meetings[meetingNumber].meetingPeriod.hr}시간</span> <span style="font-size: smaller;">동안</span>`;
             else if (meetings[meetingNumber].meetingPeriod.day == 1) meetingTags = `<span class="badge rounded-pill bg-light text-dark">하루</span> <span style="font-size: smaller;">종일</span>`;
             else meetingTags = `<span class="badge rounded-pill bg-light text-dark">${meetings[meetingNumber].meetingPeriod.day-1}박 ${meetings[meetingNumber].meetingPeriod.day}일</span> <span style="font-size: smaller;">동안</span> `
             if (meetings[meetingNumber].noMorePlace) {
