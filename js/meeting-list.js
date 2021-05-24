@@ -1,8 +1,11 @@
-const familyCode = "00AB8"
-var userID = 0
-const placeData = [], activityData = [], markers = [], infoWindows = [], latlngs = [], meetingUserPart = [], answers = [];
-var meetings, members, chats, docID, answerID;
+const familyCode = localStorage.getItem("family-code") //"00AB8"
+const userID = localStorage.getItem("family-id") // "0"
 
+const placeData = [], activityData = [], markers = [], infoWindows = [], latlngs = [], meetingUserPart = [], answers = [];
+var meetings, members, chats, docID, answerID, isAssign;
+
+isAssign = (familyCode !== null);
+console.log(familyCode)
 // duedate 지나면 결과확인 되기 -> 됨. 생성에 문제가근데, 그 전에는 duedate 남은거 받아서 표시 -> 됨. , userID가 참가자중 없는데 private이면 안보여야함. private 이면 색깔 다르게.
 // tag 중에는 제일 인기가 많은거 나오게??
 // host가 들어가면 보이는 화면이 다른가?
@@ -108,82 +111,109 @@ function processData(meetingNumber, html_isPrivate, html_dueDate, html_meetingNa
 
 
 $(document).ready(function() {
+    
     $('head').append('<style type="text/css"> #meeting-list {height: ' + ($('.card-body').height()) + 'px;}</style>');
-    db.collection('families').where('code', '==', familyCode)
-    .get()
-    .then((snapshot) => {
-        snapshot.forEach((doc) => {
-            docID = doc.id;
-            meetings = doc.data().meetings;
-            members = doc.data().members;
-
-            for (meetingNumber = 0; meetingNumber < meetings.length; meetingNumber ++){
-
-                
-                // if private and userID is not in the participants list, ignore.
-                if (meetings[meetingNumber].isPrivate && meetings[meetingNumber].participants.filter(({id}) => id === userID).length === 0) continue;
-
-                var html_isPrivate, html_dueDate, html_meetingName, html_meetingDescription, html_meetingParticipants, html_meetingTags, html_button, html_meetingDates;
-
-                if (meetings[meetingNumber].isPrivate) html_isPrivate = '<span class="text-muted" style="font-size: smaller;"><i class="fas fa-lock me-1"></i> 비공개</span>'
-                else html_isPrivate = '<span class="text-muted" style="font-size: smaller;"><i class="fas fa-globe-asia me-1"></i> 공개</span>'
-                
-                var meetingDue = new Date(meetings[meetingNumber].dueDate);
-                var now = new Date();
-
-                console.log(meetingDue, now);
-                if (meetingDue.getDate() > now.getDate()) {
-                    html_dueDate = `<span class="text-muted" style="font-size: smaller;"><i class="fa fa-ellipsis-h" aria-hidden="true"></i> &nbsp;참여 마감 <span class="text-primary">${meetingDue.getDate()-now.getDate()}</span>일 전</span>`
-                    html_button = `<button class="btn btn-outline-primary rounded-pill participate" id="${meetingNumber}">참여 신청 &nbsp; <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`
-                }
-                else {
-                    html_dueDate = `<span class="text-muted" style="font-size: smaller;"><i class="fa fa-check" aria-hidden="true"></i> &nbsp;참여 마감</span>`
-                    html_button = `<button class="btn btn-primary rounded-pill result" id="${meetingNumber}" > 결과 확인 &nbsp; <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`
-                }
-
-                html_meetingDates =``
-
-
-                if (meetings[meetingNumber].meetingPeriod.day > 1 && meetings[meetingNumber].availableDates.length == meetings[meetingNumber].meetingPeriod.day) {
-                    var time1 = meetings[meetingNumber].availableDates[0].toDate(), time2 = meetings[meetingNumber].availableDates[meetings[meetingNumber].availableDates.length-1].toDate();
-                    html_meetingDates = `<h4><span class="badge rounded-pill bg-light text-dark"><i class="fa fa-calendar" aria-hidden="true"></i> 
-                        &nbsp; ${time1.getYear()+1900}.${time1.getMonth()+1}.${time1.getDate()} ~ ${time2.getYear()+1900}.${time2.getMonth()+1}.${time2.getDate()} </span></h4>`;
-                }
-                //else {
-                else if (meetings[meetingNumber].meetingPeriod.day <= 1 && meetings[meetingNumber].availableDates.length == 1) {
-                    var time = meetings[meetingNumber].availableDates[0].toDate()
-                    html_meetingDates  =`<h4><span class="badge rounded-pill bg-light text-dark"><i class="fa fa-calendar" aria-hidden="true"></i> 
-                        &nbsp; ${time.getYear()+1900}.${time.getMonth()+1}.${time.getDate()} </span></h4>`;
-                }
-
-                html_meetingName = meetings[meetingNumber].name;
     
-                html_meetingDescription = meetings[meetingNumber].description;
+    if (isAssign){
+
+        $("#familyTree").append(`<div id= "after-setting-tree" style="height: 600px;"></div>`);
+
+        console.log("tree")
+        db.collection('families').where('code', '==', familyCode)
+        .get()
+        .then((snapshot) => {
+            snapshot.forEach((doc) => {
+                docID = doc.id;
+                meetings = doc.data().meetings;
+                members = doc.data().members;
     
-                html_meetingParticipants = ``;
-                
-                var meetingTags;
-                
-
-                if (meetings[meetingNumber].meetingPeriod.day == 0) meetingTags = `<span class="badge rounded-pill bg-light text-dark">${meetings[meetingNumber].meetingPeriod.hr}시간</span> <span style="font-size: smaller;">동안</span>`;
-                else if (meetings[meetingNumber].meetingPeriod.day == 1) meetingTags = `<span class="badge rounded-pill bg-light text-dark">하루</span> <span style="font-size: smaller;">종일</span>`;
-                else meetingTags = `<span class="badge rounded-pill bg-light text-dark">${meetings[meetingNumber].meetingPeriod.day-1}박 ${meetings[meetingNumber].meetingPeriod.day}일</span> <span style="font-size: smaller;">동안</span> `
-                if (meetings[meetingNumber].noMorePlace) {
-                    var tmp = meetings[meetingNumber].place.map((x) => `<span class="badge rounded-pill bg-light text-dark">${x}</span>`).join('');
-                    meetingTags += tmp + '<span style="font-size: smaller;">에서</span>';
-                }
-                if (meetings[meetingNumber].noMoreActivity) {
-                    var tmp = meetings[meetingNumber].activity.map((x) => `<span class="badge rounded-pill bg-light text-dark">${x}</span>`).join('');
-                    meetingTags += tmp;
-                }
-                html_meetingTags = meetingTags;
-
-                
-                processData(meetingNumber, html_isPrivate, html_dueDate, html_meetingName, html_meetingDescription, 
-                    html_meetingParticipants, html_meetingDates, html_meetingTags, html_button);
-
-            }
+                for (meetingNumber = 0; meetingNumber < meetings.length; meetingNumber ++){
+    
+                    
+                    // if private and userID is not in the participants list, ignore.
+                    if (meetings[meetingNumber].isPrivate && meetings[meetingNumber].participants.filter(({id}) => id === userID).length === 0) continue;
+    
+                    var html_isPrivate, html_dueDate, html_meetingName, html_meetingDescription, html_meetingParticipants, html_meetingTags, html_button, html_meetingDates;
+    
+                    if (meetings[meetingNumber].isPrivate) html_isPrivate = '<span class="text-muted" style="font-size: smaller;"><i class="fas fa-lock me-1"></i> 비공개</span>'
+                    else html_isPrivate = '<span class="text-muted" style="font-size: smaller;"><i class="fas fa-globe-asia me-1"></i> 공개</span>'
+                    
+                    var meetingDue = new Date(meetings[meetingNumber].dueDate);
+                    var now = new Date();
+    
+                    console.log(meetingDue, now);
+                    if (meetingDue.getDate() > now.getDate()) {
+                        html_dueDate = `<span class="text-muted" style="font-size: smaller;"><i class="fa fa-ellipsis-h" aria-hidden="true"></i> &nbsp;참여 마감 <span class="text-primary">${meetingDue.getDate()-now.getDate()}</span>일 전</span>`
+                        html_button = `<button class="btn btn-outline-primary rounded-pill participate" id="meeting-${meetingNumber}">참여 신청 &nbsp; <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`
+                    }
+                    else {
+                        html_dueDate = `<span class="text-muted" style="font-size: smaller;"><i class="fa fa-check" aria-hidden="true"></i> &nbsp;참여 마감</span>`
+                        html_button = `<button class="btn btn-primary rounded-pill result" id="meeting-${meetingNumber}" > 결과 확인 &nbsp; <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`
+                    }
+    
+                    html_meetingDates =``
+    
+    
+                    if (meetings[meetingNumber].meetingPeriod.day > 1 && meetings[meetingNumber].availableDates.length == meetings[meetingNumber].meetingPeriod.day) {
+                        var time1 = meetings[meetingNumber].availableDates[0].toDate(), time2 = meetings[meetingNumber].availableDates[meetings[meetingNumber].availableDates.length-1].toDate();
+                        html_meetingDates = `<h4><span class="badge rounded-pill bg-light text-dark"><i class="fa fa-calendar" aria-hidden="true"></i> 
+                            &nbsp; ${time1.getYear()+1900}.${time1.getMonth()+1}.${time1.getDate()} ~ ${time2.getYear()+1900}.${time2.getMonth()+1}.${time2.getDate()} </span></h4>`;
+                    }
+                    //else {
+                    else if (meetings[meetingNumber].meetingPeriod.day <= 1 && meetings[meetingNumber].availableDates.length == 1) {
+                        var time = meetings[meetingNumber].availableDates[0].toDate()
+                        html_meetingDates  =`<h4><span class="badge rounded-pill bg-light text-dark"><i class="fa fa-calendar" aria-hidden="true"></i> 
+                            &nbsp; ${time.getYear()+1900}.${time.getMonth()+1}.${time.getDate()} </span></h4>`;
+                    }
+    
+                    html_meetingName = meetings[meetingNumber].name;
         
+                    html_meetingDescription = meetings[meetingNumber].description;
+        
+                    html_meetingParticipants = ``;
+                    
+                    var meetingTags;
+                    
+    
+                    if (meetings[meetingNumber].meetingPeriod.day == 0) meetingTags = `<span class="badge rounded-pill bg-light text-dark">${meetings[meetingNumber].meetingPeriod.hr}시간</span> <span style="font-size: smaller;">동안</span>`;
+                    else if (meetings[meetingNumber].meetingPeriod.day == 1) meetingTags = `<span class="badge rounded-pill bg-light text-dark">하루</span> <span style="font-size: smaller;">종일</span>`;
+                    else meetingTags = `<span class="badge rounded-pill bg-light text-dark">${meetings[meetingNumber].meetingPeriod.day-1}박 ${meetings[meetingNumber].meetingPeriod.day}일</span> <span style="font-size: smaller;">동안</span> `
+                    if (meetings[meetingNumber].noMorePlace) {
+                        var tmp = meetings[meetingNumber].place.map((x) => `<span class="badge rounded-pill bg-light text-dark">${x}</span>`).join('');
+                        meetingTags += tmp + '<span style="font-size: smaller;">에서</span>';
+                    }
+                    if (meetings[meetingNumber].noMoreActivity) {
+                        var tmp = meetings[meetingNumber].activity.map((x) => `<span class="badge rounded-pill bg-light text-dark">${x}</span>`).join('');
+                        meetingTags += tmp;
+                    }
+                    html_meetingTags = meetingTags;
+    
+                    
+                    processData(meetingNumber, html_isPrivate, html_dueDate, html_meetingName, html_meetingDescription, 
+                        html_meetingParticipants, html_meetingDates, html_meetingTags, html_button);
+    
+                }
+            
+            });
         });
-    });
+    } else {
+        // family tree
+        $("#familyTree").append(`<p class="card-text text-muted mt-3">아직 가족 관계도가 없습니다. <a href="load-family-tree.html" class="card-link">생성하기</a>
+                <br>
+                <a href="load-family-tree.html" class="card-link card-text fw-light eng-cap">Make a new family tree.</a>
+            </p>`)
+
+
+        //meeting list
+        $("#meeting-list, #meeting-list-part, #meeting-list-not-part, #family-tree").attr("class", "card-body overflow-auto text-center")
+        $(".meeting-card, .family-tree-card").attr("class", "card h-100 shadow pb-3 bg-light")
+        $("#createNewMeeting").attr("class", "btn btn-primary rounded-pill btn-lg shadow disabled")
+        $("#meeting-list, #meeting-list-part, #meeting-list-not-part").append(`<p class="card-text text-muted mt-3">가족 관계도를 생성하고 서비스를 이용해보세요! <a href="load-family-tree.html" class="card-link">생성하기</a>
+                    <br>
+                    <a href="load-family-tree.html" class="card-link card-text fw-light eng-cap">Make a new family tree.</a>
+                </p>`
+        )
+    
+    }
+    
 });
