@@ -1,6 +1,8 @@
-//import firebase from "firebase";
+const familyCode = localStorage.getItem('family-code') == null ? '00AB8' : localStorage.getItem('family-code')
+// const familyID = localStorage.getItem('family-id') == null ? '00AB8' : localStorage.getItem('family-id')
+const meetingNumber = localStorage.getItem('meeting-number') == null ? 0 : localStorage.getItem('meeting-number')
+const userID = localStorage.getItem('id') == null ? 0 : localStorage.getItem('id')
 
-const familyCode = "00AB8", meetingNumber = 0, userID = 0;
 var meetings, members, docID;
 
 var userAvailableDates = [];
@@ -45,8 +47,14 @@ $(document).ready(function() {
             docID = doc.id;
             meetings = doc.data().meetings;
             members = doc.data().members;
-            console.log(meetings);
+            // console.log(meetings);
 
+            for (var member of members) {
+                if (member.id == userID) {
+                    $('#user-name').text(member.name);
+                    $('#user-img').attr('src', member.img);
+                }
+            }
             if (meetings[meetingNumber].isPrivate) $('#is-private').append('<span class="text-muted" style="font-size: smaller;"><i class="fas fa-lock me-1"></i> 비공개</span>')
             else $('#is-private').append('<span class="text-muted" style="font-size: smaller;"><i class="fas fa-globe-asia me-1"></i> 공개</span>')
 
@@ -55,11 +63,11 @@ $(document).ready(function() {
             $('#meeting-description').text(meetings[meetingNumber].description);
 
             for (var participant of meetings[meetingNumber].participants) {
-                $('#meeting-participants').append(` <a href="#" class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title=${participant.name}>
+                $('#meeting-participants').append(` <a class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title=${participant.name}>
                                                         <img src="${members[participant.id].img}" style="width:30px;height:30px;border-radius:70%;opacity:${(Math.random(1)<0.5)?0.5:1}"></img>
                                                     </a>`);
             }
-            console.log(meetings[meetingNumber].availableDates[0].toDate());
+            // console.log(meetings[meetingNumber].availableDates[0].toDate());
             //if (true) {
             if (meetings[meetingNumber].meetingPeriod.day > 1 && meetings[meetingNumber].availableDates.length == meetings[meetingNumber].meetingPeriod.day) {
                 var time1 = meetings[meetingNumber].availableDates[0].toDate(), time2 = meetings[meetingNumber].availableDates[meetings[meetingNumber].availableDates.length-1].toDate();
@@ -445,7 +453,9 @@ function onSuccessGeolocation(position) {
 }
 
 function onErrorGeolocation() {
-    console.log('error')
+    map = new naver.maps.Map("map", {
+        zoom: 15
+    });
 }
   
 function searchAddressToCoordinate(address) {
@@ -458,7 +468,13 @@ function searchAddressToCoordinate(address) {
         var item = response.v2.addresses[0],
             point = new naver.maps.Point(item.x, item.y);
         answer.departure = [item.x, item.y];
-        marker.setPosition(point);
+        if (marker == undefined) {
+            marker = new naver.maps.Marker({
+                position: point,
+                map: map
+            })
+        }
+        else marker.setPosition(point);
         map.setCenter(point);
     });
 }
