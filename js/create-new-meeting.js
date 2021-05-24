@@ -1,7 +1,8 @@
 // import {participants_transfer} from './js/participants-transfer.js'
 // //This is for new meeting creation page
 
-var familyCode = "00AB8"; // from the local storage
+const familyCode = "00AB8"; // from the local storage
+const userID = 20;// from the local storage
 
 var availableTime = [];
 var availableDates = [];
@@ -100,31 +101,36 @@ function validatearr(id, arr, len){
 function validatearr2(id, arr, len){
     if (arr.length != len){
         $("#"+id+"Help").remove();
-        document.getElementById(id).style = "border: ''";
         return true; 
     }
     var text = `<small id="`+id+`Help" class="form-text" style="color: red">필수입력 사항입니다. </small>`
     if ($("#"+id+"Help").length === 0) $("#"+id).parent().append(text);
-    document.getElementById(id).style = "border: 2px solid #E8ADAA";
     return false;
 }
 function validatearr3(id, arr, len){
-    if (arr.length == len || $("#day").val()> 0){
+    if (arr.length == len){
         $("#"+id+"Help").remove();
-        
+        document.getElementById(id).style = "border: ''";
+        return true; 
+    }
+    else if($("#day").val()> 0){
+        console.log("여기로 나와야 함");
+        $("#"+id+"Help").remove();
+        $('.mbsc-textfield').style('background', 'rgb(233, 233, 233)');
+
         document.getElementById(id).style = "border: ''";
         return true; 
     }
     else if (arr.length == 0){
         var text = `<small id="`+id+`Help" class="form-text" style="color: red">필수입력 사항입니다. </small>`
-        if ($("#"+id+"Help").length === 0) $("#"+id).parent().append(text);
+        if ($("#"+id+"Help").length === 0) $("#available-time-form").append(text);
         else $("#"+id+"Help").replaceWith(text);
         document.getElementById(id).style = "border: 2px solid #E8ADAA";
         return false;
     }
     else{
         var text = `<small id="`+id+`Help" class="form-text" style="color: red">시작하는 시간과 끝나는 시간을 모두 입력하세요. </small>`
-        if ($("#"+id+"Help").length === 0) $("#"+id).parent().parent().append(text);
+        if ($("#"+id+"Help").length === 0) $("#available-time-form").append(text);
         else $("#"+id+"Help").replaceWith(text);
         document.getElementById(id).style = "border: 2px solid #E8ADAA";
         return false;
@@ -162,6 +168,7 @@ allPrevBtn.click(function(){
 
 allNextBtn.click(function(){
     curId = $(this).attr('id');
+    //validation
     switch(curId) {
         case 'step1-submit':
             var a = validateinput('meeting-name');
@@ -178,7 +185,6 @@ allNextBtn.click(function(){
             return;
 
         case 'step3-submit':
-            // code block
             var a= validatearr('place', arrPlace, 0);
             var b= validatearr('activity', arrActivity, 0);
             if (a && b){
@@ -234,6 +240,11 @@ $('.timefield').change(function(){
     console.log(day)
 
     if((day) > 0){
+        document.getElementById("day").style = "border: ''";
+        document.getElementById("hour").style = "border: ''";
+        $("#periodsHelp").remove();
+        $("#start-timeHelp").remove();
+
         $('#hour').attr('disabled','disabled');
         $('#min').attr('disabled','disabled');
         if (day === "1") {
@@ -251,6 +262,10 @@ $('.timefield').change(function(){
         
     }
     else if((hour) > 0){
+        document.getElementById("day").style = "border: ''";
+        document.getElementById("hour").style = "border: ''";
+        $("#periodsHelp").remove();
+
         if ($("#periodHelp").length !== 0) $("#periodHelp").hide();
         $('#day').attr('disabled','disabled');
         
@@ -292,6 +307,10 @@ $('#meetingPrivacy').click(function(){
 $("#add-place").click (function(e){
     e.preventDefault();
     if ($('#place').val() !== ""){
+        //for validation removed style
+        $("#placeHelp").remove();
+        document.getElementById("place").style = "border: ''";
+
         console.log($('#place').val());
         var inputText = $('#place').val();
         arrPlace.push(inputText);
@@ -303,6 +322,10 @@ $("#add-place").click (function(e){
 $("#add-activity").click (function(e){
     e.preventDefault();
     if ($('#activity').val() !== ""){
+        //for validation removed style
+        $("#activityHelp").remove();
+        document.getElementById("activity").style = "border: ''";
+
         console.log($('#activity').val());
         var inputText = $('#activity').val();
         arrActivity.push(inputText);
@@ -408,18 +431,34 @@ $('#final-submit').click(function(){
     db_log_newMeeting.surveyPeriod = Number($('#surveyPeriod').val());
     db_log_newMeeting.isPrivate = $('#btnradio2').is(':checked');
     
-    
-    db_log_newMeeting.chat = {};
 
     db_log_newMeeting.isEnd = false;
+
+    var now = new Date();
+    db_log_newMeeting.dueDate = Date(now.setDate(now.getDate() + Number($('#surveyPeriod').val())));
+    db_log_newMeeting.hostID = userID;
+
     console.log(db_log_newMeeting);
 
+    db.collection('families').where('code', '==', familyCode)
+        .get()
+        .then((snapshot) => {
+            snapshot.forEach((doc) => {
+                var docID = doc.id;
+                var origMeetings = doc.data().meetings;
+                
+                origMeetings.push(db_log_newMeeting)
+                // console.log(db_log_newMeeting);
 
-    db.collection('families').doc().set({
-        code: "00AB8",
-        meetings: [db_log_newMeeting],
-        members: familyChart,
-    })
+                db.collection('families').doc(docID).update({
+                    meetings: origMeetings,
+                })
+            });
+        });
+    
+    // db.collection('families').doc().update({
+    //     meetings: [db_log_newMeeting],
+    // })
 })
 
 // for (let i=97; i<116; i ++){

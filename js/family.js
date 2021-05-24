@@ -2,8 +2,7 @@
 // import firebase  from "firebase";
 
 // var familyCode = "4NAF0";
-//var familyCode = "00AB8";
-var familyCode = localStorage.getItem('family-code');
+var familyCode = "00AB8";
 var members=[], docID ;
 window.me;
 
@@ -42,7 +41,7 @@ db.collection('families').where('code', '==', familyCode)
     })
 
     // console.log("fam_mem"+window.family_members)
-    chart = new OrgChart(document.getElementById("assign-tree"), {
+    chart = new OrgChart(document.getElementById("my-family-tree"), {
         template: "family_template",
         mouseScrool: OrgChart.action.none,
         nodeMouseClick: OrgChart.action.none,
@@ -90,77 +89,15 @@ db.collection('families').where('code', '==', familyCode)
     
         window.me = arg.node;
         console.log(window.me);    
-        $("#assign-here").modal('show');
+
     
     })
+    setFamilyCode();
 })
 // console.log("fam_mem2"+window.family_members)
 
-
-
-
-
-$('#assign-me').click(function(){
-    console.log(window.me);
-    var newNode = window.me;
-    var nodeData = chart.get(newNode.id);
-    chart.updateNode({ id: newNode.id, pid: newNode.pid, ppid: newNode.ppid, tags: ["blue", newNode.tags[0]], name: nodeData["name"],partner: nodeData["partner"], img: nodeData["img"], title: nodeData["title"],  gender: nodeData["gender"]});
-})
-
-$('#getfile').change(()=>{
-    var myId= window.me.id;
-    var storageUpRef = firebase.storage().ref('/'+myId); //profile 대신 user의 가족 내에서의 id 
-    var file = document.querySelector('#getfile');
-    var fileList = file.files;
-    var task = storageUpRef.put(fileList [0]);
-    task.on('state_changed',
-        function(snapshot){                                    
-            console.log('업로드 진행중');  // 업로드 진행시 호출
-        },
-        function(error){
-                             // 업로드 중간에 에러 발생시 호출
-        },    
-        function(){                // 업로드 완료시 
-            console.log('업로드 완료');    
-            var storageRef = firebase.storage().ref();
-            storageRef.child('/'+myId).getDownloadURL().then(function(url) { //여기도 user 대신 id
-                console.log('url은 이겁니다 : ',url);
-                var myNode = window.me;
-                var nodeData = chart.get(myNode.id);
-                chart.updateNode({ id: myId, pid: myNode.pid, ppid: myNode.ppid, tags: ["blue", myNode.tags[0]], name: nodeData["name"],partner: nodeData["partner"], img: url, title: nodeData["title"],  gender: nodeData["gender"]});
-            }).catch(function(error) {                  
-            });
-        }
-    )
-})
-
-$('#later').click(function(){
-    location.href = "after-setting-tree.html"
-})
-
-
-$('#checked').on('hidden.bs.modal ',function(){
-    location.href = "after-setting-tree.html"
-})
-
-//db 에 저장. 그런데 familycode를 알아야 할 듯
-$('#assign-submit').click(()=>{
-    localStorage.setItem('family-id', window.me.id);
-    db.collection('families').where('code', '==', familyCode)
-        .get()
-        .then((snapshot) => {
-            snapshot.forEach((doc) => {
-                var docID = doc.id;
-                origMemb = doc.data().members;
-                var obj = origMemb.find(mem => mem.id == window.me.id);
-                var idx = origMemb.indexOf(obj);
-                obj.img = members[idx].img;
-                obj.tags = members[idx].tags;
-                console.log(origMemb);
-
-                db.collection('families').doc(docID).update({
-                    members: origMemb,
-                })
-            });
-        });
-})
+function setFamilyCode()  {
+    $("#family-code").append('<h5 class="mt-2">가족 코드<span class="fw-light eng-cap"> Family Code</span> : <span class="text-primary">'+familyCode+'</span></h5>');
+    // const code = document.getElementById('family-code');
+    // code.innerHTML = '<h5 class="mt-2" id="family-code">가족코드: '+familyCode+'</h5>';
+  }

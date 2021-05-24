@@ -307,11 +307,7 @@ function bindEvents() {
         curId = $(this).attr('id');
         switch(curId) {
             case 'step1-submit':
-                var a= validatearr('place-tags', answer.place, 0);
-                var b= validatearr('activity-tags', answer.activity, 0);
-                var c= validatearr('accommodation-radio', $("#accommodation input[type='checkbox']:checked"), 0);
-                if (a&&b&&c) break;
-                return;
+                break;
     
             case 'step2-submit':
                 var a= validatearr('list-location', answer.departure, 0);

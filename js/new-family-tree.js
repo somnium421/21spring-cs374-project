@@ -92,8 +92,8 @@ chart.editUI.on('field', function(sender, args){
 
 
 var familyChart = [          
-    { id: 0, tags: ["blue"], partner: 1, name: "김덕수", title: "할아버지", gender: "male", img: "https://firebasestorage.googleapis.com/v0/b/togather-ad530.appspot.com/o/profile?alt=media&token=685d952b-31b6-42c4-bcbc-8f63f0427a75"},
-    { id: 1, pid: 0, tags: ["partner"], partner: 0, name: "문옥주", title: "할머니", gender: "female", img: "https://firebasestorage.googleapis.com/v0/b/togather-ad530.appspot.com/o/profile?alt=media&token=2b9cffe2-601b-4392-9bb1-e06523dcb96d"},
+    { id: 0, tags: ["default"], partner: 1, name: "", title: "할아버지", gender: "male", img: "https://cdn.balkan.app/shared/empty-img-white.svg"},
+    { id: 1, pid: 0, tags: ["partner"], partner: 0, name: "", title: "할머니", gender: "female", img: "https://cdn.balkan.app/shared/empty-img-white.svg"},
 ];
 
 chart.load(familyChart);
@@ -133,9 +133,6 @@ function addChild(nodeId){
     // chart.editUI.hide(window.newid);
     
 }
-function addImg(nodeId){
-    console.log('working');
-}
 
 var randomNum = {};
 //0~9까지의 난수
@@ -168,32 +165,11 @@ $(document).ready(function(){
 
 
 $('#family-tree-submit').click(()=>{
-    db.collection('families').doc().set({
-        code: familyCode,
-        meetings: [],
-        members: familyChart,
-    })
+    localStorage.setItem('family-code',family.code);
+    /////////////////////////나중에는 풀어야함/////////////////
+    // db.collection('families').doc().set({
+    //     code: familyCode,
+    //     meetings: [],
+    //     members: familyChart,
+    // })
 })
-
-$('#getfile').change(()=>{
-     var storageUpRef = firebase.storage().ref('/profile/');
-     var file = document.querySelector('#getfile');
-     var fileList = file.files;
-     var task = storageUpRef.put(fileList [0]);
-     task.on('state_changed',
-         function(snapshot){                                    
-             console.log('업로드 진행중');  // 업로드 진행시 호출
-         },
-         function(error){
-                              // 업로드 중간에 에러 발생시 호출
-         },    
-         function(){                // 업로드 완료시 
-             console.log('업로드 완료');    
-             var storageRef = firebase.storage().ref();
-             storageRef.child('/profile/').getDownloadURL().then(function(url) {
-                 console.log('url은 이겁니다 : ',url);
-             }).catch(function(error) {                  
-             });
-         }
-     )
- })

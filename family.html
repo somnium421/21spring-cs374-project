@@ -4,15 +4,19 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="generator" content="Hugo 0.83.1">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>    
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous"/> 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>   
         <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-firestore.js"></script>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
+        <link rel="stylesheet" href="icon_font/css/icon_font.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>   
+        <script src="https://balkangraph.com/js/latest/OrgChart.js"></script>
+
+
         
-        
-        <title>ToGather :: Home</title>
+        <title>ToGather :: My Family</title>
 
         <link href="css/english-caption.css" rel="stylesheet">
     </head>
@@ -29,6 +33,7 @@
             const db = firebase.firestore();
             db.settings({timestampsInSnapshots: true});
         </script>
+        <script src="js/family.js" defer></script>
         <div class="d-flex">
             <div class="d-flex flex-column flex-shrink-0 p-3 bg-white shadow" style="width: 200px; height:100vh">
                 <a href="/" class="d-flex align-items-center mx-auto text-decoration-none">
@@ -51,7 +56,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="nav-link active"  aria-current="page">
+                        <a href="#" class="nav-link active" aria-current="page">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
                                 <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275zM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/>
                             </svg>
@@ -59,7 +64,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="nav-link link-dark">
+                        <a href="#" class="nav-link link-dark" >
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list-ul" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
                             </svg>
@@ -80,67 +85,28 @@
             </div>
 
             <div class="container-fluid col px-5">
-                <div class="fs-3 fw-bold mt-5 mb-4 ms-1">새로운 가족 관계도 <span class="fw-light eng-cap">New Family Tree</span></div>
-                <div class="container col-6">
-                    <!-- <h4 class="mt-5">초대 받았나요? <span class="fw-light eng-cap">Who Invited You?</span> </h4>
-                    <form class="card p-2">
-                        <div class="input-group">
-                          <input type="text" class="form-control" placeholder="가족 코드">
-                          <button type="submit" class="btn btn-secondary">입력</button>
+                <div class="fs-3 fw-bold mt-5 mb-4 ms-1">우리 가족 <span class="fw-light eng-cap">My Family</span></div>
+                
+                <div class="row gx-5" style="height: 82%; width: 100%">
+                    <div class="card h-100 shadow bg-light mx-3" style="border-radius: 10px;padding: 0px;">
+                        <div class="card-header"> 
+                            <span class="fs-5 fw-bold">가족 관계도 <span class="fw-light eng-cap">Family Tree</span> </span>
                         </div>
-                    </form>
-                    <hr class="my-5">
-                    <h4 class="mt-5">초대 받았나요? <span class="fw-light eng-cap">Who Invited You?</span> </h4>
-                    <form class="card p-2">
-                        <div class="input-group">
-                          <input type="text" class="form-control" placeholder="가족 코드">
-                          <button type="submit" class="btn btn-secondary">입력</button>
+
+                        <div class="card-body" >
+                            <div id="my-family-tree" style="height: 93%;"></div>
                         </div>
-                    </form> -->
-                    <div class="text-center">
-                        <button type="button" class="btn btn-primary btn-block rounded-pill" data-bs-toggle="modal" data-bs-target="#familyCode" data-bs-whatever="@mdo">가족 관계도 불러오기</button>
+                        <div class="card-footer text-center"  id = "family-code"></div>
+                            
                     </div>
-                    <div class="modal fade" id="familyCode" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel"><b>받은 가족 코드로 인증하세요</b> <span class="fw-light eng-cap">Enter your family code</span> </h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form class="mb-4">
-                                    <div class="mb-3">
-                                        <label for="famlily-code-input" class="col-form-label"><h5>코드 입력 <span class="fw-light eng-cap">Code :</h5> </span> </label>
-                                        <input type="text" class="form-control" placeholder="가족 코드" id="family-code-input">
-                                        <!-- <button type="submit" class="btn btn-secondary">입력</button> -->
-                                    </div>
-                                </form>
-                                <p class="text-muted" style="font-size: smaller;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle-fill" viewBox="0 0 16 16">
-                                        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
-                                    </svg> 
-                                    <b>가족 코드란?</b>
-                                </p>
-                                <p class="text-muted" style="font-size: smaller;">
-                                    가족 중 최초로 서비스에 가입했던 사람이 회원가입을 마치고 가족 관계도 생성을 완료하면 받을 수 있는 코드로 알파벳과 숫자의 5자리 조합으로 이루어져 있습니다. 예: 00FF0.
-                                </p>
-
-                                <p><a href="new-family-tree.html">코드를 받지 못했습니다.</a></p>
-
-
-
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                              <button type="button" class="btn btn-primary" id="submit-family-code">인증</button>
-                            </div>
-                          </div>
-                        </div>
-                    </div>
-                </div>   
+                 
+                </div>
+                
+                
             </div>
-        </div>      
+        </div>
+
+
     </body>
-    <script src="./js/load-family-tree.js"></script>
 </html>
 
