@@ -102,7 +102,7 @@ function addPartner(nodeId){
    var node = chart.getNode(nodeId);
     var nodeData = chart.get(nodeId);
     chart.updateNode({ id: nodeId, pid: node.pid, ppid: node.ppid, tags: node.tags, name: nodeData["name"],partner: window.newid, img: nodeData["img"], title: nodeData["title"],  gender: nodeData["gender"]});
-   var data = {id:window.newid, pid: nodeId, tags: ["partner"], partner: nodeId, gender: "gender", img: "https://cdn.balkan.app/shared/empty-img-white.svg"};
+   var data = {id:window.newid, pid: nodeId, tags: ["partner"], name: "", title:"", partner: nodeId, gender: "gender", img: "https://cdn.balkan.app/shared/empty-img-white.svg"};
     chart.addNode(data);
     var children = node.children;
     for (var i = 0; i < children.length; i ++){
@@ -118,13 +118,13 @@ function addChild(nodeId){
     var nodeData = chart.get(nodeId);
     var data = {};
     if (!nodeData["partner"]){
-        data = {id:window.newid, pid: nodeId, tags: ["default"], gender: "gender", img: "https://cdn.balkan.app/shared/empty-img-white.svg"};
+        data = {id:window.newid, pid: nodeId, tags: ["default"], name: "", title:"", gender: "gender", partner: null, img: "https://cdn.balkan.app/shared/empty-img-white.svg"};
     }
     else if (nodeId < nodeData["partner"]){
-        data = {id:window.newid, pid: nodeId, ppid: nodeData["partner"], tags: ["default"], gender: "gender", img: "https://cdn.balkan.app/shared/empty-img-white.svg"};
+        data = {id:window.newid, pid: nodeId, ppid: nodeData["partner"], tags: ["default"], name: "", title:"", gender: "gender", partner: null, img: "https://cdn.balkan.app/shared/empty-img-white.svg"};
     }
     else{
-        data = {id:window.newid, pid: nodeData["partner"], ppid: nodeId, tags: ["default"], gender: "gender", img: "https://cdn.balkan.app/shared/empty-img-white.svg"};
+        data = {id:window.newid, pid: nodeData["partner"], ppid: nodeId, tags: ["default"], name: "", title:"", gender: "gender", partner: null, img: "https://cdn.balkan.app/shared/empty-img-white.svg"};
     }   
    chart.addNode(data);
     // var tid = window.newid;
@@ -164,13 +164,13 @@ $(document).ready(function(){
 
 
 $('#family-tree-submit').click(async function(){
-    console.log("DSD")
+    console.log(familyChart);
     localStorage.setItem('family-code',familyCode);
     ///////////////////////나중에는 풀어야함/////////////////
     await db.collection('families').doc().set({
         code: familyCode,
         meetings: [],
-        members: familyChart,
+        members: Object.assign({}, familyChart),
     })
     location.href = 'assign.html';
 })
