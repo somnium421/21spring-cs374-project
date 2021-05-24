@@ -25,7 +25,7 @@ $("#submit-family-code").click (function(){
             $("#codeHelp").remove();
             document.getElementById('family-code-input').style = "border: ''";
             //family.code local 에 올리기
-            //localStorage.setItem(family-code,family.code);
+            localStorage.setItem('family-code',family.code);
             location.href = "assign.html"
         }
     }

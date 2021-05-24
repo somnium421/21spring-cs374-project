@@ -2,8 +2,8 @@
 // import firebase  from "firebase";
 
 // var familyCode = "4NAF0";
-var familyCode = "00AB8";
-// var familyCode = localStorage.getItem(family-code);
+//var familyCode = "00AB8";
+var familyCode = localStorage.getItem('family-code');
 var members=[], docID ;
 window.me;
 
@@ -145,7 +145,7 @@ $('#checked').on('hidden.bs.modal ',function(){
 
 //db 에 저장. 그런데 familycode를 알아야 할 듯
 $('#assign-submit').click(()=>{
-    //localStorage.setItem(family-id, window.me.id);
+    localStorage.setItem('family-id', window.me.id);
     db.collection('families').where('code', '==', familyCode)
         .get()
         .then((snapshot) => {

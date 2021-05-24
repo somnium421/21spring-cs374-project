@@ -165,7 +165,8 @@ $(document).ready(function(){
 
 
 $('#family-tree-submit').click(()=>{
-    //localStorage.setItem(family-code,family.code);
+    localStorage.setItem('family-code',family.code);
+    /////////////////////////나중에는 풀어야함/////////////////
     // db.collection('families').doc().set({
     //     code: familyCode,
     //     meetings: [],
