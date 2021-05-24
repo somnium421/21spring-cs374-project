@@ -29,7 +29,8 @@ OrgChart.templates.family_template.nodeMenuButton =
 OrgChart.templates.family_template_blue = Object.assign({}, OrgChart.templates.family_template);
 OrgChart.templates.family_template_blue.node = '<circle stroke-width="3" fill="none" stroke="#039BE5" cx="43" cy="43" r="41.5"></circle>';
 
-
+$('#assign-submit').hide();
+$('#spinner').hide();
 
 
 
@@ -123,6 +124,7 @@ $('#getfile').change(()=>{
     task.on('state_changed',
         function(snapshot){                                    
             console.log('업로드 진행중');  // 업로드 진행시 호출
+            $('#spinner').show();
         },
         function(error){
                              // 업로드 중간에 에러 발생시 호출
@@ -135,6 +137,8 @@ $('#getfile').change(()=>{
                 var myNode = me;
                 var nodeData = chart.get(myNode.id);
                 chart.updateNode({ id: myId, pid: myNode.pid, ppid: myNode.ppid, tags: ["blue", myNode.tags[0]], name: nodeData["name"],partner: nodeData["partner"], img: url, title: nodeData["title"],  gender: nodeData["gender"]});
+                $('#spinner').hide();
+                $('#assign-submit').show();
             }).catch(function(error) {                  
             });
         }
@@ -167,7 +171,7 @@ $('#assign-submit').click(async ()=>{
     await db.collection('families').where('code', '==', familyCode)
         .get()
         .then((snapshot) => {
-            snapshot.forEach((doc) => {
+            snapshot.forEach(async (doc) => {
                 var docID = doc.id;
                 origMemb = doc.data().members;
                 var obj = origMemb.find(mem => mem.id == me.id);
@@ -176,7 +180,7 @@ $('#assign-submit').click(async ()=>{
                 obj.tags = members[idx].tags;
                 console.log(origMemb);
 
-                db.collection('families').doc(docID).update({
+                await db.collection('families').doc(docID).update({
                     members: origMemb,
                 })
             });
