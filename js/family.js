@@ -2,9 +2,10 @@
 // import firebase  from "firebase";
 
 // var familyCode = "4NAF0";
-var familyCode = "00AB8";
-var members=[], docID ;
-window.me;
+//localStorage.setItem('family-code', "00AB8");
+const familyCode = localStorage.getItem('family-code');
+var ichart=[], docID ;
+const userID = localStorage.getItem("family-id");
 
 OrgChart.templates.family_template = Object.assign({}, OrgChart.templates.ana);
 OrgChart.templates.family_template.size = [86, 86];
@@ -37,10 +38,9 @@ db.collection('families').where('code', '==', familyCode)
     snapshot.forEach((doc) => {
         console.log("hi");
         docID = doc.id;
-        members = doc.data().members;        
+        ichart = doc.data().members;        
     })
 
-    // console.log("fam_mem"+window.family_members)
     chart = new OrgChart(document.getElementById("my-family-tree"), {
         template: "family_template",
         mouseScrool: OrgChart.action.none,
@@ -61,9 +61,6 @@ db.collection('families').where('code', '==', familyCode)
                 template: "family_template_blue"
             }
         },
-    
-        nodes: members,
-    
     });
     
     
@@ -72,27 +69,30 @@ db.collection('families').where('code', '==', familyCode)
             return false;
         }
     });
+
+    finalchart = main(userID);
+    chart.load(finalchart);
     
-    chart.on('update', function (sender, oldNode, newNode) {
-        console.log("upddfdfate");
-        console.log(newNode);
-        console.log(oldNode);
+    // chart.on('update', function (sender, oldNode, newNode) {
+    //     console.log("upddfdfate");
+    //     console.log(newNode);
+    //     console.log(oldNode);
     
-        console.log(chart.getNode(id));
-        $('#assign-check').show();
-        chart.load();
+    //     console.log(chart.getNode(id));
+    //     $('#assign-check').show();
+    //     chart.load();
         
-    });  
-    chart.on('click',function(sender, arg){
-        console.log("click");
-        console.log(arg.node);
+    // });  
+    // chart.on('click',function(sender, arg){
+    //     console.log("click");
+    //     console.log(arg.node);
     
-        window.me = arg.node;
-        console.log(window.me);    
+    //     me = arg.node;
+    //     console.log(me);    
 
     
-    })
-    setFamilyCode();
+    // })
+    setFamilyCode(); 
 })
 // console.log("fam_mem2"+window.family_members)
 
@@ -100,4 +100,184 @@ function setFamilyCode()  {
     $("#family-code").append('<h5 class="mt-2">가족 코드<span class="fw-light eng-cap"> Family Code</span> : <span class="text-primary">'+familyCode+'</span></h5>');
     // const code = document.getElementById('family-code');
     // code.innerHTML = '<h5 class="mt-2" id="family-code">가족코드: '+familyCode+'</h5>';
-  }
+}
+
+function mypartner(me){
+    var ptn = ichart[ichart[me].partner];
+    if(ptn){
+        if(ptn.gender == "male"){
+            ptn.title = "남편"
+        }
+        else(
+            ptn.title = "아내"
+        )
+    }
+}
+function myparent(me){
+    if(ichart[ichart[me].pid].gender == "male"){
+        ichart[ichart[me].pid].title = "아버지";
+        ichart[ichart[me].ppid].title = "어머니";
+    }
+    else{
+        ichart[ichart[me].pid].title = "어머니";
+        ichart[ichart[me].ppid].title = "아버지";
+    }
+}
+function mychild(chld){
+    child = ichart[chld];
+    if (child.gender == "male"){
+        child.title = "아들";
+    }
+    else{
+        child.title = "딸";
+    }
+}
+function mychildpt(chld){
+    if (ichart[chld].gender == "male"){
+        ichart[chld].title = "사위";
+    }
+    else{
+        ichart[chld].title = "며느리";
+    }
+}
+
+function main(getme){
+
+    var fst = [0, 1];
+    var snd = [];
+    var snd_2 = [];
+    var thrd = [];
+
+    for (let i = 0; i < ichart.length; i++){
+        if (ichart[i].pid == 0 && ichart[i].ppid == 1){
+            snd.push(i);
+            snd_2.push(ichart[i].partner? ichart[i].partner: -1);
+        }
+    }
+
+    for (let j = 0; j<snd.length; j++){
+        var children = [];
+        for (let i = 0; i<ichart.length; i++){
+            if (ichart[i].pid == snd[j] && ichart[i].ppid == snd_2[j]){
+                children.push(i);
+            }
+        }
+        thrd.push(children? children: []);
+    }
+
+    var me = Number(getme); // id 숫자
+    ichart[me].title = "나";
+
+    console.log("fst:" + fst);
+    console.log("snd:" + snd);
+    console.log("snd2:" + snd_2);
+    console.log("thrd:" + thrd);
+
+    if (fst.includes(me)){
+        mypartner(me);
+
+        for (let i = 0; i<snd.length; i++){
+            mychild(snd[i]);
+            mychildpt(snd_2[i]);
+
+            for (let j = 0; j< thrd[i].length; j++){
+                ichart[thrd[i][j]].title = "손주"
+            }
+        }
+    }
+    else if (snd.includes(me)){
+        mypartner(me);
+        myparent(me);
+        chldnum = snd.indexOf(me)
+        for (let i = 0; i<snd.length; i++){
+            if (i == chldnum){
+                for (let j = 0; j< thrd[i].length; j++){
+                    mychild(thrd[i][j]);
+                }
+            }
+            else{
+                for (let j = 0; j< thrd[i].length; j++){
+                    ichart[thrd[i][j]].title = "조카";
+                }
+            }
+        }
+    }
+    else if (snd_2.includes(me)){
+        mypartner(me);
+        var ptn = ichart[me].partner
+        myparent(ptn);
+        chldnum = snd.indexOf(ptn)
+        for (let i = 0; i<snd.length; i++){
+            if (i == chldnum){
+                for (let j = 0; j< thrd[i].length; j++){
+                    mychild(thrd[i][j]);
+                }
+            }
+            else{
+                for (let j = 0; j< thrd[i].length; j++){
+                    ichart[thrd[i][j]].title = "조카";
+                }
+            }
+        }
+    }
+    else{
+        var menum = -1;
+        for (let i = 0; i< thrd.length; i++){
+            if (thrd[i].includes(me)){
+                menum = i;
+            }
+        }
+        var father = (ichart[snd[menum]].gender == "male")
+        if (father){
+            if (ichart[0].gender == "male"){
+                ichart[0].title = "할아버지";
+                ichart[1].title = "할머니";
+            }
+            else{
+                ichart[1].title = "할아버지";
+                ichart[0].title = "할머니";
+            }
+        }
+        else{
+            if (ichart[0].gender == "male"){
+                ichart[0].title = "외할아버지";
+                ichart[1].title = "외할머니";
+            }
+            else{
+                ichart[1].title = "외할아버지";
+                ichart[0].title = "외할머니";
+            }
+        }
+        for (let i = 0; i<snd.length; i++){
+            if (i == menum){
+                myparent(me);
+            }
+            else{
+                if (father){
+                    if(ichart[snd[i]].gender == "male"){
+                        ichart[snd[i]].title = "삼촌"
+                        ichart[snd_2[i]].title = "숙모"
+                    }
+                    if(ichart[snd[i]].gender == "female"){
+                        ichart[snd[i]].title = "고모"
+                        ichart[snd_2[i]].title = "고모부"
+                    }
+                }
+                else{
+                    if(ichart[snd[i]].gender == "male"){
+                        ichart[snd[i]].title = "외삼촌"
+                        ichart[snd_2[i]].title = "외숙모"
+                    }
+                    if(ichart[snd[i]].gender == "female"){
+                        ichart[snd[i]].title = "이모"
+                        ichart[snd_2[i]].title = "이모부"
+                    }
+                }
+                for (let j = 0; j< thrd[i].length; j++){
+                    ichart[thrd[i][j]].title = "사촌";
+                }
+            }
+        }
+    }
+    return ichart;
+}
