@@ -21,11 +21,14 @@ $('#login').click(() => {
     else {
         var noSuchID = true;
         for (var user of dbData) {
+            console.log(user);
             if (user.id == userID) {
                 noSuchID = false;
                 if (user.pw == userPW) {
-                    localStorage.setItem('familyCode', user["family-code"]);
-                    localStorage.setItem('familyID', user["id"]);
+                    localStorage.setItem('family-code', user["family-code"]);
+                    localStorage.setItem('family-id', user["family-id"]);
+                    localStorage.setItem('id', user["id"]);
+                    localStorage.setItem('pw', user["pw"]);
                     location.href = 'home.html';
                 }
                 else {
