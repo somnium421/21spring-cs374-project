@@ -2,13 +2,10 @@
 // import firebase  from "firebase";
 
 // var familyCode = "4NAF0";
-var familyCode = "00AB8";
-var members=[], docID ;
-window.me;
-// const familyCode = localStorage.getItem("family-code") //"00AB8"
-const userID = localStorage.getItem("family-id") // "0"
-// var userID = localStorage.getItem("family-id") // "0"
-// userID = 3;
+//localStorage.setItem('family-code', "00AB8");
+const familyCode = localStorage.getItem('family-code');
+var ichart=[], docID ;
+const userID = localStorage.getItem("family-id");
 
 OrgChart.templates.family_template = Object.assign({}, OrgChart.templates.ana);
 OrgChart.templates.family_template.size = [86, 86];
@@ -41,10 +38,9 @@ db.collection('families').where('code', '==', familyCode)
     snapshot.forEach((doc) => {
         console.log("hi");
         docID = doc.id;
-        members = doc.data().members;        
+        ichart = doc.data().members;        
     })
 
-    // console.log("fam_mem"+window.family_members)
     chart = new OrgChart(document.getElementById("my-family-tree"), {
         template: "family_template",
         mouseScrool: OrgChart.action.none,
@@ -65,9 +61,6 @@ db.collection('families').where('code', '==', familyCode)
                 template: "family_template_blue"
             }
         },
-    
-        nodes: members,
-    
     });
     
     
@@ -76,29 +69,30 @@ db.collection('families').where('code', '==', familyCode)
             return false;
         }
     });
-    
-    chart.on('update', function (sender, oldNode, newNode) {
-        console.log("upddfdfate");
-        console.log(newNode);
-        console.log(oldNode);
-    
-        console.log(chart.getNode(id));
-        $('#assign-check').show();
-        chart.load();
-        
-    });  
-    chart.on('click',function(sender, arg){
-        console.log("click");
-        console.log(arg.node);
-    
-        window.me = arg.node;
-        console.log(window.me);    
 
-    
-    })
-    setFamilyCode();
     finalchart = main(userID);
     chart.load(finalchart);
+    
+    // chart.on('update', function (sender, oldNode, newNode) {
+    //     console.log("upddfdfate");
+    //     console.log(newNode);
+    //     console.log(oldNode);
+    
+    //     console.log(chart.getNode(id));
+    //     $('#assign-check').show();
+    //     chart.load();
+        
+    // });  
+    // chart.on('click',function(sender, arg){
+    //     console.log("click");
+    //     console.log(arg.node);
+    
+    //     me = arg.node;
+    //     console.log(me);    
+
+    
+    // })
+    setFamilyCode(); 
 })
 // console.log("fam_mem2"+window.family_members)
 
@@ -106,11 +100,10 @@ function setFamilyCode()  {
     $("#family-code").append('<h5 class="mt-2">가족 코드<span class="fw-light eng-cap"> Family Code</span> : <span class="text-primary">'+familyCode+'</span></h5>');
     // const code = document.getElementById('family-code');
     // code.innerHTML = '<h5 class="mt-2" id="family-code">가족코드: '+familyCode+'</h5>';
-  }
-
+}
 
 function mypartner(me){
-    var ptn = window.nchart[window.nchart[me].partner];
+    var ptn = ichart[ichart[me].partner];
     if(ptn){
         if(ptn.gender == "male"){
             ptn.title = "남편"
@@ -121,17 +114,17 @@ function mypartner(me){
     }
 }
 function myparent(me){
-    if(window.nchart[window.nchart[me].pid].gender == "male"){
-        window.nchart[window.nchart[me].pid].title = "아버지";
-        window.nchart[window.nchart[me].ppid].title = "어머니";
+    if(ichart[ichart[me].pid].gender == "male"){
+        ichart[ichart[me].pid].title = "아버지";
+        ichart[ichart[me].ppid].title = "어머니";
     }
     else{
-        window.nchart[window.nchart[me].pid].title = "어머니";
-        window.nchart[window.nchart[me].ppid].title = "아버지";
+        ichart[ichart[me].pid].title = "어머니";
+        ichart[ichart[me].ppid].title = "아버지";
     }
 }
 function mychild(chld){
-    child = window.nchart[chld];
+    child = ichart[chld];
     if (child.gender == "male"){
         child.title = "아들";
     }
@@ -140,33 +133,32 @@ function mychild(chld){
     }
 }
 function mychildpt(chld){
-    if (window.nchart[chld].gender == "male"){
-        window.nchart[chld].title = "사위";
+    if (ichart[chld].gender == "male"){
+        ichart[chld].title = "사위";
     }
     else{
-        window.nchart[chld].title = "며느리";
+        ichart[chld].title = "며느리";
     }
 }
 
 function main(getme){
-    window.nchart = members;
 
     var fst = [0, 1];
     var snd = [];
     var snd_2 = [];
     var thrd = [];
 
-    for (let i = 0; i < window.nchart.length; i++){
-        if (window.nchart[i].pid == 0 && window.nchart[i].ppid == 1){
+    for (let i = 0; i < ichart.length; i++){
+        if (ichart[i].pid == 0 && ichart[i].ppid == 1){
             snd.push(i);
-            snd_2.push(window.nchart[i].partner? window.nchart[i].partner: -1);
+            snd_2.push(ichart[i].partner? ichart[i].partner: -1);
         }
     }
 
     for (let j = 0; j<snd.length; j++){
         var children = [];
-        for (let i = 0; i<window.nchart.length; i++){
-            if (window.nchart[i].pid == snd[j] && window.nchart[i].ppid == snd_2[j]){
+        for (let i = 0; i<ichart.length; i++){
+            if (ichart[i].pid == snd[j] && ichart[i].ppid == snd_2[j]){
                 children.push(i);
             }
         }
@@ -174,7 +166,7 @@ function main(getme){
     }
 
     var me = Number(getme); // id 숫자
-    window.nchart[me].title = "나";
+    ichart[me].title = "나";
 
     console.log("fst:" + fst);
     console.log("snd:" + snd);
@@ -189,7 +181,7 @@ function main(getme){
             mychildpt(snd_2[i]);
 
             for (let j = 0; j< thrd[i].length; j++){
-                window.nchart[thrd[i][j]].title = "손주"
+                ichart[thrd[i][j]].title = "손주"
             }
         }
     }
@@ -205,14 +197,14 @@ function main(getme){
             }
             else{
                 for (let j = 0; j< thrd[i].length; j++){
-                    window.nchart[thrd[i][j]].title = "조카";
+                    ichart[thrd[i][j]].title = "조카";
                 }
             }
         }
     }
     else if (snd_2.includes(me)){
         mypartner(me);
-        var ptn = window.nchart[me].partner
+        var ptn = ichart[me].partner
         myparent(ptn);
         chldnum = snd.indexOf(ptn)
         for (let i = 0; i<snd.length; i++){
@@ -223,7 +215,7 @@ function main(getme){
             }
             else{
                 for (let j = 0; j< thrd[i].length; j++){
-                    window.nchart[thrd[i][j]].title = "조카";
+                    ichart[thrd[i][j]].title = "조카";
                 }
             }
         }
@@ -235,25 +227,25 @@ function main(getme){
                 menum = i;
             }
         }
-        var father = (window.nchart[snd[menum]].gender == "male")
+        var father = (ichart[snd[menum]].gender == "male")
         if (father){
-            if (window.nchart[0].gender == "male"){
-                window.nchart[0].title = "할아버지";
-                window.nchart[1].title = "할머니";
+            if (ichart[0].gender == "male"){
+                ichart[0].title = "할아버지";
+                ichart[1].title = "할머니";
             }
             else{
-                window.nchart[1].title = "할아버지";
-                window.nchart[0].title = "할머니";
+                ichart[1].title = "할아버지";
+                ichart[0].title = "할머니";
             }
         }
         else{
-            if (window.nchart[0].gender == "male"){
-                window.nchart[0].title = "외할아버지";
-                window.nchart[1].title = "외할머니";
+            if (ichart[0].gender == "male"){
+                ichart[0].title = "외할아버지";
+                ichart[1].title = "외할머니";
             }
             else{
-                window.nchart[1].title = "외할아버지";
-                window.nchart[0].title = "외할머니";
+                ichart[1].title = "외할아버지";
+                ichart[0].title = "외할머니";
             }
         }
         for (let i = 0; i<snd.length; i++){
@@ -262,30 +254,30 @@ function main(getme){
             }
             else{
                 if (father){
-                    if(window.nchart[snd[i]].gender == "male"){
-                        window.nchart[snd[i]].title = "삼촌"
-                        window.nchart[snd_2[i]].title = "숙모"
+                    if(ichart[snd[i]].gender == "male"){
+                        ichart[snd[i]].title = "삼촌"
+                        ichart[snd_2[i]].title = "숙모"
                     }
-                    if(window.nchart[snd[i]].gender == "female"){
-                        window.nchart[snd[i]].title = "고모"
-                        window.nchart[snd_2[i]].title = "고모부"
+                    if(ichart[snd[i]].gender == "female"){
+                        ichart[snd[i]].title = "고모"
+                        ichart[snd_2[i]].title = "고모부"
                     }
                 }
                 else{
-                    if(window.nchart[snd[i]].gender == "male"){
-                        window.nchart[snd[i]].title = "외삼촌"
-                        window.nchart[snd_2[i]].title = "외숙모"
+                    if(ichart[snd[i]].gender == "male"){
+                        ichart[snd[i]].title = "외삼촌"
+                        ichart[snd_2[i]].title = "외숙모"
                     }
-                    if(window.nchart[snd[i]].gender == "female"){
-                        window.nchart[snd[i]].title = "이모"
-                        window.nchart[snd_2[i]].title = "이모부"
+                    if(ichart[snd[i]].gender == "female"){
+                        ichart[snd[i]].title = "이모"
+                        ichart[snd_2[i]].title = "이모부"
                     }
                 }
                 for (let j = 0; j< thrd[i].length; j++){
-                    window.nchart[thrd[i][j]].title = "사촌";
+                    ichart[thrd[i][j]].title = "사촌";
                 }
             }
         }
     }
-    return window.nchart;
-} 
+    return ichart;
+}
