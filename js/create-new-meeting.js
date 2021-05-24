@@ -489,3 +489,27 @@ $('#start-time').mobiscroll().datepicker({
     stepMinute: 60,
     timeFormat: "hh:00 A"
 });
+
+$('#logout-button').click(() => {
+    localStorage.removeItem('family-code');
+    localStorage.removeItem('family-id');
+    localStorage.removeItem('id');
+    localStorage.removeItem('pw');
+    location.href = "login.html";
+})
+
+db.collection('families').where('code', '==', familyCode).get().then((snapshot) => {
+    var members;
+    console.log('here');
+    snapshot.forEach((doc) => {
+        console.log('userID: '+userID)
+        members = doc.data().members;
+        console.log(members);
+        for (var member of members) {
+            if (member.id == userID) {
+                $('#user-name').text(member.name);
+                $('#user-img').attr('src', member.img);
+            }
+        }
+    })
+})
