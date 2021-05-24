@@ -151,10 +151,9 @@ randomNum.authNo= function(n) {
 };
 //화면에 번호 출력
 randomNum.printRandom = function(data, num) {
-    $(data).append(`<span class="text-primary"> ${randomNum.authNo(num)}</span>`);
     familyCode = randomNum.authNo(num);
+    $(data).append(`<span class="text-primary"> ${familyCode}</span>`);
     
-    console.log(randomNum.authNo(num));
 };
 
 randomNum.printRandom("#family-code-auth", 5);
