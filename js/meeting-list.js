@@ -210,16 +210,11 @@ $(document).ready(function() {
             
             });
 
-            snapshot.length
         });
     } else {
-        // family tree
-        
-
-
         //meeting list
         $("#meeting-list, #meeting-list-part, #meeting-list-not-part, #family-tree").attr("class", "card-body overflow-auto text-center")
-        $(".meeting-card").attr("class", "card h-100 shadow pb-3 bg-light")
+        $(".meeting-card .meeting-card-part .meeting-card-not-part").attr("class", "card h-100 shadow pb-3 bg-light")
         $("#createNewMeeting").attr("class", "btn btn-primary rounded-pill btn-lg shadow disabled")
         $("#meeting-list, #meeting-list-part, #meeting-list-not-part").append(`<p class="card-text text-muted mt-3">가족 관계도를 생성하고 서비스를 이용해보세요! <a href="load-family-tree.html" class="card-link">생성하기</a>
                     <br>
@@ -239,6 +234,19 @@ $(document).ready(function() {
         localStorage.setItem("meeting-number", meetingNumber);
         location.href = 'participate.html';
     });
+
+    if ($("#meeting-list-part").children().length === 0){
+        $("#meeting-list-part").append(`<p class="card-text text-muted mt-3">아직 참여한 모임이 없습니다. 
+                <br>
+                우측에 있는 여러 모임에 참여해보는건 어떨까요?
+                <br><br>
+                하단 + 버튼을 눌러서 새 모임을 만들 수 있습니다. <a href="load-family-tree.html" class="card-link">새 모임 만들기</a>
+                <br>
+                <a href="load-family-tree.html" class="card-link card-text fw-light eng-cap">Add a new meeting plan.</a>
+            </p>`)
+                $("#meeting-list-part").attr("class", "card-body overflow-auto text-center");
+                $(".meeting-card-part").attr("class", "card h-100 shadow pb-3 bg-light");
+    }
 });
 
 console.log('hello');
