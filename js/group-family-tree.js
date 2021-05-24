@@ -160,7 +160,8 @@ $(document).ready(() => {
                     }
                     nchart[cnt] = { id: node.id, stpid : window.newid, tags: node.tags, name: node.name ,partner: node.partner, img: node.img, title: node.title,  gender: node.gender};
                     console.log("title : " +node.title);
-                    if(node.title == ""){
+                    console.log("title: "+node.title)
+                    if(node.title == undefined){
                         console.log("in undefi")
                         var data = {id:window.newid, pid: 0, ppid:1 , tags: ["node_with_subtrees"],textWhenTheNodeIsMimized: node.name+"네", textWhenTheNodeIsMaximized: node.name+"네"};
     
