@@ -1,3 +1,7 @@
+// const familyCode = localStorage.getItem("family-code") //"00AB8"
+// const userID = localStorage.getItem("family-id") // "0"
+
+
 console.log("is after?");
 /*--------------------------------------------------------
 -------------- for home_family_tree-----------------------
@@ -16,7 +20,7 @@ OrgChart.templates.family_template.nodeMenuButton = '';
 OrgChart.templates.family_template_blue = Object.assign({}, OrgChart.templates.family_template);
 OrgChart.templates.family_template_blue.node = '<circle stroke-width="3" fill="none" stroke="#039BE5" cx="21.5" cy="21.5" r="20"></circle>';
 
-var familyCode = "00AB8";
+
 var members=[], docID ;
 window.me;
 /*
@@ -125,7 +129,7 @@ db.collection('families').where('code', '==', familyCode)
     });
     
     
-    finalchart = main(9);
+    finalchart = main(userID);
 
 
     addGroupBox_forHome();
