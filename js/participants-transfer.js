@@ -68,7 +68,7 @@ function families(chart, finalChart) {
                         && finalChart[i].title !== '아내'
                         && finalChart[i].title !== '남편'
                         && finalChart[i].title ) familyGroup.name = `${finalChart[i].title}네 가족`;
-                else if (finalChart[i].title === undefined 
+                else if (finalChart[i].title === "" 
                         || finalChart[i].title === '딸' 
                         || finalChart[i].title === '아들' ) familyGroup.name = `${chart[i].name}의 가족`
                 else if (finalChart[i].title === '나' 
@@ -143,6 +143,7 @@ function mypartner(me, chart){
 }
 
 function myparent(me, chart){
+    console.log(chart, me, pid, ppid)
     if(chart[chart[me].pid].gender == "male"){
         chart[chart[me].pid].title = "아버지";
         chart[chart[me].ppid].title = "어머니";
