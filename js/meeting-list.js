@@ -27,7 +27,7 @@ console.log(isAssign);
 
 
 
-function processData(meetingNumber, html_isPrivate, html_dueDate, html_meetingName, html_meetingDescription, html_meetingParticipants, html_meetingDates, html_meetingTags, html_button) {
+function processData(meetingNumber, html_isPrivate, html_dueDate, html_meetingName, html_meetingDescription, html_meetingParticipants, html_meetingDates, html_meetingTags, html_button, isPrivate) {
     // db.collection('families').doc(docID).collection('answers').where('meetingNumber', '==', meetingNumber)
     console.log(docID);
     db.collection('families').doc(docID).collection("answers").where('meetingNumber', '==', meetingNumber)
@@ -67,7 +67,8 @@ function processData(meetingNumber, html_isPrivate, html_dueDate, html_meetingNa
                                                 </a>`;
         }
 
-        var htmlStr = `<div class="card meeting-card mb-3" style="border-radius: 10px;">
+        var col = "";
+        var htmlStr = `<div class="card meeting-card ${col} mb-3" style="border-radius: 10px;">
                                     <div class="card-header">   
                                         <div class="d-flex justify-content-between">
                                             ${html_isPrivate}
@@ -95,6 +96,11 @@ function processData(meetingNumber, html_isPrivate, html_dueDate, html_meetingNa
                                         </div>
                                     </div>
                                 </div>`
+
+        if (isPrivate) {
+            $("span.rounded-pill").css("background-color: rgb(218, 218, 218);")
+            col = "bg-light";
+        }
         
         $("#meeting-list").append(htmlStr)
 
@@ -115,13 +121,19 @@ $(document).ready(function() {
     $('head').append('<style type="text/css"> #meeting-list {height: ' + ($('.card-body').height()) + 'px;}</style>');
     
     if (isAssign){
-
-        $("#familyTree").append(`<div id= "after-setting-tree" style="height: 600px;"></div>`);
-
         console.log("tree")
         db.collection('families').where('code', '==', familyCode)
         .get()
         .then((snapshot) => {
+            if (snapshot.length === 0){
+                $("#meeting-list").append(`<p class="card-text text-muted mt-3">아직 모임계획을 세우지 않으셨습니다. <a href="load-family-tree.html" class="card-link">새 모임 만들기</a>
+                <br>
+                하단 + 버튼을 눌러서 새 모임을 만들 수 있습니다.
+                <a href="load-family-tree.html" class="card-link card-text fw-light eng-cap">Add a new meeting plan.</a>
+            </p>`)
+                $("#meeting-list, #meeting-list-part, #meeting-list-not-part, #family-tree").attr("class", "card-body overflow-auto text-center");
+                $(".meeting-card").attr("class", "card h-100 shadow pb-3 bg-light");
+            }
             snapshot.forEach((doc) => {
                 docID = doc.id;
                 meetings = doc.data().meetings;
@@ -129,9 +141,9 @@ $(document).ready(function() {
     
                 for (meetingNumber = 0; meetingNumber < meetings.length; meetingNumber ++){
     
-                    
+                    var isPrivate = meetings[meetingNumber].isPrivate
                     // if private and userID is not in the participants list, ignore.
-                    if (meetings[meetingNumber].isPrivate && meetings[meetingNumber].participants.filter(({id}) => id === userID).length === 0) continue;
+                    if (isPrivate && meetings[meetingNumber].participants.filter(({id}) => id === userID).length === 0) continue;
     
                     var html_isPrivate, html_dueDate, html_meetingName, html_meetingDescription, html_meetingParticipants, html_meetingTags, html_button, html_meetingDates;
     
@@ -190,23 +202,22 @@ $(document).ready(function() {
     
                     
                     processData(meetingNumber, html_isPrivate, html_dueDate, html_meetingName, html_meetingDescription, 
-                        html_meetingParticipants, html_meetingDates, html_meetingTags, html_button);
+                        html_meetingParticipants, html_meetingDates, html_meetingTags, html_button, isPrivate);
     
                 }
             
             });
+
+            snapshot.length
         });
     } else {
         // family tree
-        $("#family-tree").append(`<p class="card-text text-muted mt-3">아직 가족 관계도가 없습니다. <a href="load-family-tree.html" class="card-link">생성하기</a>
-                <br>
-                <a href="load-family-tree.html" class="card-link card-text fw-light eng-cap">Make a new family tree.</a>
-            </p>`)
+        
 
 
         //meeting list
         $("#meeting-list, #meeting-list-part, #meeting-list-not-part, #family-tree").attr("class", "card-body overflow-auto text-center")
-        $(".meeting-card, .family-tree-card").attr("class", "card h-100 shadow pb-3 bg-light")
+        $(".meeting-card").attr("class", "card h-100 shadow pb-3 bg-light")
         $("#createNewMeeting").attr("class", "btn btn-primary rounded-pill btn-lg shadow disabled")
         $("#meeting-list, #meeting-list-part, #meeting-list-not-part").append(`<p class="card-text text-muted mt-3">가족 관계도를 생성하고 서비스를 이용해보세요! <a href="load-family-tree.html" class="card-link">생성하기</a>
                     <br>
@@ -214,6 +225,18 @@ $(document).ready(function() {
                 </p>`
         )
     }
+
+    $(document).on('click', '.result', function() {
+        meetingNumber = Number($(this).attr('id').slice(8,9));
+        localStorage.setItem("meetingNumber", meetingNumber);
+        location.href = 'result.html';
+    });
+
+    $(document).on('click','.participate', function() {
+        meetingNumber = Number($(this).attr('id').slice(8,9));
+        localStorage.setItem("meetingNumber", meetingNumber);
+        location.href = 'participate.html';
+    });
 });
 
 console.log('hello');
@@ -221,4 +244,3 @@ console.log(localStorage.getItem('familyCode'));
 console.log(localStorage.getItem('userID'));
 
 
-///없어도 뭔가 뜨게!!!!!!!!
