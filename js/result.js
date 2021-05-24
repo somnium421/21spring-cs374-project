@@ -83,6 +83,13 @@ function bindEvents() {
             });
         }
     });
+    $('#logout-button').click(() => {
+        localStorage.removeItem('family-code');
+        localStorage.removeItem('family-id');
+        localStorage.removeItem('id');
+        localStorage.removeItem('pw');
+        location.href = "login.html";
+    })
     tooltipSet();
 }
 

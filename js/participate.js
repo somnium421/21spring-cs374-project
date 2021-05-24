@@ -429,6 +429,13 @@ function bindEvents() {
             availableTime: userAvailableTime
         });
     });
+    $('#logout-button').click(() => {
+        localStorage.removeItem('family-code');
+        localStorage.removeItem('family-id');
+        localStorage.removeItem('id');
+        localStorage.removeItem('pw');
+        location.href = "login.html";
+    })
 
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {

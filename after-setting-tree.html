@@ -33,19 +33,19 @@
         </script>
         <script src="js/meeting-list.js" defer></script>
         <div class="d-flex">
-            <div class="d-flex flex-column flex-shrink-0 p-3 bg-white shadow" style="width: 200px; height:100vh">
+            <div class="d-flex flex-column flex-shrink-0 p-3 bg-white shadow fixed-bottom" style="width: 200px; height:100vh;">
                 <a href="/" class="d-flex align-items-center mx-auto text-decoration-none">
                 <img src="icons/logo.svg" alt="">
                 </a>
                 <div class="my-4">
-                    <a href="#" class="d-flex flex-column align-items-center link-dark text-decoration-none" id="user">
-                        <img src="https://github.com/mdo.png" alt="" width="60" height="60" class="rounded-circle mb-2">
-                        <strong>사용자</strong>
+                    <a class="d-flex flex-column align-items-center link-dark text-decoration-none" id="user">
+                        <img src="" alt="" width="60" height="60" class="rounded-circle mb-2" id="user-img">
+                        <strong id="user-name"></strong>
                     </a>
                 </div>
                 <ul class="nav nav-pills flex-column mb-auto">
                     <li class="nav-item">
-                        <a href="/" class="nav-link active" aria-current="page">
+                        <a href="#" class="nav-link link-dark">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-fill" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6zm5-.793V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
                                 <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
@@ -62,7 +62,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="nav-link link-dark">
+                        <a href="/" class="nav-link active" aria-current="page">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list-ul" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
                             </svg>
@@ -79,10 +79,10 @@
                         </a>
                     </li>
                 </ul>
-                <button type="button" class="btn btn-outline-primary mb-2 mx-4">로그아웃</button>
+                <button type="button" class="btn btn-outline-primary mb-2 mx-4" data-bs-toggle="modal" data-bs-target="#logout-modal" data-bs-whatever="@mdo">로그아웃</button>        
             </div>
 
-            <div class="container-fluid col px-5">
+            <div class="container-fluid col px-5" style="margin-left:200px">
                 <div class="fs-3 fw-bold mt-5 mb-4 ms-1">홈 <span class="fw-light eng-cap">Home</span></div>
                 <div class="row gx-5" style="height: 82%;">
                     <div class="col" >
@@ -311,6 +311,20 @@
                 </div>
                 
                 
+            </div>
+            <div class="modal fade" id="logout-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel"><b>로그아웃 하시겠습니까?</b> <span class="fw-light eng-cap">Log out?</span> </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                            <a type="button" class="btn btn-primary" data-bs-dismiss="modal" id="logout-button">로그아웃</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <script src="js/group-family-tree.js" defer></script>
