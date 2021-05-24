@@ -5,6 +5,10 @@
 var familyCode = "00AB8";
 var members=[], docID ;
 window.me;
+// const familyCode = localStorage.getItem("family-code") //"00AB8"
+const userID = localStorage.getItem("family-id") // "0"
+// var userID = localStorage.getItem("family-id") // "0"
+// userID = 3;
 
 OrgChart.templates.family_template = Object.assign({}, OrgChart.templates.ana);
 OrgChart.templates.family_template.size = [86, 86];
@@ -93,6 +97,8 @@ db.collection('families').where('code', '==', familyCode)
     
     })
     setFamilyCode();
+    finalchart = main(userID);
+    chart.load(finalchart);
 })
 // console.log("fam_mem2"+window.family_members)
 
@@ -101,3 +107,185 @@ function setFamilyCode()  {
     // const code = document.getElementById('family-code');
     // code.innerHTML = '<h5 class="mt-2" id="family-code">가족코드: '+familyCode+'</h5>';
   }
+
+
+function mypartner(me){
+    var ptn = window.nchart[window.nchart[me].partner];
+    if(ptn){
+        if(ptn.gender == "male"){
+            ptn.title = "남편"
+        }
+        else(
+            ptn.title = "아내"
+        )
+    }
+}
+function myparent(me){
+    if(window.nchart[window.nchart[me].pid].gender == "male"){
+        window.nchart[window.nchart[me].pid].title = "아버지";
+        window.nchart[window.nchart[me].ppid].title = "어머니";
+    }
+    else{
+        window.nchart[window.nchart[me].pid].title = "어머니";
+        window.nchart[window.nchart[me].ppid].title = "아버지";
+    }
+}
+function mychild(chld){
+    child = window.nchart[chld];
+    if (child.gender == "male"){
+        child.title = "아들";
+    }
+    else{
+        child.title = "딸";
+    }
+}
+function mychildpt(chld){
+    if (window.nchart[chld].gender == "male"){
+        window.nchart[chld].title = "사위";
+    }
+    else{
+        window.nchart[chld].title = "며느리";
+    }
+}
+
+function main(getme){
+    window.nchart = members;
+
+    var fst = [0, 1];
+    var snd = [];
+    var snd_2 = [];
+    var thrd = [];
+
+    for (let i = 0; i < window.nchart.length; i++){
+        if (window.nchart[i].pid == 0 && window.nchart[i].ppid == 1){
+            snd.push(i);
+            snd_2.push(window.nchart[i].partner? window.nchart[i].partner: -1);
+        }
+    }
+
+    for (let j = 0; j<snd.length; j++){
+        var children = [];
+        for (let i = 0; i<window.nchart.length; i++){
+            if (window.nchart[i].pid == snd[j] && window.nchart[i].ppid == snd_2[j]){
+                children.push(i);
+            }
+        }
+        thrd.push(children? children: []);
+    }
+
+    var me = Number(getme); // id 숫자
+    window.nchart[me].title = "나";
+
+    console.log("fst:" + fst);
+    console.log("snd:" + snd);
+    console.log("snd2:" + snd_2);
+    console.log("thrd:" + thrd);
+
+    if (fst.includes(me)){
+        mypartner(me);
+
+        for (let i = 0; i<snd.length; i++){
+            mychild(snd[i]);
+            mychildpt(snd_2[i]);
+
+            for (let j = 0; j< thrd[i].length; j++){
+                window.nchart[thrd[i][j]].title = "손주"
+            }
+        }
+    }
+    else if (snd.includes(me)){
+        mypartner(me);
+        myparent(me);
+        chldnum = snd.indexOf(me)
+        for (let i = 0; i<snd.length; i++){
+            if (i == chldnum){
+                for (let j = 0; j< thrd[i].length; j++){
+                    mychild(thrd[i][j]);
+                }
+            }
+            else{
+                for (let j = 0; j< thrd[i].length; j++){
+                    window.nchart[thrd[i][j]].title = "조카";
+                }
+            }
+        }
+    }
+    else if (snd_2.includes(me)){
+        mypartner(me);
+        var ptn = window.nchart[me].partner
+        myparent(ptn);
+        chldnum = snd.indexOf(ptn)
+        for (let i = 0; i<snd.length; i++){
+            if (i == chldnum){
+                for (let j = 0; j< thrd[i].length; j++){
+                    mychild(thrd[i][j]);
+                }
+            }
+            else{
+                for (let j = 0; j< thrd[i].length; j++){
+                    window.nchart[thrd[i][j]].title = "조카";
+                }
+            }
+        }
+    }
+    else{
+        var menum = -1;
+        for (let i = 0; i< thrd.length; i++){
+            if (thrd[i].includes(me)){
+                menum = i;
+            }
+        }
+        var father = (window.nchart[snd[menum]].gender == "male")
+        if (father){
+            if (window.nchart[0].gender == "male"){
+                window.nchart[0].title = "할아버지";
+                window.nchart[1].title = "할머니";
+            }
+            else{
+                window.nchart[1].title = "할아버지";
+                window.nchart[0].title = "할머니";
+            }
+        }
+        else{
+            if (window.nchart[0].gender == "male"){
+                window.nchart[0].title = "외할아버지";
+                window.nchart[1].title = "외할머니";
+            }
+            else{
+                window.nchart[1].title = "외할아버지";
+                window.nchart[0].title = "외할머니";
+            }
+        }
+        for (let i = 0; i<snd.length; i++){
+            if (i == menum){
+                myparent(me);
+            }
+            else{
+                if (father){
+                    if(window.nchart[snd[i]].gender == "male"){
+                        window.nchart[snd[i]].title = "삼촌"
+                        window.nchart[snd_2[i]].title = "숙모"
+                    }
+                    if(window.nchart[snd[i]].gender == "female"){
+                        window.nchart[snd[i]].title = "고모"
+                        window.nchart[snd_2[i]].title = "고모부"
+                    }
+                }
+                else{
+                    if(window.nchart[snd[i]].gender == "male"){
+                        window.nchart[snd[i]].title = "외삼촌"
+                        window.nchart[snd_2[i]].title = "외숙모"
+                    }
+                    if(window.nchart[snd[i]].gender == "female"){
+                        window.nchart[snd[i]].title = "이모"
+                        window.nchart[snd_2[i]].title = "이모부"
+                    }
+                }
+                for (let j = 0; j< thrd[i].length; j++){
+                    window.nchart[thrd[i][j]].title = "사촌";
+                }
+            }
+        }
+    }
+    return window.nchart;
+} 
