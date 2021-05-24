@@ -1,6 +1,8 @@
 const familyCode = localStorage.getItem("family-code") //"00AB8"
 const userID = localStorage.getItem("family-id") // "0"
 
+console.log(familyCode, userID);
+
 localStorage.removeItem("meeting-number");
 
 const placeData = [], activityData = [], markers = [], infoWindows = [], latlngs = [], meetingUserPart = [], answers = [];
@@ -140,6 +142,12 @@ $(document).ready(function() {
                 docID = doc.id;
                 meetings = doc.data().meetings;
                 members = doc.data().members;
+                for (var member of members) {
+                    if (member.id == userID) {
+                        $('#user-name').text(member.name);
+                        $('#user-img').attr('src', member.img);
+                    }
+                }
     
                 for (meetingNumber = 0; meetingNumber < meetings.length; meetingNumber ++){
     
@@ -254,3 +262,10 @@ console.log(localStorage.getItem('familyCode'));
 console.log(localStorage.getItem('userID'));
 
 
+$('#logout-button').click(() => {
+    localStorage.removeItem('family-code');
+    localStorage.removeItem('family-id');
+    localStorage.removeItem('id');
+    localStorage.removeItem('pw');
+    location.href = "login.html";
+})
