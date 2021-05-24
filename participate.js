@@ -46,11 +46,12 @@ $(document).ready(function() {
             meetings = doc.data().meetings;
             members = doc.data().members;
 
-            db.collection('families').doc(docID).collection('answers').get()
+            db.collection('families').doc(docID).collection('answers').where('meetingNumber', '==', meetingNumber).get()
             .then((snapshot) => {
                 snapshot.forEach((doc) => {
                     answers.push(doc.data());
                 })
+                console.log(answers);
                 const answered = [];
                 for (var participant of meetings[meetingNumber].participants) {
                     for (var answer of answers) {
