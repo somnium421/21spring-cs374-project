@@ -1,6 +1,9 @@
 window.newid = 2;
-var familyCode;
-
+/*
+const familyCode = !localStorage.getItem('family-code') ? '00AB8' : localStorage.getItem('family-code')
+const meetingNumber = !localStorage.getItem('meeting-number') ? 0 : localStorage.getItem('meeting-number')
+const userID = !localStorage.getItem('family-id') ? 0 : localStorage.getItem('family-id')
+*/
 
 OrgChart.templates.family_template = Object.assign({}, OrgChart.templates.ana);
 OrgChart.templates.family_template.size = [86, 86];
@@ -182,3 +185,18 @@ $('#logout-button').click(() => {
     localStorage.removeItem('pw');
     location.href = "login.html";
 })
+
+/*
+db.collection('families').where('code', '==', familyCode)
+    .get()
+    .then((snapshot) => {
+        snapshot.forEach((doc) => {
+            var members = doc.data().members;
+            for (var member of members) {
+                if (member.id == userID) {
+                    $('#user-name').text(member.name);
+                    $('#user-img').attr('src', member.img);
+                }
+            }
+        })
+    })*/

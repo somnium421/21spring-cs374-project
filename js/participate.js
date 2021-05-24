@@ -1,7 +1,7 @@
 //import firebase from "firebase";
 const familyCode = !localStorage.getItem('family-code') ? '00AB8' : localStorage.getItem('family-code')
 const meetingNumber = !localStorage.getItem('meeting-number') ? 0 : localStorage.getItem('meeting-number')
-const userID = !localStorage.getItem('id') ? 0 : localStorage.getItem('id')
+const userID = !localStorage.getItem('family-id') ? 0 : localStorage.getItem('family-id')
 
 const answers = [];
 var meetings, members, docID;
@@ -48,10 +48,13 @@ $(document).ready(function() {
             docID = doc.id;
             meetings = doc.data().meetings;
             members = doc.data().members;
+            console.log('hello');
+            console.log(userID, members);
             for (var member of members) {
                 if (member.id == userID) {
                     $('#user-name').text(member.name);
                     $('#user-img').attr('src', member.img);
+                    console.log('hello');
                 }
             }
 
