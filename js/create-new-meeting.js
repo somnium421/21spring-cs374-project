@@ -116,7 +116,7 @@ function validatearr3(id, arr, len){
     else if($("#day").val()> 0){
         console.log("여기로 나와야 함");
         $("#"+id+"Help").remove();
-        $('.mbsc-textfield').style('background', 'rgb(233, 233, 233)');
+        $('.mbsc-textfield').css('background', 'rgb(233, 233, 233)');
 
         document.getElementById(id).style = "border: ''";
         return true; 
@@ -435,7 +435,8 @@ $('#final-submit').click(function(){
     db_log_newMeeting.isEnd = false;
 
     var now = new Date();
-    db_log_newMeeting.dueDate = Date(now.setDate(now.getDate() + Number($('#surveyPeriod').val())));
+    var due = new Date(now.setDate(now.getDate() + Number($('#surveyPeriod').val())));
+    db_log_newMeeting.dueDate = due
     db_log_newMeeting.hostID = userID;
 
     console.log(db_log_newMeeting);
