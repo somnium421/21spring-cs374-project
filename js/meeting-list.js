@@ -1,5 +1,6 @@
-const familyCode = "00AB8", userID = 0;
-const placeData = [], activityData = [], markers = [], infoWindows = [], latlngs = [];
+const familyCode = "00AB8"
+var userID = 0
+const placeData = [], activityData = [], markers = [], infoWindows = [], latlngs = [], meetingUserPart = [];
 var meetings, members, chats, docID, answerID;
 
 // duedate 지나면 결과확인 되기 -> 됨. 생성에 문제가근데, 그 전에는 duedate 남은거 받아서 표시 -> 됨. , userID가 참가자중 없는데 private이면 안보여야함. private 이면 색깔 다르게.
@@ -23,12 +24,14 @@ var meetings, members, chats, docID, answerID;
 
 
 
-function processData(meetingNumber) {
+function processData(meetingNumber, htmlStr) {
     // db.collection('families').doc(docID).collection('answers').where('meetingNumber', '==', meetingNumber)
-    db.collection('families').doc(docID).collection('answers').where('meetingNumber', '==', meetingNumber)
+    console.log(docID);
+    db.collection('families').doc(docID).collection("answers").where('meetingNumber', '==', meetingNumber)
     .get()
     .then((snapshot) => {
         var placeDict = {}, activityDict = {};
+        
         snapshot.forEach((doc) => {
             for (var place of doc.data().place) {
                 if (place in placeDict) placeDict[place].push(doc.data().userID);
@@ -38,9 +41,12 @@ function processData(meetingNumber) {
                 if (activity in activityDict) activityDict[activity].push(doc.data().userID);
                 else activityDict[activity] = [doc.data().userID];
             }
+            
+            if (doc.data().userID === userID) meetingUserPart.push(meetingNumber);
+            
         });
-        
-
+        if (meetingUserPart.filter((el) => el === meetingNumber).length === 0) $("#meeting-list-not-part").append(htmlStr);
+        else $("#meeting-list-part").append(htmlStr);
     })
 }
 
@@ -55,8 +61,7 @@ $(document).ready(function() {
             meetings = doc.data().meetings;
             members = doc.data().members;
 
-            for (meetingNumber in meetings){
-                processData(meetingNumber);
+            for (meetingNumber = 0; meetingNumber < meetings.length; meetingNumber ++){
 
                 // if private and userID is not in the participants list, ignore.
                 if (meetings[meetingNumber].isPrivate && meetings[meetingNumber].participants.filter(({id}) => id === userID).length === 0) continue;
@@ -133,9 +138,12 @@ $(document).ready(function() {
                                     </div>
                                 </div>`
                 $("#meeting-list").append(htmlStr)
+                console.log(meetings[meetingNumber].participants)
+                console.log(meetingUserPart)
 
-                if (meetings[meetingNumber].participants.filter(({id}) => id === userID).length === 0) $("#meeting-list-not-part").append(htmlStr);
-                else $("#meeting-list-part").append(htmlStr);
+                processData(meetingNumber, htmlStr);
+
+                
             }
         
         });
