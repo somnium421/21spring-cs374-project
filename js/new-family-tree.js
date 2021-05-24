@@ -165,6 +165,7 @@ $(document).ready(function(){
 
 
 $('#family-tree-submit').click(()=>{
+    //localStorage.setItem(family-code,family.code);
     // db.collection('families').doc().set({
     //     code: familyCode,
     //     meetings: [],
