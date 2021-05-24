@@ -198,7 +198,7 @@ $(document).ready(function() {
         });
     } else {
         // family tree
-        $("#familyTree").append(`<p class="card-text text-muted mt-3">아직 가족 관계도가 없습니다. <a href="load-family-tree.html" class="card-link">생성하기</a>
+        $("#family-tree").append(`<p class="card-text text-muted mt-3">아직 가족 관계도가 없습니다. <a href="load-family-tree.html" class="card-link">생성하기</a>
                 <br>
                 <a href="load-family-tree.html" class="card-link card-text fw-light eng-cap">Make a new family tree.</a>
             </p>`)
@@ -213,7 +213,5 @@ $(document).ready(function() {
                     <a href="load-family-tree.html" class="card-link card-text fw-light eng-cap">Make a new family tree.</a>
                 </p>`
         )
-    
     }
-    
 });
