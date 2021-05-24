@@ -1,11 +1,11 @@
 
 // import firebase  from "firebase";
 
-// var familyCode = "4NAF0";
+localStorage.setItem('family-code', "4NAF0");
 //var familyCode = "00AB8";
 var familyCode = localStorage.getItem('family-code');
 var members=[], docID ;
-window.me;
+var me;
 
 OrgChart.templates.family_template = Object.assign({}, OrgChart.templates.ana);
 OrgChart.templates.family_template.size = [86, 86];
@@ -41,7 +41,7 @@ db.collection('families').where('code', '==', familyCode)
         members = doc.data().members;        
     })
 
-    // console.log("fam_mem"+window.family_members)
+    console.log(members);
     chart = new OrgChart(document.getElementById("assign-tree"), {
         template: "family_template",
         mouseScrool: OrgChart.action.none,
@@ -88,8 +88,8 @@ db.collection('families').where('code', '==', familyCode)
         console.log("click");
         console.log(arg.node);
     
-        window.me = arg.node;
-        console.log(window.me);    
+        me = arg.node;
+        console.log(me);    
         $("#assign-here").modal('show');
     
     })
@@ -101,14 +101,14 @@ db.collection('families').where('code', '==', familyCode)
 
 
 $('#assign-me').click(function(){
-    console.log(window.me);
-    var newNode = window.me;
+    console.log(me);
+    var newNode = me;
     var nodeData = chart.get(newNode.id);
     chart.updateNode({ id: newNode.id, pid: newNode.pid, ppid: newNode.ppid, tags: ["blue", newNode.tags[0]], name: nodeData["name"],partner: nodeData["partner"], img: nodeData["img"], title: nodeData["title"],  gender: nodeData["gender"]});
 })
 
 $('#getfile').change(()=>{
-    var myId= window.me.id;
+    var myId= me.id;
     var storageUpRef = firebase.storage().ref('/'+myId); //profile 대신 user의 가족 내에서의 id 
     var file = document.querySelector('#getfile');
     var fileList = file.files;
@@ -125,7 +125,7 @@ $('#getfile').change(()=>{
             var storageRef = firebase.storage().ref();
             storageRef.child('/'+myId).getDownloadURL().then(function(url) { //여기도 user 대신 id
                 console.log('url은 이겁니다 : ',url);
-                var myNode = window.me;
+                var myNode = me;
                 var nodeData = chart.get(myNode.id);
                 chart.updateNode({ id: myId, pid: myNode.pid, ppid: myNode.ppid, tags: ["blue", myNode.tags[0]], name: nodeData["name"],partner: nodeData["partner"], img: url, title: nodeData["title"],  gender: nodeData["gender"]});
             }).catch(function(error) {                  
@@ -144,15 +144,26 @@ $('#checked').on('hidden.bs.modal ',function(){
 })
 
 //db 에 저장. 그런데 familycode를 알아야 할 듯
-$('#assign-submit').click(()=>{
-    localStorage.setItem('family-id', window.me.id);
-    db.collection('families').where('code', '==', familyCode)
+$('#assign-submit').click(async ()=>{
+    localStorage.setItem('family-id', me.id);
+    await db.collection('users').where('id', '==', localStorage.getItem('id'))
+        .get()
+        .then((snapshot) =>{
+            snapshot.forEach((doc) =>{
+                var docID = doc.id;
+                db.collection('users').doc(docID).update({
+                    'family-id': me.id,
+                    'family-code': familyCode
+                })
+            })
+        })
+    await db.collection('families').where('code', '==', familyCode)
         .get()
         .then((snapshot) => {
             snapshot.forEach((doc) => {
                 var docID = doc.id;
                 origMemb = doc.data().members;
-                var obj = origMemb.find(mem => mem.id == window.me.id);
+                var obj = origMemb.find(mem => mem.id == me.id);
                 var idx = origMemb.indexOf(obj);
                 obj.img = members[idx].img;
                 obj.tags = members[idx].tags;
