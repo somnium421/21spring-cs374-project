@@ -1,6 +1,9 @@
 //import firebase from "firebase";
+const familyCode = !localStorage.getItem('family-code') ? '00AB8' : localStorage.getItem('family-code')
+const meetingNumber = !localStorage.getItem('meeting-number') ? 0 : localStorage.getItem('meeting-number')
+const userID = !localStorage.getItem('id') ? 0 : localStorage.getItem('id')
 
-const familyCode = "00AB8", meetingNumber = 0, userID = 0, answers = [];
+const answers = [];
 var meetings, members, docID;
 
 var userAvailableDates = [];

@@ -1,4 +1,8 @@
-const familyCode = "00AB8", meetingNumber = 0, userID = 0;
+//import firebase from "firebase";
+const familyCode = !localStorage.getItem('family-code') ? '00AB8' : localStorage.getItem('family-code');
+const meetingNumber = !localStorage.getItem('meeting-number') ? 0 : Number(localStorage.getItem('meeting-number'));
+const userID = !localStorage.getItem('family-id') ? 0 : Number(localStorage.getItem('family-id'));
+
 const placeData = [], activityData = [], markers = [], infoWindows = [], latlngs = [], answers = [];
 var meetings, members, chats,  docID, answerID;
 var hostAvailableDates = {};
@@ -300,7 +304,7 @@ $(document).ready(function() {
                 snapshot.forEach((doc) => {
                     answerID = doc.id;
                     chats = doc.data();
-                    //console.log(chats);
+                    console.log(chats);
                 })
                 for (var i=0; i<chats.chat.length; i++) drawChat(i);
             })

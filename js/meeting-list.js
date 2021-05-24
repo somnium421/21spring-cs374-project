@@ -1,6 +1,8 @@
 const familyCode = localStorage.getItem("family-code") //"00AB8"
 const userID = localStorage.getItem("family-id") // "0"
 
+localStorage.removeItem("meeting-number");
+
 const placeData = [], activityData = [], markers = [], infoWindows = [], latlngs = [], meetingUserPart = [], answers = [];
 var meetings, members, chats, docID, answerID, isAssign;
 
@@ -228,13 +230,13 @@ $(document).ready(function() {
 
     $(document).on('click', '.result', function() {
         meetingNumber = Number($(this).attr('id').slice(8,9));
-        localStorage.setItem("meetingNumber", meetingNumber);
+        localStorage.setItem("meeting-number", meetingNumber);
         location.href = 'result.html';
     });
 
     $(document).on('click','.participate', function() {
         meetingNumber = Number($(this).attr('id').slice(8,9));
-        localStorage.setItem("meetingNumber", meetingNumber);
+        localStorage.setItem("meeting-number", meetingNumber);
         location.href = 'participate.html';
     });
 });
