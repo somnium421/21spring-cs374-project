@@ -440,22 +440,28 @@ $('#final-submit').click(function(){
     db_log_newMeeting.hostID = userID;
 
     console.log(db_log_newMeeting);
-
+    
     db.collection('families').where('code', '==', familyCode)
         .get()
         .then((snapshot) => {
+            var batch = db.batch();
             snapshot.forEach((doc) => {
                 var docID = doc.id;
                 var origMeetings = doc.data().meetings;
                 
                 origMeetings.push(db_log_newMeeting)
                 // console.log(db_log_newMeeting);
-
-                db.collection('families').doc(docID).update({
-                    meetings: origMeetings,
-                })
+                var sfRef = db.collection('families').doc(docID);
+                batch.update(sfRef, {"meetings": origMeetings,});
+                
             });
+            batch.commit().then(() => {
+                location.href = "home.html"
+            });
+            // 
         });
+
+       
     
     // db.collection('families').doc().update({
     //     meetings: [db_log_newMeeting],
