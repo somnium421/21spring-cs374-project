@@ -98,6 +98,8 @@ $("#sign-in").click(async function() {
     document.getElementById('userID').style = "border: ''";
     document.getElementById('userPW').style = "border: ''";
     $("#signinHelp").remove();
+    localStorage.setItem('id', userID);
+    localStorage.setItem('pw', userPW);
     
     await db.collection('users').add({
       // family-code: familyCode,

@@ -173,7 +173,7 @@ $('#family-tree-submit').click(async function(){
     await db.collection('families').doc().set({
         code: familyCode,
         meetings: [],
-        members: Object.assign({}, familyChart),
+        members: familyChart,
     })
     location.href = 'assign.html';
 })
