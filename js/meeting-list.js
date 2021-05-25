@@ -49,11 +49,11 @@ function processData(meetingNumber, html_isPrivate, html_dueDate, html_meetingNa
             }
             answers.push(doc.data());
             if (doc.data().userID === userID) meetingUserPart.push(meetingNumber);
-            
         });
 
        
         const answered = [];
+        console.log('helpme:', meetings[meetingNumber].participants, answers)
         for (var participant of meetings[meetingNumber].participants) {
             for (var answer of answers) {
                 if (answer.userID == participant.id) {
@@ -64,7 +64,7 @@ function processData(meetingNumber, html_isPrivate, html_dueDate, html_meetingNa
                 }
             }
         }
-        //console.log("answers:", answered, answers);
+        console.log("answers:", answered, answers);
         for (var participant of meetings[meetingNumber].participants) {
             //console.log(Number(participant.id) in answered);
             if (!(Number(participant.id) in answered)) {
@@ -107,7 +107,7 @@ function processData(meetingNumber, html_isPrivate, html_dueDate, html_meetingNa
                                 </div>`
 
     
-        console.log(htmlStr);
+        //console.log(htmlStr);
         
         $("#meeting-list").append(htmlStr)
         console.log($("span.rounded-pill"));
