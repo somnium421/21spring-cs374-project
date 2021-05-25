@@ -194,5 +194,5 @@ $('#logout-button').click(() => {
     localStorage.removeItem('family-id');
     localStorage.removeItem('id');
     localStorage.removeItem('pw');
-    location.href = "login.html";
+    location.href = "index.html";
 })

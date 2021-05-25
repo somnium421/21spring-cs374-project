@@ -509,7 +509,7 @@ $('#logout-button').click(() => {
     localStorage.removeItem('family-id');
     localStorage.removeItem('id');
     localStorage.removeItem('pw');
-    location.href = "login.html";
+    location.href = "index.html";
 })
 
 db.collection('families').where('code', '==', familyCode).get().then((snapshot) => {
