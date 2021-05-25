@@ -445,15 +445,22 @@ $('#final-submit').click(function(){
         .get()
         .then((snapshot) => {
             var batch = db.batch();
+            
             snapshot.forEach((doc) => {
                 var docID = doc.id;
                 var origMeetings = doc.data().meetings;
-                
+                var meetingSize = origMeetings.length;
                 origMeetings.push(db_log_newMeeting)
                 // console.log(db_log_newMeeting);
                 var sfRef = db.collection('families').doc(docID);
                 batch.update(sfRef, {"meetings": origMeetings,});
                 
+                var nycRef = db.collection('families').doc(docID).collection('chats').doc();
+                batch.set(nycRef, {
+                    chat: [],
+                    meetingNumber: meetingSize
+                });
+
             });
             batch.commit().then(() => {
                 location.href = "home.html"
