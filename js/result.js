@@ -257,11 +257,13 @@ function processData() {
         dateChartDraw(datesChartData);
         
         if (availableTimeArr.length !== 0){
-            console.log(availableTimeArr);
             availableTimeArr = availableTimeArr.map(({name, arrTime})=> {return {"name":members[name].name , "arrTime" : arrTime}})
             console.log(availableTimeArr);
             hostAvailableTime = rangeToItems (hostAvailableTime);
             timeChartDraw(availableTimeArr, hostAvailableTime)
+        }else{
+            console.log(availableTimeArr);
+            $("#time-card-container").remove();
         }
         
         // if (availableTimeArr){
