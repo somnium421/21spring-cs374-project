@@ -53,10 +53,9 @@ $('#login').click(() => {
             if (user.id == userID) {
                 noSuchID = false;
                 if (user.pw == userPW) {
+                    console.log(user);
                     document.getElementById('userID').style = "border: ''";
                     document.getElementById('userPW').style = "border: ''";
-                    $("#loginHelp").remove();
-
                     localStorage.setItem('family-code', user["family-code"]);
                     localStorage.setItem('family-id', user["family-id"]);
                     localStorage.setItem('id', user["id"]);
