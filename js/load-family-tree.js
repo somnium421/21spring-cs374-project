@@ -27,6 +27,7 @@ $("#submit-family-code").click (function(){
             //family.code local 에 올리기
             localStorage.setItem('family-code',family.code);
             location.href = "assign.html"
+            return;
         }
     }
     var text = `<small id="codeHelp" class="form-text" style="color: red">없는 가족코드입니다. 다시 입력해주세요. </small>`
