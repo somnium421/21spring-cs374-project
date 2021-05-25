@@ -408,9 +408,11 @@ function bindEvents() {
     $('#submit-button').click(function() {
         var a = validatearr2('Txt_Date', userAvailableDates, 0);
         var b = validatearr3('start-time', $('#start-time').val(), 19);
+
         if( a && b == false) return; 
 
         if ($("#start-time").length > 0){ //period.day < 1 인 경우에는 선택자가 이미 사라져있음.
+           
             userAvailableTime.push($("#start-time").val().slice(0,8));
             userAvailableTime.push($("#start-time").val().slice(11,19));
         }
@@ -431,6 +433,7 @@ function bindEvents() {
             availableDates: userAvailableDates,
             availableTime: userAvailableTime
         });
+        location.href = "home.html";
     });
     $('#logout-button').click(() => {
         localStorage.removeItem('family-code');

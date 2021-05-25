@@ -1,5 +1,5 @@
 const familyCode = localStorage.getItem("family-code") //"00AB8"
-const userID = localStorage.getItem("family-id") // "0"
+const userID = Number(localStorage.getItem("family-id")) // "0"
 console.log(familyCode, userID);
 
 localStorage.removeItem("meeting-number");
@@ -76,6 +76,7 @@ function processData(meetingNumber, html_isPrivate, html_dueDate, html_meetingNa
         }
 
         var col = "";
+        if (isPrivate) col = "bg-light";
         var htmlStr = `<div class="card meeting-card ${col} mb-3" style="border-radius: 10px;">
                                     <div class="card-header">   
                                         <div class="d-flex justify-content-between">
@@ -105,12 +106,11 @@ function processData(meetingNumber, html_isPrivate, html_dueDate, html_meetingNa
                                     </div>
                                 </div>`
 
-        if (isPrivate) {
-            $("span.rounded-pill").css("background-color: rgb(218, 218, 218);")
-            col = "bg-light";
-        }
+    
+        console.log(htmlStr);
         
         $("#meeting-list").append(htmlStr)
+        console.log($("span.rounded-pill"));
 
         if (meetingUserPart.filter((el) => el === meetingNumber).length === 0) $("#meeting-list-not-part").append(htmlStr);
         else $("#meeting-list-part").append(htmlStr);
@@ -156,12 +156,13 @@ $(document).ready(function() {
                 for (meetingNumber = 0; meetingNumber < meetings.length; meetingNumber ++){
     
                     var isPrivate = meetings[meetingNumber].isPrivate
+                    console.log(meetings[meetingNumber].participants);
                     // if private and userID is not in the participants list, ignore.
-                    if (isPrivate && meetings[meetingNumber].participants.filter(({id}) => id === userID).length === 0) continue;
-    
+                    if (isPrivate && meetings[meetingNumber].participants.filter(({id}) => Number(id) === userID).length === 0) continue;
+                    
                     var html_isPrivate, html_dueDate, html_meetingName, html_meetingDescription, html_meetingParticipants, html_meetingTags, html_button, html_meetingDates;
-    
-                    if (meetings[meetingNumber].isPrivate) html_isPrivate = '<span class="text-muted" style="font-size: smaller;"><i class="fas fa-lock me-1"></i> 비공개</span>'
+                    
+                    if (isPrivate) html_isPrivate = '<span class="text-muted" style="font-size: smaller;"><i class="fas fa-lock me-1"></i> 비공개</span>'
                     else html_isPrivate = '<span class="text-muted" style="font-size: smaller;"><i class="fas fa-globe-asia me-1"></i> 공개</span>'
                     
                 
@@ -179,17 +180,18 @@ $(document).ready(function() {
                     }
     
                     html_meetingDates =``
-    
+                    if(isPrivate) var isPrivateBadge = "private-badge";
+                    else var isPrivateBadge = ""
     
                     if (meetings[meetingNumber].meetingPeriod.day > 1 && meetings[meetingNumber].availableDates.length == meetings[meetingNumber].meetingPeriod.day) {
                         var time1 = meetings[meetingNumber].availableDates[0].toDate(), time2 = meetings[meetingNumber].availableDates[meetings[meetingNumber].availableDates.length-1].toDate();
-                        html_meetingDates = `<h4><span class="badge rounded-pill bg-light text-dark"><i class="fa fa-calendar" aria-hidden="true"></i> 
+                        html_meetingDates = `<h4><span class="badge rounded-pill bg-light text-dark ${isPrivateBadge}"><i class="fa fa-calendar" aria-hidden="true"></i> 
                             &nbsp; ${time1.getYear()+1900}.${time1.getMonth()+1}.${time1.getDate()} ~ ${time2.getYear()+1900}.${time2.getMonth()+1}.${time2.getDate()} </span></h4>`;
                     }
                     //else {
                     else if (meetings[meetingNumber].meetingPeriod.day <= 1 && meetings[meetingNumber].availableDates.length == 1) {
                         var time = meetings[meetingNumber].availableDates[0].toDate()
-                        html_meetingDates  =`<h4><span class="badge rounded-pill bg-light text-dark"><i class="fa fa-calendar" aria-hidden="true"></i> 
+                        html_meetingDates  =`<h4><span class="badge rounded-pill bg-light text-dark ${isPrivateBadge}"><i class="fa fa-calendar" aria-hidden="true"></i> 
                             &nbsp; ${time.getYear()+1900}.${time.getMonth()+1}.${time.getDate()} </span></h4>`;
                     }
     
@@ -202,15 +204,15 @@ $(document).ready(function() {
                     var meetingTags;
                     
     
-                    if (meetings[meetingNumber].meetingPeriod.day == 0) meetingTags = `<span class="badge rounded-pill bg-light text-dark">${meetings[meetingNumber].meetingPeriod.hr}시간</span> <span style="font-size: smaller;">동안</span>`;
-                    else if (meetings[meetingNumber].meetingPeriod.day == 1) meetingTags = `<span class="badge rounded-pill bg-light text-dark">하루</span> <span style="font-size: smaller;">종일</span>`;
-                    else meetingTags = `<span class="badge rounded-pill bg-light text-dark">${meetings[meetingNumber].meetingPeriod.day-1}박 ${meetings[meetingNumber].meetingPeriod.day}일</span> <span style="font-size: smaller;">동안</span> `
+                    if (meetings[meetingNumber].meetingPeriod.day == 0) meetingTags = `<span class="badge rounded-pill bg-light text-dark ${isPrivateBadge}">${meetings[meetingNumber].meetingPeriod.hr}시간</span> <span style="font-size: smaller;">동안 </span>`;
+                    else if (meetings[meetingNumber].meetingPeriod.day == 1) meetingTags = `<span class="badge rounded-pill bg-light text-dark ${isPrivateBadge}">하루</span> <span style="font-size: smaller;">종일 </span>`;
+                    else meetingTags = `<span class="badge rounded-pill bg-light text-dark ${isPrivateBadge}">${meetings[meetingNumber].meetingPeriod.day-1}박 ${meetings[meetingNumber].meetingPeriod.day}일</span> <span style="font-size: smaller;">동안 </span> `
                     if (meetings[meetingNumber].noMorePlace) {
-                        var tmp = meetings[meetingNumber].place.map((x) => `<span class="badge rounded-pill bg-light text-dark">${x}</span>`).join('');
+                        var tmp = meetings[meetingNumber].place.map((x) => `<span class="badge rounded-pill bg-light text-dark ${isPrivateBadge}">${x}</span>`).join('');
                         meetingTags += tmp + '<span style="font-size: smaller;">에서</span>';
                     }
                     if (meetings[meetingNumber].noMoreActivity) {
-                        var tmp = meetings[meetingNumber].activity.map((x) => `<span class="badge rounded-pill bg-light text-dark">${x}</span>`).join('');
+                        var tmp = meetings[meetingNumber].activity.map((x) => `<span class="badge rounded-pill bg-light text-dark ${isPrivateBadge}">${x}</span>`).join('');
                         meetingTags += tmp;
                     }
                     html_meetingTags = meetingTags;

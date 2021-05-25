@@ -2,3 +2,7 @@
   color: gray;
   font-size: smaller;
 }
+
+.private-badge{
+  background-color: rgb(218, 218, 218)!important;
+}

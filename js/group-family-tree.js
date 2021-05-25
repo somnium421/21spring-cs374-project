@@ -3,7 +3,7 @@
 
 $(document).ready(() => {
     if (familyCode !== null){
-        console.log("is after?");
+        // console.log("is after?");
         /*--------------------------------------------------------
         -------------- for home_family_tree-----------------------
         --------------------------------------------------------*/
@@ -66,14 +66,14 @@ $(document).ready(() => {
         .get()
         .then((snapshot) => {
             snapshot.forEach((doc) => {
-                console.log("hi");
+                // console.log("hi");
                 docID = doc.id;
                 members = doc.data().members;    
                 window.newid = members.length;   
     
             })
             
-            console.log(document.getElementById("family-tree"));
+            // console.log(document.getElementById("family-tree"));
             // console.log("fam_mem"+window.family_members)
             chart = new OrgChart(document.getElementById("family-tree"), {
                 template: "family_template",
@@ -143,7 +143,7 @@ $(document).ready(() => {
     
     
         function addGroupBox_forHome(){
-            console.log("in group box"+window.newid);
+            // console.log("in group box"+window.newid);
             var nodenum = window.newid;
             for(var cnt = 2; cnt < nodenum; cnt ++){
                 
@@ -153,25 +153,25 @@ $(document).ready(() => {
                     // for colomn 1
                     for(var ccnt= 2; ccnt<nodenum; ccnt++){
                         var node2 = window.nchart[ccnt];
-                        console.log(node2);
+                        // console.log(node2);
                         if((node2.pid == node.id ) ||(node2.ppid ==  node.id)){
                             nchart[ccnt] = { id: node2.id, stpid : window.newid, tags: node2.tags, name: node2.name,partner: node2.partner, img: node2.img, title: node2.title,  gender: node2.gender};                    
                         }
                     }
                     nchart[cnt] = { id: node.id, stpid : window.newid, tags: node.tags, name: node.name ,partner: node.partner, img: node.img, title: node.title,  gender: node.gender};
-                    console.log("title : " +node.title);
-                    console.log("title: "+node.title)
+                    // console.log("title : " +node.title);
+                    // console.log("title: "+node.title)
                     if(node.title == undefined){
-                        console.log("in undefi")
+                        // console.log("in undefi")
                         var data = {id:window.newid, pid: 0, ppid:1 , tags: ["node_with_subtrees"],textWhenTheNodeIsMimized: node.name+"네", textWhenTheNodeIsMaximized: node.name+"네"};
     
                     }
                     else if(node.title == "아내" ||node.title == "나" || node.title == "남편" ||node.title == "아버지"||node.title == "어머니"){
                         var data = {id:window.newid, pid: 0, ppid:1 , tags: ["node_with_subtrees"],textWhenTheNodeIsMimized: "우리가족", textWhenTheNodeIsMaximized: "우리가족"};
-                        console.log("in 우리")
+                        // console.log("in 우리")
                     }
                     else{
-                        console.log("in else")
+                        // console.log("in else")
                         var data = {id:window.newid, pid: 0, ppid:1 , tags: ["node_with_subtrees"],textWhenTheNodeIsMimized: node.title+"네", textWhenTheNodeIsMaximized: node.title+"네"};
                     }
                     nchart.push(data);
