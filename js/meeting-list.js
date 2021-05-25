@@ -229,7 +229,11 @@ $(document).ready(function() {
     } else {
         //meeting list
         $("#meeting-list, #meeting-list-part, #meeting-list-not-part, #family-tree").attr("class", "card-body overflow-auto text-center")
-        $(".meeting-card .meeting-card-part .meeting-card-not-part").attr("class", "card h-100 shadow pb-3 bg-light")
+        $(".meeting-card").attr("class", "card h-100 shadow pb-3 bg-light meeting-card")
+        $(".meeting-card-part").attr("class", "card h-100 shadow pb-3 bg-light meeting-card-part")
+        $(".meeting-card-not-part").attr("class", "card h-100 shadow pb-3 bg-light meeting-card-not-part")
+        
+        
         $("#createNewMeeting").attr("class", "btn btn-primary rounded-pill btn-lg shadow disabled")
         $("#meeting-list, #meeting-list-part, #meeting-list-not-part").append(`<p class="card-text text-muted mt-3">가족 관계도를 생성하고 서비스를 이용해보세요! <a href="load-family-tree.html" class="card-link">생성하기</a>
                     <br>

@@ -3,7 +3,7 @@
 isAssign = (familyCode !== null && familyCode !== "undefined" && familyCode !== undefined);
 
 $(document).ready(() => {
-    if (familyCode !== null){
+    if (isAssign){
         // console.log("is after?");
         /*--------------------------------------------------------
         -------------- for home_family_tree-----------------------
