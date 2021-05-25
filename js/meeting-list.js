@@ -57,7 +57,7 @@ function processData(meetingNumber, html_isPrivate, html_dueDate, html_meetingNa
         for (var participant of meetings[meetingNumber].participants) {
             for (var answer of answers) {
                 if (answer.userID == participant.id) {
-                    answered.push(answer.userID);
+                    answered.push(Number(answer.userID));
                     html_meetingParticipants = html_meetingParticipants + ` <a class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title=${participant.name}>
                                                     <img src="${members[participant.id].img}" style="width:30px;height:30px;border-radius:70%;margin-bottom:2px;"></img>
                                                 </a>`;
@@ -65,7 +65,7 @@ function processData(meetingNumber, html_isPrivate, html_dueDate, html_meetingNa
             }
         }
         for (var participant of meetings[meetingNumber].participants) {
-            if (!(participant.id in answered)) html_meetingParticipants = html_meetingParticipants + ` <a class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title=${participant.name}>
+            if (!(Number(participant.id) in answered)) html_meetingParticipants = html_meetingParticipants + ` <a class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title=${participant.name}>
                                                     <img src="${members[participant.id].img}" style="width:30px;height:30px;border-radius:70%;margin-bottom:2px;filter:brightness(0.5);"></img>
                                                 </a>`;
         }

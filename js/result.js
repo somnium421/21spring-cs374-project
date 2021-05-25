@@ -342,7 +342,7 @@ $(document).ready(function() {
                 for (var participant of meetings[meetingNumber].participants) {
                     for (var answer of answers) {
                         if (answer.userID == participant.id) {
-                            answered.push(answer.userID);
+                            answered.push(Number(answer.userID));
                             $('#meeting-participants').append(` <a class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title=${participant.name}>
                                                             <img src="${members[participant.id].img}" style="width:30px;height:30px;border-radius:70%;margin-bottom:2px;"></img>
                                                         </a>`);
