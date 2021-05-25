@@ -440,29 +440,35 @@ $('#final-submit').click(function(){
     db_log_newMeeting.hostID = userID;
 
     console.log(db_log_newMeeting);
-
+    
     db.collection('families').where('code', '==', familyCode)
         .get()
         .then((snapshot) => {
+            var batch = db.batch();
+            
             snapshot.forEach((doc) => {
                 var docID = doc.id;
                 var origMeetings = doc.data().meetings;
-                
+                var meetingSize = origMeetings.length;
                 origMeetings.push(db_log_newMeeting)
                 // console.log(db_log_newMeeting);
+                var sfRef = db.collection('families').doc(docID);
+                batch.update(sfRef, {"meetings": origMeetings,});
+                
+                var nycRef = db.collection('families').doc(docID).collection('chats').doc();
+                batch.set(nycRef, {
+                    chat: [],
+                    meetingNumber: meetingSize
+                });
 
-                db.collection('families').doc(docID).update({
-                    meetings: origMeetings,
-                })
-                db.collection('families').doc(docID).collection('chats').get().then((snapshot) => {
-                    console.log("familyCode: "+familyCode);
-                    db.collection('families').doc(docID).collection('chats').add({
-                        chat: [],
-                        meetingNumber: snapshot.size
-                    })
-                })
             });
+            batch.commit().then(() => {
+                location.href = "home.html"
+            });
+            // 
         });
+
+       
     
     // db.collection('families').doc().update({
     //     meetings: [db_log_newMeeting],
