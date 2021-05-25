@@ -491,7 +491,9 @@ function onSuccessGeolocation(position) {
 }
 
 function onErrorGeolocation() {
-    console.log('error')
+    map = new naver.maps.Map("map", {
+        zoom: 15
+    });
 }
   
 function searchAddressToCoordinate(address) {
@@ -504,7 +506,13 @@ function searchAddressToCoordinate(address) {
         var item = response.v2.addresses[0],
             point = new naver.maps.Point(item.x, item.y);
         answer.departure = [item.x, item.y];
-        marker.setPosition(point);
+        if (marker == undefined) {
+            marker = new naver.maps.Marker({
+                position: point,
+                map: map
+            });
+        }
+        else marker.setPosition(point);
         map.setCenter(point);
     });
 }
