@@ -110,7 +110,7 @@ db.collection('families').where('code', '==', familyCode)
 
 
 $('#assign-me').click(function(){
-    console.log(me);
+    console.log('me.id: '+me.id);
     var newNode = me;
     var nodeData = chart.get(newNode.id);
     chart.updateNode({ id: newNode.id, pid: newNode.pid, ppid: newNode.ppid, tags: ["blue", newNode.tags[0]], name: nodeData["name"],partner: nodeData["partner"], img: nodeData["img"], title: nodeData["title"],  gender: nodeData["gender"]});

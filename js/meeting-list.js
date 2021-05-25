@@ -7,7 +7,7 @@ localStorage.removeItem("meeting-number");
 const placeData = [], activityData = [], markers = [], infoWindows = [], latlngs = [], meetingUserPart = [], answers = [];
 var meetings, members, chats, docID, answerID, isAssign;
 
-isAssign = (familyCode !== null);
+isAssign = (familyCode !== null && familyCode !== "undefined" && familyCode !== undefined);
 console.log(isAssign);
 // duedate 지나면 결과확인 되기 -> 됨. 생성에 문제가근데, 그 전에는 duedate 남은거 받아서 표시 -> 됨. , userID가 참가자중 없는데 private이면 안보여야함. private 이면 색깔 다르게.
 // tag 중에는 제일 인기가 많은거 나오게??

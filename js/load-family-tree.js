@@ -35,3 +35,11 @@ $("#submit-family-code").click (function(){
     document.getElementById('family-code-input').style = "border: 2px solid #E8ADAA";
     return false;
 })
+
+$('#logout-button').click(() => {
+    localStorage.removeItem('family-code');
+    localStorage.removeItem('family-id');
+    localStorage.removeItem('id');
+    localStorage.removeItem('pw');
+    location.href = "login.html";
+})

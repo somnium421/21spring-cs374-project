@@ -1,5 +1,6 @@
 //var familyCode = localStorage.getItem("family-code"); //"00AB8"
 // var userID = localStorage.getItem("family-id"); // "0"
+isAssign = (familyCode !== null && familyCode !== "undefined" && familyCode !== undefined);
 
 $(document).ready(() => {
     if (familyCode !== null){
