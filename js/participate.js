@@ -64,9 +64,11 @@ $(document).ready(function() {
                 snapshot.forEach((doc) => {
                     answers.push(doc.data());
                 })
+                var participants = meetings[meetingNumber].participants;
+                if (participants.filter(({id, name})=> Number(id) === Number(userID)).length !== 0) participants.push({"id":String(userID), "name": ""});
                 console.log(answers);
                 const answered = [];
-                for (var participant of meetings[meetingNumber].participants) {
+                for (var participant of participants) {
                     for (var answer of answers) {
                         if (answer.userID == participant.id) {
                             answered.push(Number(answer.userID));
@@ -76,7 +78,7 @@ $(document).ready(function() {
                         }
                     }
                 }
-                for (var participant of meetings[meetingNumber].participants) {
+                for (var participant of participants) {
                     if (!(Number(participant.id) in answered)) $('#meeting-participants').append(` <a class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title=${participant.name}>
                                                             <img src="${members[participant.id].img}" style="width:30px;height:30px;border-radius:70%;margin-bottom:2px;filter:brightness(0.3);opacity:0.4;"></img>
                                                         </a>`);
