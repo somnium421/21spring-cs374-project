@@ -166,7 +166,7 @@ $(document).ready(() => {
                         var data = {id:window.newid, pid: 0, ppid:1 , tags: ["node_with_subtrees"],textWhenTheNodeIsMimized: node.name+"네", textWhenTheNodeIsMaximized: node.name+"네"};
     
                     }
-                    else if(node.title == "아내" ||node.title == "나" || node.title == "남편" ||node.title == "아빠"||node.title == "엄마"){
+                    else if(node.title == "아내" ||node.title == "나" || node.title == "남편" ||node.title == "아버지"||node.title == "어머니"){
                         var data = {id:window.newid, pid: 0, ppid:1 , tags: ["node_with_subtrees"],textWhenTheNodeIsMimized: "우리가족", textWhenTheNodeIsMaximized: "우리가족"};
                         console.log("in 우리")
                     }
