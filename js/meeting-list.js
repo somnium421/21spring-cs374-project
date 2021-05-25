@@ -58,7 +58,7 @@ function processData(meetingNumber, html_isPrivate, html_dueDate, html_meetingNa
             for (var answer of answers) {
                 if (Number(answer.userID) == Number(participant.id)) {
                     answered.push(Number(answer.userID));
-                    html_meetingParticipants = html_meetingParticipants + ` <a class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title=${participant.name}>
+                    html_meetingParticipants = html_meetingParticipants + ` <a class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title=${members[participant.id].name}>
                                                     <img src="${members[participant.id].img}" style="width:30px;height:30px;border-radius:70%;margin-bottom:2px;"></img>
                                                 </a>`;
                 }
@@ -69,7 +69,7 @@ function processData(meetingNumber, html_isPrivate, html_dueDate, html_meetingNa
             // console.log(Number(participant.id) in answered);
             if (!answered.includes(Number(participant.id))) {
                 // console.log(participant.id, Number(participant.id) in answered);
-                html_meetingParticipants = html_meetingParticipants + ` <a class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title=${participant.name}>
+                html_meetingParticipants = html_meetingParticipants + ` <a class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title=${members[participant.id].name}>
                                                     <img src="${members[participant.id].img}" style="width:30px;height:30px;border-radius:70%;margin-bottom:2px;filter:brightness(0.5);"></img>
                                                 </a>`;
             }
