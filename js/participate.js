@@ -212,6 +212,7 @@ function setDateDisabled(arrDates){
     
         // console.log(e.dates);
         userAvailableDates = e.dates;
+        console.log(userAvailableDates);
     })
 }
 
@@ -407,22 +408,26 @@ function bindEvents() {
 
     $('#submit-button').click(function() {
         var a = validatearr2('Txt_Date', userAvailableDates, 0);
-        var b = validatearr3('start-time', $('#start-time').val(), 19);
-
-        if( a && b == false) return; 
+        var b = true;
 
         if ($("#start-time").length > 0){ //period.day < 1 인 경우에는 선택자가 이미 사라져있음.
-           
+            var b = validatearr3('start-time', $('#start-time').val(), 19);
             userAvailableTime.push($("#start-time").val().slice(0,8));
             userAvailableTime.push($("#start-time").val().slice(11,19));
-        }
+        };
+
+        if( a && b == false) return;
+
         // console.log(userAvailableDates, userAvailableTime);
         for (var checked of $("#accommodation input[type='checkbox']:checked")) answer.accommodation.push($(checked).attr('id'));
         for (var transportation of $("#transportation input[type='radio']:checked")) answer.transportation.push($(transportation).attr('id'));
         console.log(answer);
         // userAvailableDates 는 다른곳에서 받음
         
-        db.collection('families').doc(docID).collection('answers').add({
+        var batch = db.batch();
+
+        var ansRef = db.collection('families').doc(docID).collection('answers').doc();
+        batch.set (ansRef, {
             meetingNumber: meetingNumber,
             userID: userID,
             place: answer.place,
@@ -433,8 +438,13 @@ function bindEvents() {
             availableDates: userAvailableDates,
             availableTime: userAvailableTime
         });
-        location.href = "home.html";
+
+        batch.commit().then(() => {
+            location.href = "home.html";
+        })
+        
     });
+
     $('#logout-button').click(() => {
         localStorage.removeItem('family-code');
         localStorage.removeItem('family-id');
@@ -445,10 +455,10 @@ function bindEvents() {
 
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-    return new bootstrap.Tooltip(tooltipTriggerEl)
-});
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    });
 
-}
+};
     
 $(document).on('click', '.remove-tag', function(e){
     e.preventDefault();
