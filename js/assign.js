@@ -95,9 +95,10 @@ db.collection('families').where('code', '==', familyCode)
     chart.on('click',function(sender, arg){
         console.log("click");
         console.log(arg.node);
+        
     
         me = arg.node;
-        console.log(me);    
+        console.log(me);   
         $("#assign-here").modal('show');
     
     })
@@ -155,20 +156,21 @@ $('#checked').on('hidden.bs.modal ',function(){
 })
 
 //db 에 저장. 그런데 familycode를 알아야 할 듯
-$('#assign-submit').click(async ()=>{
+$('#assign-submit').click(()=> {
+    console.log("me.id: "+me.id);
+    console.log("familyCode: "+familyCode);
     localStorage.setItem('family-id', me.id);
-    await db.collection('users').where('id', '==', localStorage.getItem('id'))
-        .get()
-        .then((snapshot) =>{
-            snapshot.forEach((doc) =>{
-                var docID = doc.id;
-                db.collection('users').doc(docID).update({
-                    'family-id': me.id,
-                    'family-code': familyCode
-                })
+    db.collection('users').where('id', '==', localStorage.getItem('id')).get()
+    .then((snapshot) => {
+        snapshot.forEach((doc) => {
+            var docID = doc.id;
+            db.collection('users').doc(docID).update({
+                'family-id': me.id,
+                'family-code': familyCode
             })
         })
-    await db.collection('families').where('code', '==', familyCode)
+    })
+    db.collection('families').where('code', '==', familyCode)
         .get()
         .then((snapshot) => {
             snapshot.forEach(async (doc) => {

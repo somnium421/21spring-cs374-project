@@ -3,6 +3,14 @@ var userID, userPw;
 storage = window.localStorage;
 
 $(document).ready(function(){
+    localStorage.removeItem('family-code');
+    localStorage.removeItem('familyCode');
+    localStorage.removeItem('family-id');
+    localStorage.removeItem('familyID');
+    localStorage.removeItem('id');
+    localStorage.removeItem('userID');
+    localStorage.removeItem('pw');
+
     db.collection('users').get()
     .then((snapshot) => {
         snapshot.forEach((doc) => {
