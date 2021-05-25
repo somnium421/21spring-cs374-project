@@ -175,7 +175,7 @@ function drawChat(idx) {
 }
 
 function processData() {
-    db.collection('families').doc(docID).collection('answers').where('meetingNumber', '==', meetingNumber)
+    db.collection('families').doc(docID).collection('answers').where('meetingNumber', '==', String(meetingNumber))
     .get()
     .then((snapshot) => {
         var placeDict = {}, activityDict = {}, availableDatesDict = {}, availableTimeArr = [];
@@ -258,11 +258,11 @@ function processData() {
         
         if (availableTimeArr.length !== 0){
             availableTimeArr = availableTimeArr.map(({name, arrTime})=> {return {"name":members[name].name , "arrTime" : arrTime}})
-            console.log(availableTimeArr);
+            //console.log(availableTimeArr);
             hostAvailableTime = rangeToItems (hostAvailableTime);
             timeChartDraw(availableTimeArr, hostAvailableTime)
         }else{
-            console.log(availableTimeArr);
+            //console.log(availableTimeArr);
             $("#time-card-container").remove();
         }
         
@@ -311,7 +311,7 @@ $(document).ready(function() {
             }
 
             hostAvailableTime = meetings[meetingNumber].availableTimes;
-            console.log(hostAvailableTime);
+            //console.log(hostAvailableTime);
 
             processData();
             
@@ -332,26 +332,26 @@ $(document).ready(function() {
 
             $('#meeting-description').text(meetings[meetingNumber].description);
 
-            db.collection('families').doc(docID).collection('answers').where('meetingNumber', '==', meetingNumber).get()
+            db.collection('families').doc(docID).collection('answers').where('meetingNumber', '==', String(meetingNumber)).get()
             .then((snapshot) => {
                 snapshot.forEach((doc) => {
                     answers.push(doc.data());
                 })
-                // console.log(answers);
+                console.log(answers);
                 const answered = [];
                 for (var participant of meetings[meetingNumber].participants) {
                     for (var answer of answers) {
-                        if (answer.userID == participant.id) {
+                        if (Number(answer.userID) == Number(participant.id)) {
                             answered.push(Number(answer.userID));
-                            $('#meeting-participants').append(` <a class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title=${participant.name}>
+                            $('#meeting-participants').append(` <a class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title=${members[participant.id].name}>
                                                             <img src="${members[participant.id].img}" style="width:30px;height:30px;border-radius:70%;margin-bottom:2px;"></img>
                                                         </a>`);
                         }
                     }
                 }
                 for (var participant of meetings[meetingNumber].participants) {
-                    if (!(Number(participant.id) in answered)) {
-                        $('#meeting-participants').append(` <a class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="${participant.name}">
+                    if (!answered.includes(Number(participant.id))) {
+                        $('#meeting-participants').append(` <a class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="${members[participant.id].name}">
                                                             <img src="${members[participant.id].img}" style="width:30px;height:30px;border-radius:70%;margin-bottom:2px;filter:brightness(0.3);opacity:0.4;"></img>
                                                         </a>`);
                     }
@@ -671,3 +671,11 @@ function timeChartDraw(IDtoTime, arrAvailable) {
         }
     });
 }
+
+$('#logout-button').click(() => {
+    localStorage.removeItem('family-code');
+    localStorage.removeItem('family-id');
+    localStorage.removeItem('id');
+    localStorage.removeItem('pw');
+    location.href = "login.html";
+})

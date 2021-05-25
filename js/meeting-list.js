@@ -53,7 +53,7 @@ function processData(meetingNumber, html_isPrivate, html_dueDate, html_meetingNa
 
        
         const answered = [];
-        // console.log('helpme:', meetings[meetingNumber].participants, answers)
+        console.log('helpme:', meetings[meetingNumber].participants, answers)
         for (var participant of meetings[meetingNumber].participants) {
             for (var answer of answers) {
                 if (Number(answer.userID) == Number(participant.id)) {
@@ -169,7 +169,8 @@ $(document).ready(function() {
                     var meetingDue = new Date(meetings[meetingNumber].dueDate.seconds*1000)
                     var now = new Date();
     
-                    console.log(meetingDue, now);
+                    // console.log(meetingDue, now);
+                    
                     if (meetingDue > now) {
                         html_dueDate = `<span class="text-muted" style="font-size: smaller;"><i class="fa fa-ellipsis-h" aria-hidden="true"></i> &nbsp;참여 마감 <span class="text-primary">${meetingDue.getDate()-now.getDate()}</span>일 전</span>`
                         html_button = `<button class="btn btn-outline-primary rounded-pill participate" id="meeting-${meetingNumber}">참여 신청 &nbsp; <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`
