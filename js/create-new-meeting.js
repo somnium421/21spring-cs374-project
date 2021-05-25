@@ -455,7 +455,8 @@ $('#final-submit').click(function(){
                     meetings: origMeetings,
                 })
                 db.collection('families').doc(docID).collection('chats').get().then((snapshot) => {
-                    db.collection('families').doc(docID).collection('chats').doc().set({
+                    console.log("familyCode: "+familyCode);
+                    db.collection('families').doc(docID).collection('chats').add({
                         chat: [],
                         meetingNumber: snapshot.size
                     })
