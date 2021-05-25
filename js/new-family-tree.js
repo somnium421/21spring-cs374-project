@@ -167,15 +167,27 @@ $(document).ready(function(){
 
 
 $('#family-tree-submit').click(async function(){
-    console.log(familyChart);
+    // console.log(familyChart);
     localStorage.setItem('family-code',familyCode);
     ///////////////////////나중에는 풀어야함/////////////////
     await db.collection('families').doc().set({
         code: familyCode,
         meetings: [],
         members: familyChart,
+    }).then(() => {
+        location.href = 'assign.html';
     })
-    location.href = 'assign.html';
+    
+    /*.then(() => {
+        db.collection('families').where('code', '==', familyCode).get()
+        .then((snapshot) => {
+            var docID;
+            console.log(familyCode);
+            snapshot.forEach((doc) => {
+                docID = doc.id;
+            })
+        })
+    })*/
 })
 
 $('#logout-button').click(() => {

@@ -513,3 +513,21 @@ db.collection('families').where('code', '==', familyCode).get().then((snapshot) 
         }
     })
 })
+
+
+
+db.collection('families').where('code', '==', familyCode)
+        .get()
+        .then((snapshot) => {
+            snapshot.forEach((doc) => {
+                var docID = doc.id;
+                db.collection('families').doc(docID).collection('chats').get().then((snapshot) => {
+                    console.log("familyCode: "+familyCode);
+                    console.log("size: "+snapshot.size);
+                    db.collection('families').doc(docID).collection('chats').doc().set({
+                        chat: [],
+                        meetingNumber: snapshot.size
+                    })
+                })
+            });
+        });
