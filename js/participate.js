@@ -65,8 +65,10 @@ $(document).ready(function() {
                     answers.push(doc.data());
                 })
                 var participants = meetings[meetingNumber].participants;
-                if (participants.filter(({id, name})=> Number(id) === Number(userID)).length !== 0) participants.push({"id":String(userID), "name": ""});
-                console.log(answers);
+                if (participants.filter(({id, name})=> Number(id) === Number(userID)).length === 0) participants.push({"id":String(userID), "name": ""});
+
+                console.log(participants.filter(({id, name})=> Number(id) === Number(userID)).length !== 0);
+                console.log(participants);
                 const answered = [];
                 for (var participant of participants) {
                     for (var answer of answers) {
