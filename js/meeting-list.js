@@ -167,12 +167,13 @@ $(document).ready(function() {
                     
                 
                     var meetingDue = new Date(meetings[meetingNumber].dueDate.seconds*1000)
+                    
                     var now = new Date();
     
                     // console.log(meetingDue, now);
-                    
+
                     if (meetingDue > now) {
-                        html_dueDate = `<span class="text-muted" style="font-size: smaller;"><i class="fa fa-ellipsis-h" aria-hidden="true"></i> &nbsp;참여 마감 <span class="text-primary">${meetingDue.getDate()-now.getDate()}</span>일 전</span>`
+                        html_dueDate = `<span class="text-muted" style="font-size: smaller;"><i class="fa fa-ellipsis-h" aria-hidden="true"></i> &nbsp;참여 마감 <span class="text-primary">${Math.ceil((meetingDue.getTime()-now.getTime())/(1000*3600*24))}</span>일 전</span>`
                         console.log(meetingDue.getDate()-now.getDate());
                         html_button = `<button class="btn btn-outline-primary rounded-pill participate" id="meeting-${meetingNumber}">참여 신청 &nbsp; <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`
                     }
