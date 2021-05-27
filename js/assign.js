@@ -118,7 +118,7 @@ $('#assign-me').click(function(){
 
 $('#getfile').change(()=>{
     var myId= me.id;
-    var storageUpRef = firebase.storage().ref('/'+myId); //profile 대신 user의 가족 내에서의 id 
+    var storageUpRef = firebase.storage().ref('/'+familyCode+'/'+myId); //profile 대신 user의 가족 내에서의 id 
     var file = document.querySelector('#getfile');
     var fileList = file.files;
     var task = storageUpRef.put(fileList [0]);
@@ -133,7 +133,7 @@ $('#getfile').change(()=>{
         function(){                // 업로드 완료시 
             console.log('업로드 완료');    
             var storageRef = firebase.storage().ref();
-            storageRef.child('/'+myId).getDownloadURL().then(function(url) { //여기도 user 대신 id
+            storageRef.child('/'+familyCode+'/'+myId).getDownloadURL().then(function(url) { //여기도 user 대신 id
                 console.log('url은 이겁니다 : ',url);
                 var myNode = me;
                 var nodeData = chart.get(myNode.id);
