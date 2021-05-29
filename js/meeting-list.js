@@ -88,6 +88,27 @@ function processData(meetingNumber, html_isPrivate, html_dueDate, html_meetingNa
             }
         }
 
+
+        var meetingDue = new Date(meetings[meetingNumber].dueDate.seconds*1000)
+                    
+        var now = new Date();
+
+        // console.log(meetingDue, now);
+        if (meetingDue > now && meetingUserPart.filter((el) => Number(el) === Number(meetingNumber)).length === 0) {
+            html_dueDate = `<span class="text-muted" style="font-size: smaller;"><i class="fa fa-ellipsis-h" aria-hidden="true"></i> &nbsp;참여 마감 <span class="text-primary">${Math.ceil((meetingDue.getTime()-now.getTime())/(1000*3600*24))}</span>일 전</span>`
+            console.log(meetingDue.getDate()-now.getDate());
+            html_button = `<button class="btn btn-outline-primary rounded-pill participate" id="meeting-${meetingNumber}">참여 신청 &nbsp; <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`
+        }
+        else if (meetingDue > now && meetingUserPart.filter((el) => Number(el) === Number(meetingNumber)).length !== 0){
+            html_dueDate = `<span class="text-muted" style="font-size: smaller;"><i class="fa fa-ellipsis-h" aria-hidden="true"></i> &nbsp;참여 마감 <span class="text-primary">${Math.ceil((meetingDue.getTime()-now.getTime())/(1000*3600*24))}</span>일 전</span>`
+            console.log(meetingDue.getDate()-now.getDate());
+            html_button = `<button class="btn btn-outline-primary rounded-pill participate" id="meeting-${meetingNumber}" disabled>참여 완료 &nbsp; <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`
+        }
+        else {
+            html_dueDate = `<span class="text-muted" style="font-size: smaller;"><i class="fa fa-check" aria-hidden="true"></i> &nbsp;참여 마감</span>`
+            html_button = `<button class="btn btn-primary rounded-pill result" id="meeting-${meetingNumber}" > 결과 확인 &nbsp; <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`
+        }
+            
         var col = "";
         if (isPrivate) col = "bg-light";
         var htmlStr = `<div class="card meeting-card ${col} mb-3" style="border-radius: 10px;">
@@ -182,22 +203,6 @@ $(document).ready(function() {
                     if (isPrivate) html_isPrivate = '<span class="text-muted" style="font-size: smaller;"><i class="fas fa-lock me-1"></i> 비공개</span>'
                     else html_isPrivate = '<span class="text-muted" style="font-size: smaller;"><i class="fas fa-globe-asia me-1"></i> 공개</span>'
                     
-                
-                    var meetingDue = new Date(meetings[meetingNumber].dueDate.seconds*1000)
-                    
-                    var now = new Date();
-    
-                    // console.log(meetingDue, now);
-
-                    if (meetingDue > now) {
-                        html_dueDate = `<span class="text-muted" style="font-size: smaller;"><i class="fa fa-ellipsis-h" aria-hidden="true"></i> &nbsp;참여 마감 <span class="text-primary">${Math.ceil((meetingDue.getTime()-now.getTime())/(1000*3600*24))}</span>일 전</span>`
-                        console.log(meetingDue.getDate()-now.getDate());
-                        html_button = `<button class="btn btn-outline-primary rounded-pill participate" id="meeting-${meetingNumber}">참여 신청 &nbsp; <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`
-                    }
-                    else {
-                        html_dueDate = `<span class="text-muted" style="font-size: smaller;"><i class="fa fa-check" aria-hidden="true"></i> &nbsp;참여 마감</span>`
-                        html_button = `<button class="btn btn-primary rounded-pill result" id="meeting-${meetingNumber}" > 결과 확인 &nbsp; <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`
-                    }
     
                     html_meetingDates =``
                     if(isPrivate) var isPrivateBadge = "private-badge";
