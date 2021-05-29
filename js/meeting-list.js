@@ -127,7 +127,8 @@ function processData(meetingNumber, html_isPrivate, html_dueDate, html_meetingNa
 $(document).ready(function() {
     
     $('head').append(`<style type="text/css"> #meeting-list {height: ${$('.card-body').height()} px;}</style>`);
-    $('head').append(`<style type="text/css"> #family-tree {height: ${$('.card-body').height()} px; width: ${$('.card-body').width()}}</style>`);
+    $('#family-tree').css("height", $('.card-body').height());
+    $('#family-tree').css("width", $('.card-body').width());
     
     if (isAssign){
         console.log("tree")
