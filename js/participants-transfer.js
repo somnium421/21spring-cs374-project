@@ -30,7 +30,6 @@ var participants_transfer
 // ];
 
 
-
 function families(chart, finalChart) {
     
     var family =[];
@@ -351,6 +350,14 @@ $(document).ready(function(){
         };
 
         participants_transfer = $("#participants-transfer").transfer(settings);
+
+        $(document).ready(function(){
+            console.log($(".family-title"))
+            for (let i=0; i < $(".family-title").length; i++){
+                console.log($(".family-title")[i].innerHTML);
+            };
+            console.log($(".family-title").filter((el) => el.innerHTML === "나").parents().attr("id"));
+        }) 
 
 
 

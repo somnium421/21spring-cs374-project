@@ -349,6 +349,9 @@ $(document).on('click', '.remove-tag', function(e){
     }
 })
 
+$(document).ready(function(){
+    console.log($(".family-title").length);
+})
 
 // var familyChart = [
 //     { id: 0, tags: ["blue"], partner: 1, name: "정창식", gender: "male", img: "https://cdn.balkan.app/shared/empty-img-white.svg"},
