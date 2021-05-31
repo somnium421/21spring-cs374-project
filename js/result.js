@@ -116,8 +116,7 @@ function bindEvents() {
     $('#share-button').click(() => {
         var t = document.createElement("textarea");
         document.body.appendChild(t);
-        t.value = `http://127.0.0.1:5500/result.html?familyCode=${familyCode}&meetingNumber=${meetingNumber}`;
-        //t.value = `https://somnium421.github.io/ToGather/result.html?familyCode=asdf`;
+        t.value = `http://somnium421.github.io/ToGather/result.html?familyCode=${familyCode}&meetingNumber=${meetingNumber}`;
         t.select();
         document.execCommand('copy');
         document.body.removeChild(t);
