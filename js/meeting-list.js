@@ -303,5 +303,8 @@ $('#logout-button').click(() => {
     localStorage.removeItem('family-id');
     localStorage.removeItem('id');
     localStorage.removeItem('pw');
+    localStorage.removeItem('real-family-id');
+
     location.href = "index.html";
+
 })

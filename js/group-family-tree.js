@@ -10,8 +10,6 @@ $(document).ready(() => {
         --------------------------------------------------------*/
         OrgChart.templates.family_template = Object.assign({}, OrgChart.templates.ana);
         OrgChart.templates.family_template.size = [43, 43];
-        // OrgChart.templates.family_template.plus = "";
-        // OrgChart.templates.family_template.minus = "";
         OrgChart.templates.family_template.rippleRadius = 20;
         OrgChart.templates.family_template.name = '<text style="font-size: 10px;" fill="#000000" x="21.5" y="54" text-anchor="middle">{val}</text>';
         OrgChart.templates.family_template.title = '<text style="font-size: 10px;" fill="#aeaeae" x="21.5" y="64" text-anchor="middle">{val}</text>';
@@ -41,21 +39,7 @@ $(document).ready(() => {
     
         OrgChart.templates.group.min = Object.assign({}, OrgChart.templates.group);
         OrgChart.templates.group.nodeMenuButton = '';
-                // '<g style="cursor:pointer;" transform="matrix(1,0,0,1,93,15)" control-node-menu-id="{id}">'
-                // + '<rect x="-4" y="-10" fill="#000000" fill-opacity="0" width="22" height="22">'
-                // + '</rect>'
-                // + '<line x1="0" y1="0" x2="0" y2="10" stroke-width="2" stroke="#0890D3" />'
-                // + '<line x1="7" y1="0" x2="7" y2="10" stroke-width="2" stroke="#0890D3" />'
-                // + '<line x1="14" y1="0" x2="14" y2="10" stroke-width="2" stroke="#0890D3" />'
-                // + '</g>';
         OrgChart.templates.group.min.nodeMenuButton = '';
-                // '<g style="cursor:pointer;" transform="matrix(1,0,0,1,200,15)" control-node-menu-id="{id}">'
-                // + '<rect x="-4" y="-10" fill="#000000" fill-opacity="0" width="22" height="22">'
-                // + '</rect>'
-                // + '<line x1="0" y1="0" x2="0" y2="10" stroke-width="2" stroke="#0890D3" />'
-                // + '<line x1="7" y1="0" x2="7" y2="10" stroke-width="2" stroke="#0890D3" />'
-                // + '<line x1="14" y1="0" x2="14" y2="10" stroke-width="2" stroke="#0890D3" />'
-                // + '</g>';
         OrgChart.templates.group.min.node = 
                 '<rect rx="30" ry="30" x="50" y="0" height="60" width="150" fill="#f2f2f2" stroke-width="0"></rect>'
         OrgChart.templates.group.min.textFieldWhenTheNodeIsMimized = '<text width="100" style="font-size: 12px;" fill="#aeaeae" x="{cw}" y="35" text-anchor="middle">{val}</text>'
@@ -110,12 +94,7 @@ $(document).ready(() => {
             
                         }
                     },
-                    "partner":{
-                        siblingSeparation: 20,
-                    },
-                    "default":{
-                        siblingSeparation: 20,
-                    }
+                
                 
             
                 },
@@ -126,18 +105,58 @@ $(document).ready(() => {
             });
             
             
+            
+
+            // chart2 = new OrgChart(document.getElementById("change-account-tree"), {
+            //     template: "family_template",
+            //     mouseScrool: OrgChart.action.none,
+            //     nodeMouseClick: OrgChart.action.none,
+            //     showXScroll: OrgChart.scroll.visible, 
+            //     showYScroll: OrgChart.scroll.visible, 
+            //     enableSearch: false,
+            //     siblingSeparation: 40,
+            //     nodeBinding: {
+            //         name: "name",
+            //         gender: "gender",
+            //         partner: "partner",
+            //         title: "title",
+            //         img: "img",
+            //     },
+            //     tags: {
+            //         blue: {
+            //         template: "family_template_blue",
+            //         siblingSeparation: 20,
+                
+            //         },                
+                
+            
+            //     }
+                
+            // });
+            
             chart.editUI.on('field', function(sender, args){
                 if (args.name == 'partner' || args.name == 'title' || args.name == 'img'){
                     return false;
                 }
             });
+            // chart2.editUI.on('field', function(sender, args){
+            //     if (args.name == 'partner' || args.name == 'title' || args.name == 'img'){
+            //         return false;
+            //     }
+            // });
             
             
             finalchart = main(userID);
-    
-    
             addGroupBox_forHome();
+
             chart.load(finalchart);
+            console.log("load chart1");
+
+            // $('#change-account-modal').on('show.bs.modal', function (event) {
+            //     // chart2.load(finalchart);            
+            //     console.log("load chart2 ");
+    
+            // })
             
         })
     
@@ -383,5 +402,7 @@ $('#logout-button').click(() => {
     localStorage.removeItem('family-id');
     localStorage.removeItem('id');
     localStorage.removeItem('pw');
+    localStorage.removeItem('real-family-id');
+
     location.href = "index.html";
 })

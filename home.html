@@ -92,7 +92,19 @@
                     <div class="col" >
                         <div class="card h-100 shadow pb-3 meeting-card" style="border-radius: 10px;">
                             <div class="card-header">
-                                <h5 class="mt-2">모임 <span class="fw-light eng-cap">Meeting</span></h5>
+                                <div class = "d-flex justify-content-between">
+                                    <span>
+                                        <h5 class="mt-2">모임 <span class="fw-light eng-cap">Meeting</span>  </h5>
+                                    </span>
+                                    <span>
+                                        <button id = "change_account_button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#change-account-modal"> <sapn class = "fw-light">다른 사람으로 참가하기</sapn></button>
+                                        <button id = "turn_to_origin" style="display: none;" class="btn btn-secondary" onclick="turn_to_origin()"> <sapn class = "fw-light">원래 계정으로 돌아가기</sapn></button>
+                                       
+                                    </span>
+
+                                </div>
+                                
+                                
                             </div>
                             <div class="card-body overflow-auto" id="meeting-list">
                                 <!-- meeting list 자리 -->
@@ -121,10 +133,37 @@
                         </div>
                     </div>
                 </div>
+                <div class="modal fade" id="change-account-modal" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="false">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel2"><b>어떤 사람으로 참가하시겠습니까?</b> </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body" style="height: 400px; width: 400px;" >
+                                <!-- <h1>hihihi</h1> -->
+                                <div id = "change-account-tree" style="height: 400px; width: 400px; overflow: visible;"></div>
+                                <!-- <div id="change-account-tree"><span><h3>ㅗㅑ</h3></span></div> -->
+                                <!-- 리스트 형식일때 -->
+                                <script>
+                                    // const familyCode = localStorage.getItem("family-code") //"00AB8"
+                                    // const userID = Number(localStorage.getItem("family-id")) // "0"
+                                   
+                                </script>
+                            </div>
+                            
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                                <a type="button" onclick = "change_account()" class="btn btn-primary" data-bs-dismiss="modal" id="select-account-button">완료</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 
             </div>
         </div>
         <script src="js/group-family-tree.js" defer></script>
+        <script src="js/home.js" defer></script>
     </body>
 </html>
 
