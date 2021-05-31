@@ -1,6 +1,6 @@
 //import firebase from "firebase";
-const familyCode = !localStorage.getItem('family-code') ? '00AB8' : localStorage.getItem('family-code');
-const meetingNumber = !localStorage.getItem('meeting-number') ? 1 : Number(localStorage.getItem('meeting-number'));
+var familyCode = !localStorage.getItem('family-code') ? '00AB8' : localStorage.getItem('family-code');
+var meetingNumber = !localStorage.getItem('meeting-number') ? 1 : Number(localStorage.getItem('meeting-number'));
 const userID = !localStorage.getItem('family-id') ? 0 : Number(localStorage.getItem('family-id'));
 
 const placeData = [], activityData = [], markers = [], infoWindows = [], latlngs = [], answers = [];
@@ -90,6 +90,15 @@ function bindEvents() {
         localStorage.removeItem('pw');
         location.href = "index.html";
     })
+    $('#share-button').click(() => {
+        var t = document.createElement("textarea");
+        document.body.appendChild(t);
+        t.value = `http://127.0.0.1:5500/result.html?familyCode=${familyCode}&meetingNumber=${meetingNumber}`;
+        //t.value = `https://somnium421.github.io/ToGather/result.html?familyCode=asdf`;
+        t.select();
+        document.execCommand('copy');
+        document.body.removeChild(t);
+    });
     tooltipSet();
 }
 
@@ -279,16 +288,24 @@ function processData() {
 }
 
 $(document).ready(function() {
-
+    var params = location.search.substr(location.search.indexOf("?") + 1);
+    params = params.split("&");
 
     $('.overflow-scroll').on('mousewheel DOMMouseScroll', function(event){
-
         var delta = Math.max(-1, Math.min(1, (event.originalEvent.wheelDelta || -event.originalEvent.detail)));
-
         $(this).scrollLeft( $(this).scrollLeft() - ( delta * 20 ) );
         event.preventDefault();
-
     });
+
+    if (params.length) {
+        familyCode = params[0].split("=")[1];
+        meetingNumber = Number(params[1].split("=")[1]);
+        if (userID != Number(localStorage.getItem('family-id'))) {
+            $('#logout-modal-button').text('로그인');
+            $('#logoutModalLabel').html('<b>로그인 하시겠습니까?</b> <span class="fw-light eng-cap">Log in?</span>');
+            $('#logout-button').text('로그인');
+        }
+    }
 
     db.collection('families').where('code', '==', familyCode)
     .get()
