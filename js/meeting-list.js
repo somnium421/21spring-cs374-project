@@ -178,15 +178,16 @@ $(document).ready(function() {
                 meetings = doc.data().meetings;
                 members = doc.data().members;
                 if (meetings.length === 0){
-                    $("#meeting-list").append(`<p class="card-text text-muted mt-3">아직 모임계획을 세우지 않으셨습니다. 
+                    var htmlStr = `<p class="card-text text-muted mt-3">아직 모임계획을 세우지 않았습니다. 
                     <br>
                     하단 + 버튼을 눌러서 새 모임을 만들 수 있습니다.
                     <br><br>
                     <a href="create-new-meeting.html" class="card-link">새 모임 만들기</a>
                     <a href="load-family-tree.html" class="card-link card-text fw-light eng-cap"><br>Add a new meeting plan.</a>
-                </p>`)
+                </p>`;
+                    $("#meeting-list, #meeting-list-part, #meeting-list-not-part").append(htmlStr);
                     $("#meeting-list, #meeting-list-part, #meeting-list-not-part, #family-tree").attr("class", "card-body overflow-auto text-center");
-                    $(".meeting-card").attr("class", "card h-100 shadow pb-3 bg-light");
+                    $(".meeting-card, .meeting-card-not-part, .meeting-card-part").attr("class", "card h-100 shadow pb-3 bg-light");
                 }
                 for (var member of members) {
                     if (member.id == userID) {
