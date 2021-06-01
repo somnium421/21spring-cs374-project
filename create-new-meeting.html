@@ -76,7 +76,7 @@
             <button type="button" class="btn btn-outline-primary mb-2 mx-4 rounded-pill" data-bs-toggle="modal" data-bs-target="#logout-modal" data-bs-whatever="@mdo">로그아웃</button>        
         </div>
         <div class="container-fluid col" id="grad1" style="margin-left: 200px;">
-            <div class="row fs-3 fw-bold mt-5 mb-4 ms-5">새 모임 만들기 New Meeting</div>
+            <div class="fs-3 fw-bold mt-5 mb-4 ms-5">새 모임 만들기 <span class="fw-light eng-cap">New Meeting</span></div>
             <div class="row"><hr></div>
             <div></div>
             
@@ -163,7 +163,7 @@
                             <div class="input-group mt-2">
                                 <input class="form-control" placeholder="모이고 싶은 장소는? 태그를 추가하세요" id="place" type="place">
                                 <div class="input-group-append">
-                                    <button id="add-place" type="add-place" class="btn btn-primary">추가</button>
+                                    <button id="add-place" type="add-place" class="btn btn-primary">Add</button>
                                 </div>
                             </div>
                         </div>
@@ -171,7 +171,7 @@
                         <div class="form-check mt-2">
                             <input class="form-check-input" type="checkbox" name="place-recommend" id="place-recommend" value="option-place-recommend">
                             <label class="form-check-label" for="place-recommend">
-                            참여자들에게 장소를 <span style="font-weight: bold;">추천 받지 않음</span>
+                            참여자들에게 장소를 <span style="font-weight: bold;">추천 받지 않음</span><span class="fw-light eng-cap"> Participants can not suggest more</span>
                             </label>
                             <!-- <small id="emailHelp" class="form-text text-muted">참여자들은 선택만 가능합니다</small> -->
                         </div>
@@ -181,7 +181,7 @@
                             <div class="input-group mt-2">
                                 <input class="form-control" placeholder="모임에서 하고 싶은 일은? 태그를 추가하세요" id="activity" type="activity">
                                 <div class="input-group-append">
-                                    <button id="add-activity" type="add-activity" class="btn btn-primary">추가</button>
+                                    <button id="add-activity" type="add-activity" class="btn btn-primary">Add</button>
                                 </div>
                             </div>
                         </div>
@@ -189,7 +189,7 @@
                         <div class="form-check mt-2">
                             <input class="form-check-input" type="checkbox" name="activity-recommend" id="activity-recommend" value="option-activity-recommend">
                             <label class="form-check-label" for="activity-recommend">
-                            참여자들에게 할 일을 <span style="font-weight: bold;">추천 받지 않음</span>
+                            참여자들에게 할 일을 <span style="font-weight: bold;">추천 받지 않음</span><span class="fw-light eng-cap"> Participants can not suggest more</span>
                             </label>
                         </div>
     
@@ -214,13 +214,13 @@
                             <div class="input-group" style="width: 49%">
                                 <input id = "day" type="number" class="form-control timefield" min=0 oninput="validity.valid||(value='');">
                                 <div class="input-group-append">
-                                  <span class="input-group-text"> 일</span>
+                                  <span class="input-group-text"> days</span>
                                 </div>
                             </div>
                             <div class="input-group timefield" style="width: 50%">
                                 <input id = "hour" type="number" class="form-control" min=0 oninput="validity.valid||(value='');">
                                 <div class="input-group-append">
-                                  <span class="input-group-text">시간</span>
+                                  <span class="input-group-text">hours</span>
                                 </div>
                             </div>
                             <!-- <div class="input-group timefield" style="width: 33%">
@@ -267,11 +267,11 @@
                     <p class="text-center fs-5 text-secondary">설문 기간과 공개 범위를 설정하세요.<br><span style="font-size: 12pt;">Set survey period and privacy.</span></p>
                     <form>
                         <div class="form-group mt-4">
-                            <label class="fw-bold fs-5" for="surveyPeriod">참가 설문 기간<span style="color: red"> *</span> <span class="fw-light eng-cap">Survey deadline duration</span></label>
+                            <label class="fw-bold fs-5" for="surveyPeriod">참가 설문 기간<span style="color: red"> *</span> <span class="fw-light eng-cap">Survey deadline</span></label>
                             <div class="input-group mt-2" style="width: 50%;">
                                 <input class="form-control" id="surveyPeriod" type="number" min=0 oninput="validity.valid||(value='');">
                                 <div class="input-group-append">
-                                    <span class="input-group-text">  일</span>
+                                    <span class="input-group-text">  days</span>
                                 </div>
                             </div>
                         </div>
