@@ -49,11 +49,11 @@ var chart = new OrgChart(document.getElementById("tree"), {
             template: "family_template_blue"
         }
     },
-    nodeMenu:{
-        addPartner: {text:"Add partner", icon:OrgChart.icon.add(24,24, "#7A7A7A"), onClick: addPartner},
-        addChild: {text:"Add child", icon:OrgChart.icon.add(24,24, "#7A7A7A"), onClick: addChild},
-        edit:{text: "Edit"},
-        remove:{text: "Remove"}
+    nodeMenu:{  
+        addChild: {text:"자식 추가 (Add child)", icon:OrgChart.icon.add(24,24, "#7A7A7A"), onClick: addChild},
+        addPartner: {text:"배우자 추가 (Add partner)", icon:OrgChart.icon.add(24,24, "#7A7A7A"), onClick: addPartner},
+        edit:{text: "수정 (Edit)"},
+        remove:{text: "삭제 (Remove)"}
     },
 });
 
@@ -93,6 +93,46 @@ chart.editUI.on('field', function(sender, args){
     }
 });
 
+function iterate(c, n, ids){      
+    ids.push(n.id)
+    var child= n.childrenIds;
+    var nodeData = c.get(n.id);
+    var partnerId = nodeData["partner"];
+    if (partnerId != null){
+        child += c.getNode(partnerId).childrenIds;
+    }
+    console.log(child);
+    for(var i = 0; i < child.length; i++){
+      ids.push(child[i])
+    }
+}
+
+chart.on('remove', function (sender, nodeId) {
+
+    var ids = [];
+
+    var node = chart.getNode(nodeId);
+    var nodeData = chart.get(nodeId);
+    var partnerId = nodeData["partner"];
+    if (partnerId != null){
+        var cnode = chart.getNode(partnerId);
+        var cnodeData = chart.get(partnerId);
+        chart.updateNode({ id: cnode.id, pid: cnode.pid, ppid: cnode.ppid, tags: cnode.tags, name: cnodeData["name"],partner: null, img: cnodeData["img"], title: cnodeData["title"], gender: cnodeData["gender"]});
+    }
+    iterate(sender, node, ids);
+
+    console.log(ids);
+    for(var i = 0; i < ids.length; i++)
+    {
+        console.log(ids[i]);
+        sender.remove(ids[i]);      
+    }
+    window.newid = familyChart.length;
+    sender.draw();
+
+    return false; 
+}); 
+
 
 var familyChart = [          
     { id: 0, tags: ["default"], partner: 1, name: "", title: "할아버지", gender: "male", img: "https://cdn.balkan.app/shared/empty-img-white.svg"},
@@ -102,10 +142,10 @@ var familyChart = [
 chart.load(familyChart);
 
 function addPartner(nodeId){
-   var node = chart.getNode(nodeId);
+    var node = chart.getNode(nodeId);
     var nodeData = chart.get(nodeId);
     chart.updateNode({ id: nodeId, pid: node.pid, ppid: node.ppid, tags: node.tags, name: nodeData["name"],partner: window.newid, img: nodeData["img"], title: nodeData["title"],  gender: nodeData["gender"]});
-   var data = {id:window.newid, pid: nodeId, tags: ["partner"], name: "", title:"", partner: nodeId, gender: "gender", img: "https://cdn.balkan.app/shared/empty-img-white.svg"};
+    var data = {id:window.newid, pid: nodeId, tags: ["partner"], name: "", title:"", partner: nodeId, gender: "gender", img: "https://cdn.balkan.app/shared/empty-img-white.svg"};
     chart.addNode(data);
     var children = node.children;
     for (var i = 0; i < children.length; i ++){
@@ -117,10 +157,10 @@ function addPartner(nodeId){
     window.newid ++;
     
 }
-function addChild(nodeId){
+function addChild(nodeId){   
     var nodeData = chart.get(nodeId);
     var data = {};
-    if (!nodeData["partner"]){
+    if (nodeData["partner"] == null){
         data = {id:window.newid, pid: nodeId, tags: ["default"], name: "", title:"", gender: "gender", partner: null, img: "https://cdn.balkan.app/shared/empty-img-white.svg"};
     }
     else if (nodeId < nodeData["partner"]){
