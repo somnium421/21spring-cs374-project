@@ -352,7 +352,6 @@ function bindEvents() {
     
             case 'step2-submit':
                 var a= validatearr('list-location', answer.departure, 0);
-                //var a = true;
                 var b = isRadioChecked('transportation-radio');
                 if (a&&b) break;
                 return;
@@ -522,6 +521,7 @@ function onSuccessGeolocation(position) {
         if (status == kakao.maps.services.Status.OK) {
             console.log(result[0].road_address.address_name);
             $('#departure-place').attr('placeholder', `현재 위치 : ${result[0].road_address.address_name}`)
+            console.log(result[0].road_address);
             answer.departure = [result[0].road_address.x, result[0].road_address.y];
         }
     })
