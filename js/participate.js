@@ -48,13 +48,13 @@ $(document).ready(function() {
             docID = doc.id;
             meetings = doc.data().meetings;
             members = doc.data().members;
-            console.log('hello');
-            console.log(userID, members);
+            //console.log('hello');
+            //console.log(userID, members);
             for (var member of members) {
                 if (member.id == userID) {
                     $('#user-name').text(member.name);
                     $('#user-img').attr('src', member.img);
-                    console.log('hello');
+                    //console.log('hello');
                 }
             }
 
@@ -67,8 +67,8 @@ $(document).ready(function() {
                 var participants = meetings[meetingNumber].participants;
                 if (participants.filter(({id, name})=> Number(id) === Number(userID)).length === 0) participants.push({"id":String(userID), "name": ""});
 
-                console.log(participants.filter(({id, name})=> Number(id) === Number(userID)).length !== 0);
-                console.log(participants);
+                //console.log(participants.filter(({id, name})=> Number(id) === Number(userID)).length !== 0);
+                //console.log(participants);
                 const answered = [];
                 for (var participant of participants) {
                     for (var answer of answers) {
@@ -222,7 +222,7 @@ function setDateDisabled(arrDates){
     
         // console.log(e.dates);
         userAvailableDates = e.dates;
-        console.log(userAvailableDates);
+        // console.log(userAvailableDates);
     })
 }
 
@@ -359,7 +359,7 @@ function bindEvents() {
             default:
                 break;
         }
-        console.log('hi');
+        // console.log('hi');
     
         var curStep = $(this).closest(".setup-content"),
             curStepBtn = curStep.attr("id"),
@@ -431,7 +431,7 @@ function bindEvents() {
         // console.log(userAvailableDates, userAvailableTime);
         for (var checked of $("#accommodation input[type='checkbox']:checked")) answer.accommodation.push($(checked).attr('id'));
         for (var transportation of $("#transportation input[type='radio']:checked")) answer.transportation.push($(transportation).attr('id'));
-        console.log(answer);
+        // console.log(answer);
         // userAvailableDates 는 다른곳에서 받음
         
         var batch = db.batch();
@@ -478,7 +478,7 @@ $(document).on('click', '.remove-tag', function(e){
         $(e.target).parent().parent().remove();
     }
     else {
-        console.log(answer.place);
+        // console.log(answer.place);
         if ($(e.target).parent().data('place-activity') == "place") answer.place.splice(answer.place.indexOf($(e.target).parent().text()), 1);
         if ($(e.target).parent().data('place-activity') == "activity") answer.activity.splice(answer.activity.indexOf($(e.target).parent().text()), 1);
         $(e.target).parent().remove();
@@ -488,7 +488,26 @@ $(document).on('click', '.remove-tag', function(e){
 var map, marker, currPos;
 navigator.geolocation.getCurrentPosition(onSuccessGeolocation, onErrorGeolocation);
 
+/*
+var mapContainer = document.getElementById('kakao-map'), // 지도를 표시할 div 
+    mapOption = {
+        center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
+        level: 1 // 지도의 확대 레벨
+    };  
+
+// 지도를 생성합니다    
+var map = new kakao.maps.Map(mapContainer, mapOption); */
+
+var geocoder = new kakao.maps.services.Geocoder();
+
+function searchDetailAddrFromCoords(coords, callback) {
+    // 좌표로 법정동 상세 주소 정보를 요청합니다
+    geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
+}
+
+
 function onSuccessGeolocation(position) {
+    // console.log('success')
     currPos = new naver.maps.LatLng(position.coords.latitude, position.coords.longitude);
     map = new naver.maps.Map("map", {
         center: currPos,
@@ -498,9 +517,16 @@ function onSuccessGeolocation(position) {
         position: currPos,
         map: map
     });
+    searchDetailAddrFromCoords(new kakao.maps.LatLng(position.coords.latitude, position.coords.longitude), function(result, status) {
+        if (status == kakao.maps.services.Status.OK) {
+            console.log(result[0].road_address.address_name);
+            $('#departure-place').attr('placeholder', `현재 위치 : ${result[0].road_address.address_name}`)
+        }
+    })
 }
 
 function onErrorGeolocation() {
+    // console.log('failed')
     map = new naver.maps.Map("map", {
         center: new naver.maps.LatLng(36.3717787, 127.3608437),
         zoom: 15
@@ -516,7 +542,7 @@ function searchAddressToCoordinate(address) {
         if (response.v2.meta.totalCount === 0) return alert('No result.');
         var item = response.v2.addresses[0],
             point = new naver.maps.Point(item.x, item.y);
-        console.log(item.x, item.y);
+        // console.log(item.x, item.y);
         answer.departure = [item.x, item.y];
         if (marker == undefined) {
             marker = new naver.maps.Marker({
@@ -547,19 +573,18 @@ function getAddr(){
     });
 }
 
-var prevLocation;
+// var prevLocation;
+
 function locationClick(event) {
+    /*
     if (prevLocation) {
         prevLocation.removeClass('active');
     }
     prevLocation = $(event.target);
     prevLocation.addClass('active');
-    searchAddressToCoordinate(prevLocation.text());
+    */
+    searchAddressToCoordinate($(event.target).text());
+    $('#departure-place').val($(event.target).text());
+    $(event.target).parent().remove();
 }
-
-
-// console.log(mobiscroll);
-
-
-
 
