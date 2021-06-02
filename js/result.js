@@ -80,7 +80,9 @@ function bindEvents() {
             })
             .then((snapshot) => {
                 drawChat(chats.chat.length-1);
+                $("#chat-placeholder").remove();
             });
+            
         }
     });
     $('#logout-button').click(() => {
@@ -125,6 +127,14 @@ $('#delete-button').click(() => {
         chat: chats.chat
     })
     $(deleteTarget).parent().parent().remove();
+    if ($('#chat').children().length === 0){
+        $("#chat").append(
+            `<div id="chat-placeholder" class="text-center text-muted">
+                아직 댓글을 작성한 사람이 없습니다. <br> 가장 먼저 댓글을 달아보세요!
+            </div>
+        `)
+    }
+    
 })
 
 function timeCalculate(time) {
