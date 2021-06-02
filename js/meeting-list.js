@@ -4,7 +4,7 @@ console.log(familyCode, userID);
 
 localStorage.removeItem("meeting-number");
 
-const placeData = [], activityData = [], markers = [], infoWindows = [], latlngs = [], meetingUserPart = [], answers = [];
+const placeData = [], activityData = [], markers = [], infoWindows = [], latlngs = [];
 var meetings, members, chats, docID, answerID, isAssign;
 
 isAssign = (familyCode !== null && familyCode !== "undefined" && familyCode !== undefined);
@@ -32,12 +32,16 @@ console.log(isAssign);
 
 function processData(meetingNumber, html_isPrivate, html_dueDate, html_meetingName, html_meetingDescription, html_meetingParticipants, html_meetingDates, html_meetingTags, html_button, isPrivate) {
     // db.collection('families').doc(docID).collection('answers').where('meetingNumber', '==', meetingNumber)
+    
+    
     console.log(docID);
     db.collection('families').doc(docID).collection("answers").where('meetingNumber', '==', String(meetingNumber))
     .get()
     .then((snapshot) => {
         var placeDict = {}, activityDict = {};
-        
+        var meetingUserPart = [];
+        console.log(snapshot.length);
+        answers = []
         snapshot.forEach((doc) => {
             for (var place of doc.data().place) {
                 if (place in placeDict) placeDict[place].push(doc.data().userID);
@@ -48,22 +52,31 @@ function processData(meetingNumber, html_isPrivate, html_dueDate, html_meetingNa
                 else activityDict[activity] = [doc.data().userID];
             }
             answers.push(doc.data());
-            if (doc.data().userID === userID) meetingUserPart.push(meetingNumber);
+            if (Number(doc.data().userID) === Number(userID)) meetingUserPart.push(meetingNumber);
         });
 
-       
-        const answered = [];
         console.log('helpme:', meetings[meetingNumber].participants, answers)
-        for (var participant of meetings[meetingNumber].participants) {
-            for (var answer of answers) {
-                if (Number(answer.userID) == Number(participant.id)) {
-                    answered.push(Number(answer.userID));
-                    html_meetingParticipants = html_meetingParticipants + ` <a class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title=${members[participant.id].name}>
-                                                    <img src="${members[participant.id].img}" style="width:30px;height:30px;border-radius:70%;margin-bottom:2px;"></img>
-                                                </a>`;
-                }
-            }
+        const answered = [];
+
+        for (var answer of answers) {
+            answered.push(Number(answer.userID));
+            html_meetingParticipants = html_meetingParticipants + ` <a class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title=${members[Number(answer.userID)].name}>
+                                            <img src="${members[Number(answer.userID)].img}" style="width:30px;height:30px;border-radius:70%;margin-bottom:2px;"></img>
+                                        </a>`;
         }
+            
+        // console.log('helpme:', meetings[meetingNumber].participants, answers)
+        // for (var participant of meetings[meetingNumber].participants) {
+        //     for (var answer of answers) {
+        //         if (Number(answer.userID) == Number(participant.id)) {
+        //             answered.push(Number(answer.userID));
+        //             html_meetingParticipants = html_meetingParticipants + ` <a class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title=${members[participant.id].name}>
+        //                                             <img src="${members[participant.id].img}" style="width:30px;height:30px;border-radius:70%;margin-bottom:2px;"></img>
+        //                                         </a>`;
+        //         }
+        //     }
+        // }
+        
         // console.log("answers:", answered);
         for (var participant of meetings[meetingNumber].participants) {
             // console.log(Number(participant.id) in answered);
@@ -75,6 +88,27 @@ function processData(meetingNumber, html_isPrivate, html_dueDate, html_meetingNa
             }
         }
 
+
+        var meetingDue = new Date(meetings[meetingNumber].dueDate.seconds*1000)
+                    
+        var now = new Date();
+
+        // console.log(meetingDue, now);
+        if (meetingDue > now && meetingUserPart.filter((el) => Number(el) === Number(meetingNumber)).length === 0) {
+            html_dueDate = `<span class="text-muted" style="font-size: smaller;"><i class="fa fa-ellipsis-h" aria-hidden="true"></i> &nbsp;참여 마감 <span class="text-primary">${Math.ceil((meetingDue.getTime()-now.getTime())/(1000*3600*24))}</span>일 전</span>`
+            console.log(meetingDue.getDate()-now.getDate());
+            html_button = `<button class="btn btn-outline-primary rounded-pill participate" id="meeting-${meetingNumber}">참여 신청 &nbsp; <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`
+        }
+        else if (meetingDue > now && meetingUserPart.filter((el) => Number(el) === Number(meetingNumber)).length !== 0){
+            html_dueDate = `<span class="text-muted" style="font-size: smaller;"><i class="fa fa-ellipsis-h" aria-hidden="true"></i> &nbsp;참여 마감 <span class="text-primary">${Math.ceil((meetingDue.getTime()-now.getTime())/(1000*3600*24))}</span>일 전</span>`
+            console.log(meetingDue.getDate()-now.getDate());
+            html_button = `<button class="btn btn-outline-primary rounded-pill participate" id="meeting-${meetingNumber}" disabled>참여 완료 &nbsp; <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`
+        }
+        else {
+            html_dueDate = `<span class="text-muted" style="font-size: smaller;"><i class="fa fa-check" aria-hidden="true"></i> &nbsp;참여 마감</span>`
+            html_button = `<button class="btn btn-primary rounded-pill result" id="meeting-${meetingNumber}" > 결과 확인 &nbsp; <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`
+        }
+            
         var col = "";
         if (isPrivate) col = "bg-light";
         var htmlStr = `<div class="card meeting-card ${col} mb-3" style="border-radius: 10px;">
@@ -111,8 +145,8 @@ function processData(meetingNumber, html_isPrivate, html_dueDate, html_meetingNa
         
         $("#meeting-list").append(htmlStr)
         console.log($("span.rounded-pill"));
-
-        if (meetingUserPart.filter((el) => el === meetingNumber).length === 0) $("#meeting-list-not-part").append(htmlStr);
+        console.log(meetingUserPart);
+        if (meetingUserPart.filter((el) => Number(el) === Number(meetingNumber)).length === 0) $("#meeting-list-not-part").append(htmlStr);
         else $("#meeting-list-part").append(htmlStr);
 
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
@@ -125,27 +159,36 @@ function processData(meetingNumber, html_isPrivate, html_dueDate, html_meetingNa
 
 
 $(document).ready(function() {
-    
-    $('head').append('<style type="text/css"> #meeting-list {height: ' + ($('.card-body').height()) + 'px;}</style>');
+    $('#meeting-list').css("height", $('.card-body').height());
+    $('#meeting-list-part').css("height", $('.card-body').height());
+    $('#meeting-list-not-part').css("height", $('.card-body').height());
+    //$('head').append(`<style type="text/css"> #meeting-list {height: ${$('.card-body').height()} px;}</style>`);
+    $('#family-tree').css("height", $('.card-body').height());
+    $('#family-tree').css("width", $('.card-body').width());
     
     if (isAssign){
         console.log("tree")
         db.collection('families').where('code', '==', familyCode)
         .get()
         .then((snapshot) => {
-            if (snapshot.length === 0){
-                $("#meeting-list").append(`<p class="card-text text-muted mt-3">아직 모임계획을 세우지 않으셨습니다. <a href="load-family-tree.html" class="card-link">새 모임 만들기</a>
-                <br>
-                하단 + 버튼을 눌러서 새 모임을 만들 수 있습니다.
-                <a href="load-family-tree.html" class="card-link card-text fw-light eng-cap">Add a new meeting plan.</a>
-            </p>`)
-                $("#meeting-list, #meeting-list-part, #meeting-list-not-part, #family-tree").attr("class", "card-body overflow-auto text-center");
-                $(".meeting-card").attr("class", "card h-100 shadow pb-3 bg-light");
-            }
+            console.log(snapshot.size);
+            
             snapshot.forEach((doc) => {
                 docID = doc.id;
                 meetings = doc.data().meetings;
                 members = doc.data().members;
+                if (meetings.length === 0){
+                    var htmlStr = `<p class="card-text text-muted mt-3">아직 모임계획을 세우지 않았습니다. 
+                    <br>
+                    하단 + 버튼을 눌러서 새 모임을 만들 수 있습니다.
+                    <br><br>
+                    <a href="create-new-meeting.html" class="card-link">새 모임 만들기</a>
+                    <a href="load-family-tree.html" class="card-link card-text fw-light eng-cap"><br>Add a new meeting plan.</a>
+                </p>`;
+                    $("#meeting-list, #meeting-list-part, #meeting-list-not-part").append(htmlStr);
+                    $("#meeting-list, #meeting-list-part, #meeting-list-not-part, #family-tree").attr("class", "card-body overflow-auto text-center");
+                    $(".meeting-card, .meeting-card-not-part, .meeting-card-part").attr("class", "card h-100 shadow pb-3 bg-light");
+                }
                 for (var member of members) {
                     if (member.id == userID) {
                         $('#user-name').text(member.name);
@@ -165,21 +208,6 @@ $(document).ready(function() {
                     if (isPrivate) html_isPrivate = '<span class="text-muted" style="font-size: smaller;"><i class="fas fa-lock me-1"></i> 비공개</span>'
                     else html_isPrivate = '<span class="text-muted" style="font-size: smaller;"><i class="fas fa-globe-asia me-1"></i> 공개</span>'
                     
-                
-                    var meetingDue = new Date(meetings[meetingNumber].dueDate.seconds*1000)
-                    var now = new Date();
-    
-                    // console.log(meetingDue, now);
-                    
-                    if (meetingDue > now) {
-                        html_dueDate = `<span class="text-muted" style="font-size: smaller;"><i class="fa fa-ellipsis-h" aria-hidden="true"></i> &nbsp;참여 마감 <span class="text-primary">${meetingDue.getDate()-now.getDate()}</span>일 전</span>`
-                        console.log(meetingDue.getDate()-now.getDate());
-                        html_button = `<button class="btn btn-outline-primary rounded-pill participate" id="meeting-${meetingNumber}">참여 신청 &nbsp; <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`
-                    }
-                    else {
-                        html_dueDate = `<span class="text-muted" style="font-size: smaller;"><i class="fa fa-check" aria-hidden="true"></i> &nbsp;참여 마감</span>`
-                        html_button = `<button class="btn btn-primary rounded-pill result" id="meeting-${meetingNumber}" > 결과 확인 &nbsp; <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`
-                    }
     
                     html_meetingDates =``
                     if(isPrivate) var isPrivateBadge = "private-badge";
@@ -256,7 +284,7 @@ $(document).ready(function() {
         location.href = 'participate.html';
     });
 
-    if ($("#meeting-list-part").children().length === 0){
+    if ($("#meeting-list-part").length === 0){
         $("#meeting-list-part").append(`<p class="card-text text-muted mt-3">아직 참여한 모임이 없습니다. 
                 <br>
                 우측에 있는 여러 모임에 참여해보는건 어떨까요?

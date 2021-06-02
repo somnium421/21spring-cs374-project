@@ -80,7 +80,9 @@ function bindEvents() {
             })
             .then((snapshot) => {
                 drawChat(chats.chat.length-1);
+                $("#chat-placeholder").remove();
             });
+            
         }
     });
     $('#logout-button').click(() => {
@@ -125,6 +127,14 @@ $('#delete-button').click(() => {
         chat: chats.chat
     })
     $(deleteTarget).parent().parent().remove();
+    if ($('#chat').children().length === 0){
+        $("#chat").append(
+            `<div id="chat-placeholder" class="text-center text-muted">
+                아직 댓글을 작성한 사람이 없습니다. <br> 가장 먼저 댓글을 달아보세요!
+            </div>
+        `)
+    }
+    
 })
 
 function timeCalculate(time) {
@@ -279,8 +289,7 @@ function processData() {
 }
 
 $(document).ready(function() {
-
-
+    
     $('.overflow-scroll').on('mousewheel DOMMouseScroll', function(event){
 
         var delta = Math.max(-1, Math.min(1, (event.originalEvent.wheelDelta || -event.originalEvent.detail)));
@@ -318,11 +327,19 @@ $(document).ready(function() {
             db.collection('families').doc(docID).collection('chats').where('meetingNumber', '==', meetingNumber)
             .get().then((snapshot) =>{
                 snapshot.forEach((doc) => {
+                    $("#chat-placeholder").remove();
                     answerID = doc.id;
                     chats = doc.data();
                     console.log(chats);
                 })
                 for (var i=0; i<chats.chat.length; i++) drawChat(i);
+                if (chats.chat.length === 0){
+                    $("#chat").append(
+                        `<div id="chat-placeholder" class="text-center text-muted">
+                            아직 댓글을 작성한 사람이 없습니다. <br> 가장 먼저 댓글을 달아보세요!
+                        </div>
+                    `)
+                }
             })
 
             if (meetings[meetingNumber].isPrivate) $('#is-private').append('<span class="text-muted" style="font-size: smaller;"><i class="fas fa-lock me-1"></i> 비공개</span>')
