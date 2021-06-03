@@ -5,6 +5,17 @@
 //var familyCode = "00AB8";
 var familyCode = localStorage.getItem('family-code');
 var userID = localStorage.getItem('family-id');
+var userImg = localStorage.getItem('img');
+var userName = localStorage.getItem('name');
+
+var imgDrawn = false;
+
+if (userImg !== undefined && userImg !== null && userImg !== 'undefined' && userImg !== ""){
+    $('#user-name').text(userName);
+    $('#user-img').attr('src', userImg);
+    imgDrawn = true;
+}
+
 var members=[], docID ;
 var me;
 
@@ -41,12 +52,14 @@ db.collection('families').where('code', '==', familyCode)
         console.log("hi");
         docID = doc.id;
         members = doc.data().members;    
-        for (var member of members) {
-            if (member.id == userID) {
-                $('#user-name').text(member.name);
-                $('#user-img').attr('src', member.img);
-            }
-        }    
+        if (!imgDrawn){
+            for (var member of members) {
+                if (member.id == userID) {
+                    $('#user-name').text(member.name);
+                    $('#user-img').attr('src', member.img);
+                }
+            }    
+        }
     })
 
     console.log(members);
@@ -149,19 +162,7 @@ $('#getfile').change(()=>{
 })
 
 $('#later').click(function(){
-    console.log("me.id: "+me.id);
-    console.log("familyCode: "+familyCode);
-    localStorage.setItem('family-id', me.id);
-    db.collection('users').where('id', '==', localStorage.getItem('id')).get()
-    .then((snapshot) => {
-        snapshot.forEach((doc) => {
-            var docID = doc.id;
-            db.collection('users').doc(docID).update({
-                'family-id': me.id,
-                'family-code': familyCode
-            })
-        })
-    })
+
     db.collection('families').where('code', '==', familyCode)
         .get()
         .then((snapshot) => {
@@ -199,7 +200,9 @@ $('#assign-submit').click(()=> {
             var docID = doc.id;
             db.collection('users').doc(docID).update({
                 'family-id': me.id,
-                'family-code': familyCode
+                'family-code': familyCode,
+                'name': me.name,
+                'img': me.img,
             })
         })
     })
@@ -225,6 +228,8 @@ $('#assign-submit').click(()=> {
 $('#logout-button').click(() => {
     localStorage.removeItem('family-code');
     localStorage.removeItem('family-id');
+localStorage.removeItem('name');
+localStorage.removeItem('img');
     localStorage.removeItem('id');
     localStorage.removeItem('pw');
     location.href = "index.html";

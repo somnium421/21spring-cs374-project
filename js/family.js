@@ -6,8 +6,15 @@
 const familyCode = localStorage.getItem('family-code');
 var ichart=[], docID ;
 const userID = localStorage.getItem("family-id");
-console.log(familyCode, userID);
-lang = localStorage.getItem('lang');
+const userName = localStorage.getItem("name");
+const userImg = localStorage.getItem("img");
+var imgDrawn = false;
+
+if (userImg !== undefined && userImg !== null && userImg !== 'undefined' && userImg !== ""){
+    $('#user-name').text(userName);
+    $('#user-img').attr('src', userImg);
+    imgDrawn = true;
+}
 
 OrgChart.templates.family_template = Object.assign({}, OrgChart.templates.ana);
 OrgChart.templates.family_template.size = [86, 86];
@@ -41,13 +48,14 @@ db.collection('families').where('code', '==', familyCode)
         console.log("hi");
         docID = doc.id;
         ichart = doc.data().members;   
-        console.log(ichart);
-        for (var member of ichart) {
-            if (member.id == userID) {
-                $('#user-name').text(member.name);
-                $('#user-img').attr('src', member.img);
+        if (!imgDrawn){
+            for (var member of ichart) {
+                if (member.id == userID) {
+                    $('#user-name').text(member.name);
+                    $('#user-img').attr('src', member.img);
+                }
             }
-        }     
+        }
     })
 
     chart = new OrgChart(document.getElementById("my-family-tree"), {
@@ -298,6 +306,8 @@ function main(getme){
 $('#logout-button').click(() => {
     localStorage.removeItem('family-code');
     localStorage.removeItem('family-id');
+localStorage.removeItem('name');
+localStorage.removeItem('img');
     localStorage.removeItem('id');
     localStorage.removeItem('pw');
     location.href = "index.html";

@@ -6,6 +6,8 @@ $(document).ready(function(){
     localStorage.removeItem('family-code');
     localStorage.removeItem('familyCode');
     localStorage.removeItem('family-id');
+localStorage.removeItem('name');
+localStorage.removeItem('img');
     localStorage.removeItem('familyID');
     localStorage.removeItem('id');
     localStorage.removeItem('userID');
@@ -68,6 +70,8 @@ $('#login').click(() => {
                     localStorage.setItem('family-id', user["family-id"]);
                     localStorage.setItem('id', user["id"]);
                     localStorage.setItem('pw', user["pw"]);
+                    localStorage.setItem('img', user["img"]);
+                    localStorage.setItem('name', user["name"]);
                     location.href = 'home.html';
                 }
                 else {

@@ -3,7 +3,15 @@
 
 const familyCode = localStorage.getItem("family-code"); // from the local storage
 const userID = Number(localStorage.getItem("family-id"));// from the local storage
+var userImg = localStorage.getItem('img');
+var userName = localStorage.getItem('name');
+var imgDrawn = false;
 
+if (userImg !== undefined && userImg !== null && userImg !== 'undefined' && userImg !== ""){
+    $('#user-name').text(userName);
+    $('#user-img').attr('src', userImg);
+    imgDrawn = true;
+}
 var availableTime = [];
 var availableDates = [];
 lang = localStorage.getItem('lang');
@@ -527,23 +535,27 @@ $('#start-time').mobiscroll().datepicker({
 $('#logout-button').click(() => {
     localStorage.removeItem('family-code');
     localStorage.removeItem('family-id');
+localStorage.removeItem('name');
+localStorage.removeItem('img');
     localStorage.removeItem('id');
     localStorage.removeItem('pw');
     location.href = "index.html";
 })
 
-db.collection('families').where('code', '==', familyCode).get().then((snapshot) => {
-    var members;
-    console.log('here');
-    snapshot.forEach((doc) => {
-        console.log('userID: '+userID)
-        members = doc.data().members;
-        console.log(members);
-        for (var member of members) {
-            if (member.id == userID) {
-                $('#user-name').text(member.name);
-                $('#user-img').attr('src', member.img);
+if (!imgDrawn) {
+    db.collection('families').where('code', '==', familyCode).get().then((snapshot) => {
+        var members;
+        console.log('here');
+        snapshot.forEach((doc) => {
+            console.log('userID: '+userID)
+            members = doc.data().members;
+            console.log(members);
+            for (var member of members) {
+                if (member.id == userID) {
+                    $('#user-name').text(member.name);
+                    $('#user-img').attr('src', member.img);
+                }
             }
-        }
+        })
     })
-})
+}

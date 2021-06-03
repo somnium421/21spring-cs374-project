@@ -1,5 +1,15 @@
 const familyCode = localStorage.getItem("family-code") //"00AB8"
 const userID = Number(localStorage.getItem("family-id")) // "0"
+const userName = localStorage.getItem("name");
+const userImg = localStorage.getItem("img");
+var imgDrawn = false;
+
+if (userImg !== undefined && userImg !== null && userImg !== 'undefined' && userImg !== ""){
+    $('#user-name').text(userName);
+    $('#user-img').attr('src', userImg);
+    imgDrawn = true;
+}
+
 console.log(familyCode, userID);
 lang = localStorage.getItem('lang');
 
@@ -198,6 +208,7 @@ $(document).ready(function() {
                 docID = doc.id;
                 meetings = doc.data().meetings;
                 members = doc.data().members;
+
                 if (meetings.length === 0){
                     if(lang == 'en'){
                         var htmlStr = `<p class="card-text text-muted mt-3">No meeting plan yet. 
@@ -219,13 +230,15 @@ $(document).ready(function() {
                     $("#meeting-list, #meeting-list-part, #meeting-list-not-part, #family-tree").attr("class", "card-body overflow-auto text-center");
                     $(".meeting-card, .meeting-card-not-part, .meeting-card-part").attr("class", "card h-100 shadow pb-3 bg-light");
                 }
-                for (var member of members) {
-                    if (member.id == userID) {
-                        $('#user-name').text(member.name);
-                        $('#user-img').attr('src', member.img);
+                if (!imgDrawn){
+                    for (var member of members) {
+                        if (member.id == userID) {
+                            $('#user-name').text(member.name);
+                            $('#user-img').attr('src', member.img);
+                        }
                     }
                 }
-    
+
                 for (i = 0; i < meetings.length; i ++){
                     
                     meetingNumber = meetings.length - i -1;
@@ -378,7 +391,11 @@ console.log(localStorage.getItem('userID'));
 $('#logout-button').click(() => {
     localStorage.removeItem('family-code');
     localStorage.removeItem('family-id');
+    localStorage.removeItem('name');
+    localStorage.removeItem('img');
     localStorage.removeItem('id');
     localStorage.removeItem('pw');
+    localStorage.removeItem('real-family-id');
+    localStorage.removeItem('funcUrl');
     location.href = "index.html";
 })
