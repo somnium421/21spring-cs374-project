@@ -369,7 +369,7 @@ $(document).ready(function() {
                 for (var participant of meetings[meetingNumber].participants) {
                     if (!answered.includes(Number(participant.id))) {
                         $('#meeting-participants').append(` <a class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="${members[participant.id].name}">
-                                                            <img src="${members[participant.id].img}" style="width:30px;height:30px;border-radius:70%;margin-bottom:2px;filter:brightness(0.3);opacity:0.4;"></img>
+                                                            <img src="${members[participant.id].img}" style="width:30px;height:30px;border-radius:70%;margin-bottom:2px;filter:brightness(0.5);"></img>
                                                         </a>`);
                     }
                 }

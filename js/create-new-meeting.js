@@ -18,9 +18,21 @@ $("#Txt_Date").datepicker({
     todayHighlight: false
 }).on("changeDate", function(e) {
 
-    console.log(e.dates);
-    availableDates = e.dates;
-});;
+    
+    var res = e.dates.map((el) => new Date(el).getTime())
+                    .sort()
+                    .map((el) => new Date(el));
+    
+    // e.dates.sort((a,b) => {
+    //     if (new Date(a).getTime() < new Date(b).getTime()) return 1 ;
+    //     else if (new Date(a).getTime < new Date(b).getTime()) return -1 ;
+    //     else return 0 ;
+    // });
+    console.log(res);
+    availableDates = e.dates.map((el) => new Date(el).getTime())
+                            .sort()
+                            .map((el) => new Date(el));
+});
 
 function validateinput(id){
     if (!$("#"+id).val()){
@@ -425,6 +437,7 @@ $('#final-submit').click(function(){
     availableTime.push($("#start-time").val().slice(11,19));
 
     db_log_newMeeting.meetingPeriod = db_period;
+    
     db_log_newMeeting.availableDates = availableDates; // I don't know well
     db_log_newMeeting.availableTimes = availableTime;
 

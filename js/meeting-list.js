@@ -196,7 +196,7 @@ $(document).ready(function() {
                     }
                 }
     
-                for (meetingNumber = 0; meetingNumber < meetings.length; meetingNumber ++){
+                for (meetingNumber = meetings.length-1; meetingNumber > 0; meetingNumber--){
     
                     var isPrivate = meetings[meetingNumber].isPrivate
                     console.log(meetings[meetingNumber].participants);

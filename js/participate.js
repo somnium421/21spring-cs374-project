@@ -82,7 +82,7 @@ $(document).ready(function() {
                 }
                 for (var participant of participants) {
                     if (!(Number(participant.id) in answered)) $('#meeting-participants').append(` <a class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title=${participant.name}>
-                                                            <img src="${members[participant.id].img}" style="width:30px;height:30px;border-radius:70%;margin-bottom:2px;filter:brightness(0.3);opacity:0.4;"></img>
+                                                            <img src="${members[participant.id].img}" style="width:30px;height:30px;border-radius:70%;margin-bottom:2px;filter:brightness(0.5);"></img>
                                                         </a>`);
                 }
             })
@@ -221,7 +221,9 @@ function setDateDisabled(arrDates){
     .on("changeDate", function(e) {
     
         // console.log(e.dates);
-        userAvailableDates = e.dates;
+        userAvailableDates = e.dates.map((el) => new Date(el).getTime())
+                                    .sort()
+                                    .map((el) => new Date(el));
         // console.log(userAvailableDates);
     })
 }
