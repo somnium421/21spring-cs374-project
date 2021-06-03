@@ -147,7 +147,38 @@ $('#getfile').change(()=>{
 })
 
 $('#later').click(function(){
-    location.href = "home.html"
+    console.log("me.id: "+me.id);
+    console.log("familyCode: "+familyCode);
+    localStorage.setItem('family-id', me.id);
+    db.collection('users').where('id', '==', localStorage.getItem('id')).get()
+    .then((snapshot) => {
+        snapshot.forEach((doc) => {
+            var docID = doc.id;
+            db.collection('users').doc(docID).update({
+                'family-id': me.id,
+                'family-code': familyCode
+            })
+        })
+    })
+    db.collection('families').where('code', '==', familyCode)
+        .get()
+        .then((snapshot) => {
+            snapshot.forEach(async (doc) => {
+                var docID = doc.id;
+                origMemb = doc.data().members;
+                var obj = origMemb.find(mem => mem.id == me.id);
+                var idx = origMemb.indexOf(obj);
+                obj.tags = members[idx].tags;
+                console.log(origMemb);
+
+                await db.collection('families').doc(docID).update({
+                    members: origMemb,
+                })
+            });
+        });
+
+    $('#checked').modal('show');
+
 })
 
 
