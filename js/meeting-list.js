@@ -196,8 +196,9 @@ $(document).ready(function() {
                     }
                 }
     
-                for (meetingNumber = meetings.length-1; meetingNumber > 0; meetingNumber--){
-    
+                for (meetingNumber = meetings.length; meetingNumber > 0; meetingNumber--){
+                    
+                    meetingNumber -= 1;
                     var isPrivate = meetings[meetingNumber].isPrivate
                     console.log(meetings[meetingNumber].participants);
                     // if private and userID is not in the participants list, ignore.
