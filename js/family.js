@@ -40,6 +40,7 @@ db.collection('families').where('code', '==', familyCode)
         console.log("hi");
         docID = doc.id;
         ichart = doc.data().members;   
+        console.log(ichart);
         for (var member of ichart) {
             if (member.id == userID) {
                 $('#user-name').text(member.name);
