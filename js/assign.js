@@ -94,13 +94,15 @@ db.collection('families').where('code', '==', familyCode)
     });  
     chart.on('click',function(sender, arg){
         console.log("click");
-        console.log(arg.node);
-        
-    
-        me = arg.node;
-        console.log(me);   
-        $("#assign-here").modal('show');
-    
+        var isAlreadyAssigned = arg.node.tags.includes("blue");
+        if (isAlreadyAssigned){
+            $("#assign-fail").modal('show');
+        }
+        else{
+            me = arg.node;
+            console.log(me);   
+            $("#assign-here").modal('show');
+        }
     })
 })
 // console.log("fam_mem2"+window.family_members)
