@@ -521,10 +521,9 @@ function onSuccessGeolocation(position) {
     });
     searchDetailAddrFromCoords(new kakao.maps.LatLng(position.coords.latitude, position.coords.longitude), function(result, status) {
         if (status == kakao.maps.services.Status.OK) {
-            console.log(result[0].road_address.address_name);
+            // console.log(result[0].road_address.address_name);
             $('#departure-place').attr('placeholder', `현재 위치 : ${result[0].road_address.address_name}`)
-            console.log(result[0].road_address);
-            answer.departure = [result[0].road_address.x, result[0].road_address.y];
+            answer.departure = [position.coords.longitude, position.coords.latitude];
         }
     })
 }
@@ -546,7 +545,7 @@ function searchAddressToCoordinate(address) {
         if (response.v2.meta.totalCount === 0) return alert('No result.');
         var item = response.v2.addresses[0],
             point = new naver.maps.Point(item.x, item.y);
-        // console.log(item.x, item.y);
+        console.log(item.x, item.y);
         answer.departure = [item.x, item.y];
         if (marker == undefined) {
             marker = new naver.maps.Marker({
