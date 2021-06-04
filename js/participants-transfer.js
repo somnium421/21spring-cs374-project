@@ -69,6 +69,7 @@ function families(chart, finalChart) {
                         && finalChart[i].title !== '남편'
                         && finalChart[i].title ) familyGroup.name = `${finalChart[i].title}네 가족`;
                 else if (finalChart[i].title === undefined
+                        || finalChart[i].title === '' 
                         || finalChart[i].title === '딸' 
                         || finalChart[i].title === '아들' ) familyGroup.name = `${chart[i].name}의 가족`
                 else if (finalChart[i].title === '나' 
