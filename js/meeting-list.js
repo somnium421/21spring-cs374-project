@@ -95,18 +95,18 @@ function processData(meetingNumber, html_isPrivate, html_dueDate, html_meetingNa
 
         // console.log(meetingDue, now);
         if (meetingDue > now && meetingUserPart.filter((el) => Number(el) === Number(meetingNumber)).length === 0) {
-            html_dueDate = `<span class="text-muted" style="font-size: smaller;"><i class="fa fa-ellipsis-h" aria-hidden="true"></i> &nbsp;참여 마감 <span class="text-primary">${Math.ceil((meetingDue.getTime()-now.getTime())/(1000*3600*24))}</span>일 전</span>`
+            html_dueDate = `<span class="text-muted" style="font-size: smaller;"><i class="fa fa-ellipsis-h" aria-hidden="true"></i> &nbsp;참여 마감<span class="text-primary">${Math.ceil((meetingDue.getTime()-now.getTime())/(1000*3600*24))}</span>일 전</span>`
             console.log(meetingDue.getDate()-now.getDate());
-            html_button = `<button class="btn btn-outline-primary rounded-pill participate" id="meeting-${meetingNumber}">참여 신청 &nbsp; <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`
+            html_button = `<button class="btn btn-outline-primary rounded-pill participate" id="meeting-${meetingNumber}">참여 신청 Participate &nbsp; <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`
         }
         else if (meetingDue > now && meetingUserPart.filter((el) => Number(el) === Number(meetingNumber)).length !== 0){
-            html_dueDate = `<span class="text-muted" style="font-size: smaller;"><i class="fa fa-ellipsis-h" aria-hidden="true"></i> &nbsp;참여 마감 <span class="text-primary">${Math.ceil((meetingDue.getTime()-now.getTime())/(1000*3600*24))}</span>일 전</span>`
+            html_dueDate = `<span class="text-muted" style="font-size: smaller;"><i class="fa fa-ellipsis-h" aria-hidden="true"></i> &nbsp;참여 마감<span class="text-primary">${Math.ceil((meetingDue.getTime()-now.getTime())/(1000*3600*24))}</span>일 전</span>`
             console.log(meetingDue.getDate()-now.getDate());
-            html_button = `<button class="btn btn-outline-primary rounded-pill participate" id="meeting-${meetingNumber}" disabled>참여 완료 &nbsp; <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`
+            html_button = `<button class="btn btn-outline-primary rounded-pill participate" id="meeting-${meetingNumber}" disabled>참여 완료 Participated &nbsp; <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`
         }
         else {
-            html_dueDate = `<span class="text-muted" style="font-size: smaller;"><i class="fa fa-check" aria-hidden="true"></i> &nbsp;참여 마감</span>`
-            html_button = `<button class="btn btn-primary rounded-pill result" id="meeting-${meetingNumber}" > 결과 확인 &nbsp; <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`
+            html_dueDate = `<span class="text-muted" style="font-size: smaller;"><i class="fa fa-check" aria-hidden="true"></i> &nbsp;참여 마감 Closed </span>`
+            html_button = `<button class="btn btn-primary rounded-pill result" id="meeting-${meetingNumber}" > 결과 확인 Result &nbsp; <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`
         }
             
         var col = "";
@@ -178,9 +178,9 @@ $(document).ready(function() {
                 meetings = doc.data().meetings;
                 members = doc.data().members;
                 if (meetings.length === 0){
-                    var htmlStr = `<p class="card-text text-muted mt-3">아직 모임계획을 세우지 않았습니다. 
+                    var htmlStr = `<p class="card-text text-muted mt-3">아직 모임계획을 세우지 않았습니다. <br><span class = "eng-cap fw-light"> No meetings yet.</span>
                     <br>
-                    하단 + 버튼을 눌러서 새 모임을 만들 수 있습니다.
+                    하단 + 버튼을 눌러서 새 모임을 만들 수 있습니다. <br><span class = "eng-cap fw-light">You can add new meeting by clicking + button.</span>
                     <br><br>
                     <a href="create-new-meeting.html" class="card-link">새 모임 만들기</a>
                     <a href="load-family-tree.html" class="card-link card-text fw-light eng-cap"><br>Add a new meeting plan.</a>
@@ -206,8 +206,8 @@ $(document).ready(function() {
                     
                     var html_isPrivate, html_dueDate, html_meetingName, html_meetingDescription, html_meetingParticipants, html_meetingTags, html_button, html_meetingDates;
                     
-                    if (isPrivate) html_isPrivate = '<span class="text-muted" style="font-size: smaller;"><i class="fas fa-lock me-1"></i> 비공개</span>'
-                    else html_isPrivate = '<span class="text-muted" style="font-size: smaller;"><i class="fas fa-globe-asia me-1"></i> 공개</span>'
+                    if (isPrivate) html_isPrivate = '<span class="text-muted" style="font-size: smaller;"><i class="fas fa-lock me-1"></i> 비공개 Private</span>'
+                    else html_isPrivate = '<span class="text-muted" style="font-size: smaller;"><i class="fas fa-globe-asia me-1"></i> 공개 Public</span>'
                     
     
                     html_meetingDates =``
@@ -267,8 +267,8 @@ $(document).ready(function() {
         
         $("#createNewMeeting").attr("class", "btn btn-primary rounded-pill btn-lg shadow disabled")
         $("#meeting-list, #meeting-list-part, #meeting-list-not-part").append(`<p class="card-text text-muted mt-3">가족 관계도를 생성하고 서비스를 이용해보세요! <a href="load-family-tree.html" class="card-link">생성하기</a>
-                    <br>
-                    <a href="load-family-tree.html" class="card-link card-text fw-light eng-cap">Make a new family tree.</a>
+                    <br> Create a family tree and use the service!
+                    <a href="load-family-tree.html" class="card-link">Make a new family tree.</a>
                 </p>`
         )
     }

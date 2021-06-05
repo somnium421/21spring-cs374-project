@@ -130,7 +130,7 @@ $('#delete-button').click(() => {
     if ($('#chat').children().length === 0){
         $("#chat").append(
             `<div id="chat-placeholder" class="text-center text-muted">
-                아직 댓글을 작성한 사람이 없습니다. <br> 가장 먼저 댓글을 달아보세요!
+                아직 댓글을 작성한 사람이 없습니다. <br> 가장 먼저 댓글을 달아보세요! Leave your comments.
             </div>
         `)
     }
@@ -336,7 +336,7 @@ $(document).ready(function() {
                 if (chats.chat.length === 0){
                     $("#chat").append(
                         `<div id="chat-placeholder" class="text-center text-muted">
-                            아직 댓글을 작성한 사람이 없습니다. <br> 가장 먼저 댓글을 달아보세요!
+                            아직 댓글을 작성한 사람이 없습니다. <br> 가장 먼저 댓글을 달아보세요! Leave your comments.
                         </div>
                     `)
                 }

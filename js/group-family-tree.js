@@ -186,8 +186,8 @@ $(document).ready(() => {
     
     }else {
         $("#family-tree").append(`<p class="card-text text-muted mt-3">아직 가족 관계도가 없습니다. <a href="load-family-tree.html" class="card-link">생성하기</a>
-                    <br>
-                    <a href="load-family-tree.html" class="card-link card-text fw-light eng-cap">Make a new family tree.</a>
+                    <br> No family tree yet.
+                    <a href="load-family-tree.html" class="card-link">Make a new family tree.</a>
                 </p>`)
     
             $(".family-tree-card").attr("class", "card h-100 shadow pb-3 bg-light")

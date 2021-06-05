@@ -67,9 +67,9 @@ chart.editUI.on('field', function(sender, args){
             txt.style.color = "red";  
             
             var select = document.createElement('select');
-            select.innerHTML = '<option value="gender" selected>성별을 고르시오</option>' 
-            + '<option value="male">남자</option>'
-            + '<option value="female">여자</option>';
+            select.innerHTML = '<option value="gender" selected>성별을 고르시오 <span class = "eng-cap fw-light">Choose gender</span></option>' 
+            + '<option value="male">남자 <span class = "eng-cap fw-light"> Male</span></option>'
+            + '<option value="female">여자 <span class = "eng-cap fw-light"> Female</span></option>';
             
             select.style.width = '100%';                    
             select.setAttribute('val', '');

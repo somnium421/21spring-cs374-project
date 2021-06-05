@@ -48,7 +48,7 @@
   <path fill-rule="evenodd" d="M2 13.5V7h1v6.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7h1v6.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5zm11-11V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
   <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
 </svg>
-                             &nbsp; 홈
+                             &nbsp; 홈 Home
                         </a>
                     </li>
                     <li>
@@ -58,7 +58,7 @@
                                 <path fill-rule="evenodd" d="M5.216 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216z"/>
                                 <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>
                               </svg>
-                             &nbsp; 우리 가족
+                             &nbsp; 가족 Family
                         </a>
                     </li>
                     <li>
@@ -66,11 +66,11 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list-ul" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
                             </svg>
-                            &nbsp; 모임
+                            &nbsp; 모임 Meeting
                         </a>
                     </li>
                 </ul>
-                <button type="button" class="btn btn-outline-primary mb-2 mx-4 rounded-pill" data-bs-toggle="modal" data-bs-target="#logout-modal" data-bs-whatever="@mdo">로그아웃</button>        
+                <button type="button" class="btn btn-outline-primary mb-2 mx-4 rounded-pill" data-bs-toggle="modal" data-bs-target="#logout-modal" data-bs-whatever="@mdo">Logout</button>        
             </div>
 
             <div class="container-fluid col px-5" style="margin-left:200px">
@@ -92,7 +92,7 @@
                         </div>
                     </form> -->
                     <div class="text-center">
-                        <button type="button" class="btn btn-primary btn-block rounded-pill" data-bs-toggle="modal" data-bs-target="#familyCode" data-bs-whatever="@mdo">가족 관계도 불러오기</button>
+                        <button type="button" class="btn btn-primary btn-block rounded-pill" data-bs-toggle="modal" data-bs-target="#familyCode" data-bs-whatever="@mdo">가족 관계도 불러오기   Import family tree</button>
                     </div>
                     <div class="modal fade" id="familyCode" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
@@ -104,8 +104,8 @@
                             <div class="modal-body">
                                 <form class="mb-4">
                                     <div class="mb-3">
-                                        <label for="famlily-code-input" class="col-form-label"><h5>코드 입력 <span class="fw-light eng-cap">Code :</h5> </span> </label>
-                                        <input type="text" class="form-control" placeholder="가족 코드" id="family-code-input">
+                                        <label for="famlily-code-input" class="col-form-label"><h5>코드 입력 <span class="fw-light eng-cap">Enter Code</h5> </span> </label>
+                                        <input type="text" class="form-control" placeholder="가족 코드 Family Code" id="family-code-input">
                                         <!-- <button type="submit" class="btn btn-secondary">입력</button> -->
                                     </div>
                                 </form>
@@ -113,20 +113,21 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle-fill" viewBox="0 0 16 16">
                                         <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
                                     </svg> 
-                                    <b>가족 코드란?</b>
+                                    <b>가족 코드란? <span class="fw-light eng-cap">What is family code?</span></b>
                                 </p>
                                 <p class="text-muted" style="font-size: smaller;">
                                     가족 중 최초로 서비스에 가입했던 사람이 회원가입을 마치고 가족 관계도 생성을 완료하면 받을 수 있는 코드로 알파벳과 숫자의 5자리 조합으로 이루어져 있습니다. 예: 00FF0.
+                                    <br> <span class="fw-light eng-cap">It is a code that can be received when the first person in the family who signed up for the service completes membership registration and completes creation of a family relationship. Example: 00FF0.</span>
                                 </p>
 
-                                <p><a href="new-family-tree.html">코드를 받지 못했습니다.</a></p>
+                                <p><a href="new-family-tree.html">코드를 받지 못했습니다. I don't have a code. Make one.</a></p>
 
 
 
                             </div>
                             <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                              <button type="button" class="btn btn-primary" id="submit-family-code">인증</button>
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기 Close</button>
+                              <button type="button" class="btn btn-primary" id="submit-family-code">인증 Apply</button>
                             </div>
                           </div>
                         </div>
@@ -137,12 +138,12 @@
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel"><b>로그아웃 하시겠습니까?</b> <span class="fw-light eng-cap">Log out?</span> </h5>
+                            <h5 class="modal-title" id="exampleModalLabel"><b>로그아웃 하시겠습니까?</b> <span class="fw-light eng-cap">Do you want to Log out?</span> </h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                            <a type="button" class="btn btn-primary" data-bs-dismiss="modal" id="logout-button">로그아웃</a>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기 Close</button>
+                            <a type="button" class="btn btn-primary" data-bs-dismiss="modal" id="logout-button">로그아웃 LogOut</span></a>
                         </div>
                     </div>
                 </div>
