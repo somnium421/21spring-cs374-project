@@ -521,8 +521,9 @@ function onSuccessGeolocation(position) {
     });
     searchDetailAddrFromCoords(new kakao.maps.LatLng(position.coords.latitude, position.coords.longitude), function(result, status) {
         if (status == kakao.maps.services.Status.OK) {
-            // console.log(result[0].road_address.address_name);
-            $('#departure-place').attr('placeholder', `현재 위치 : ${result[0].road_address.address_name}`)
+            console.log(result);
+            if (result.road_address == null) $('#departure-place').attr('placeholder', `현재 위치 : ${result[0].address.address_name}`)
+            else $('#departure-place').attr('placeholder', `현재 위치 : ${result[0].road_address.address_name}`)
             answer.departure = [position.coords.longitude, position.coords.latitude];
         }
     })
