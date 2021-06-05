@@ -11,7 +11,10 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>   
         <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-firestore.js"></script>
-        
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/i18next/17.0.18/i18next.min.js"
+            type="text/javascript"
+        ></script>
         
         <title>ToGather :: Home</title>
 
@@ -45,10 +48,10 @@
                     <li class="nav-item">
                         <a href="home.html" class="nav-link link-dark">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
-  <path fill-rule="evenodd" d="M2 13.5V7h1v6.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7h1v6.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5zm11-11V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
-  <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
-</svg>
-                             &nbsp; 홈
+                                <path fill-rule="evenodd" d="M2 13.5V7h1v6.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7h1v6.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5zm11-11V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
+                                <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
+                            </svg>
+                             &nbsp; <span id="tabHome">홈</span>
                         </a>
                     </li>
                     <li>
@@ -58,7 +61,7 @@
                                 <path fill-rule="evenodd" d="M5.216 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216z"/>
                                 <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>
                               </svg>
-                             &nbsp; 우리 가족
+                             &nbsp; <span id="tabFamily">가족</span>
                         </a>
                     </li>
                     <li>
@@ -66,15 +69,15 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list-ul" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
                             </svg>
-                            &nbsp; 모임
+                            &nbsp; <span id="tabMeeting">모임</span>
                         </a>
                     </li>
                 </ul>
-                <button type="button" class="btn btn-outline-primary mb-2 mx-4 rounded-pill" data-bs-toggle="modal" data-bs-target="#logout-modal" data-bs-whatever="@mdo">로그아웃</button>        
+                <button type="button" class="btn btn-outline-primary mb-2 mx-4 rounded-pill" data-bs-toggle="modal" data-bs-target="#logout-modal" data-bs-whatever="@mdo" id="tabLogout">로그아웃</button>        
             </div>
 
             <div class="container-fluid col px-5" style="margin-left:200px">
-                <div class="fs-3 fw-bold mt-5 mb-4 ms-1">새로운 가족 관계도 <span class="fw-light eng-cap">New Family Tree</span></div>
+                <div class="fs-3 fw-bold mt-5 mb-4 ms-1" id="pagetitleLoad">새로운 가족 관계도</div>
                 <div class="container col-6">
                     <!-- <h4 class="mt-5">초대 받았나요? <span class="fw-light eng-cap">Who Invited You?</span> </h4>
                     <form class="card p-2">
@@ -92,19 +95,19 @@
                         </div>
                     </form> -->
                     <div class="text-center">
-                        <button type="button" class="btn btn-primary btn-block rounded-pill" data-bs-toggle="modal" data-bs-target="#familyCode" data-bs-whatever="@mdo">가족 관계도 불러오기</button>
+                        <button type="button" class="btn btn-primary btn-block rounded-pill" data-bs-toggle="modal" data-bs-target="#familyCode" data-bs-whatever="@mdo" id="call">가족 관계도 불러오기</button>
                     </div>
                     <div class="modal fade" id="familyCode" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                           <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel"><b>받은 가족 코드로 인증하세요</b> <span class="fw-light eng-cap">Enter your family code</span> </h5>
+                                <h5 class="modal-title" id="exampleModalLabel1"><b>받은 가족 코드로 인증하세요</b></h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <form class="mb-4">
                                     <div class="mb-3">
-                                        <label for="famlily-code-input" class="col-form-label"><h5>코드 입력 <span class="fw-light eng-cap">Code :</h5> </span> </label>
+                                        <label for="famlily-code-input" class="col-form-label"><h5 id="code">코드 입력 </h5></label>
                                         <input type="text" class="form-control" placeholder="가족 코드" id="family-code-input">
                                         <!-- <button type="submit" class="btn btn-secondary">입력</button> -->
                                     </div>
@@ -113,19 +116,19 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle-fill" viewBox="0 0 16 16">
                                         <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
                                     </svg> 
-                                    <b>가족 코드란?</b>
+                                    <b id="codeD">가족 코드란?</b>
                                 </p>
-                                <p class="text-muted" style="font-size: smaller;">
+                                <p class="text-muted" style="font-size: smaller;" id="codeD2">
                                     가족 중 최초로 서비스에 가입했던 사람이 회원가입을 마치고 가족 관계도 생성을 완료하면 받을 수 있는 코드로 알파벳과 숫자의 5자리 조합으로 이루어져 있습니다. 예: 00FF0.
                                 </p>
 
-                                <p><a href="new-family-tree.html">코드를 받지 못했습니다.</a></p>
+                                <p><a href="new-family-tree.html" id="codeD3">코드를 받지 못했습니다.</a></p>
 
 
 
                             </div>
                             <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="close2">닫기</button>
                               <button type="button" class="btn btn-primary" id="submit-family-code">인증</button>
                             </div>
                           </div>
@@ -137,11 +140,11 @@
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel"><b>로그아웃 하시겠습니까?</b> <span class="fw-light eng-cap">Log out?</span> </h5>
+                            <h5 class="modal-title" id="exampleModalLabel"><b>로그아웃 하시겠습니까?</b></h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="close">닫기</button>
                             <a type="button" class="btn btn-primary" data-bs-dismiss="modal" id="logout-button">로그아웃</a>
                         </div>
                     </div>
@@ -150,5 +153,6 @@
         </div>      
     </body>
     <script src="./js/load-family-tree.js"></script>
+    <script src="language/load-family-tree.js" defer></script>
 </html>
 
