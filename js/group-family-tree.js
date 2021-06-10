@@ -1,6 +1,7 @@
 //var familyCode = localStorage.getItem("family-code"); //"00AB8"
 // var userID = localStorage.getItem("family-id"); // "0"
 isAssign = (familyCode !== null && familyCode !== "undefined" && familyCode !== undefined);
+lang = localStorage.getItem('lang');
 
 $(document).ready(() => {
     if (isAssign){
@@ -185,12 +186,19 @@ $(document).ready(() => {
         }
     
     }else {
-        $("#family-tree").append(`<p class="card-text text-muted mt-3">아직 가족 관계도가 없습니다. <a href="load-family-tree.html" class="card-link">생성하기</a>
-                    <br>
-                    <a href="load-family-tree.html" class="card-link card-text fw-light eng-cap">Make a new family tree.</a>
+        if (lang =='en'){
+            $("#family-tree").append(`<p class="card-text text-muted mt-3">No family tree yet. <a href="load-family-tree.html" class="card-link">Make one</a>
                 </p>`)
     
             $(".family-tree-card").attr("class", "card h-100 shadow pb-3 bg-light")
+        }
+        else{
+            $("#family-tree").append(`<p class="card-text text-muted mt-3">아직 가족 관계도가 없습니다. <a href="load-family-tree.html" class="card-link">생성하기</a>
+                </p>`)
+    
+            $(".family-tree-card").attr("class", "card h-100 shadow pb-3 bg-light")
+        }
+        
     }
     
     

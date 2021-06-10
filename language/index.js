@@ -1,6 +1,17 @@
+localStorage.setItem('lang', 'en');
+
+if(localStorage.getItem('lang')== 'en'){
+  $('#eng').attr('selected',true);
+  $('#kor').removeAttr('selected');
+}
+else{
+  $('#kor').attr('selected',true);
+  $('#eng').removeAttr('selected');
+}
+
 i18next.init(
     {
-      lng: "ko",
+      lng: localStorage.getItem('lang'),
       debug: true,
       resources: {
         ko: {
@@ -43,6 +54,8 @@ function updateContent() {
   document.getElementById("login").innerHTML = i18next.t("login");
 }
 
-i18next.on("languageChanged", () => {
+i18next.on("languageChanged", (lang) => {
     updateContent();
+    localStorage.setItem('lang', lang);
+    console.log(lang);
 });

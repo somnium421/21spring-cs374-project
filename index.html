@@ -53,7 +53,11 @@
             db.settings({timestampsInSnapshots: true});
         </script>
         <main class="form-signin">
-            <form>
+            <select id="lang-select" onchange="i18next.changeLanguage(this.value)" class="form-select" aria-label="Default select example" style="width: 105px;">
+                <option value="en">English</option>
+                <option value="ko">Korean</option>
+            </select>
+            <form class="mt-4">
                 <img class="mb-4" src="icons/logo.svg" alt="" width="139" height="43">
                 <h1 class="h3 mb-3 fw-normal" id="loginD">로그인 해주세요</h1>
 

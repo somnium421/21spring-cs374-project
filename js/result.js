@@ -8,6 +8,7 @@ var meetings, members, chats,  docID, answerID;
 var hostAvailableDates = {};
 var datesChartData = {};
 var hostAvailableTime = [];
+lang = localStorage.getItem('lang');
 
 let placeOptions = {
     container: {
@@ -128,11 +129,20 @@ $('#delete-button').click(() => {
     })
     $(deleteTarget).parent().parent().remove();
     if ($('#chat').children().length === 0){
-        $("#chat").append(
-            `<div id="chat-placeholder" class="text-center text-muted">
-                아직 댓글을 작성한 사람이 없습니다. <br> 가장 먼저 댓글을 달아보세요!
-            </div>
-        `)
+        if(lang =='en'){
+            $("#chat").append(
+                `<div id="chat-placeholder" class="text-center text-muted">
+                    No comments yet. <br> Leave your comments! 
+                </div>
+            `)
+        }
+        else{
+            $("#chat").append(
+                `<div id="chat-placeholder" class="text-center text-muted">
+                    아직 댓글을 작성한 사람이 없습니다. <br> 가장 먼저 댓글을 달아보세요!
+                </div>
+            `)
+        }
     }
     
 })
@@ -334,17 +344,31 @@ $(document).ready(function() {
                 })
                 for (var i=0; i<chats.chat.length; i++) drawChat(i);
                 if (chats.chat.length === 0){
-                    $("#chat").append(
-                        `<div id="chat-placeholder" class="text-center text-muted">
-                            아직 댓글을 작성한 사람이 없습니다. <br> 가장 먼저 댓글을 달아보세요!
-                        </div>
-                    `)
+                    if(lang =='en'){
+                        $("#chat").append(
+                            `<div id="chat-placeholder" class="text-center text-muted">
+                                No comments yet. <br> Leave your comments! 
+                            </div>
+                        `)
+                    }
+                    else{
+                        $("#chat").append(
+                            `<div id="chat-placeholder" class="text-center text-muted">
+                                아직 댓글을 작성한 사람이 없습니다. <br> 가장 먼저 댓글을 달아보세요!
+                            </div>
+                        `)
+                    }
                 }
             })
-
-            if (meetings[meetingNumber].isPrivate) $('#is-private').append('<span class="text-muted" style="font-size: smaller;"><i class="fas fa-lock me-1"></i> 비공개</span>')
-            else $('#is-private').append('<span class="text-muted" style="font-size: smaller;"><i class="fas fa-globe-asia me-1"></i> 공개</span>')
-
+            if(lang == 'en'){
+                if (meetings[meetingNumber].isPrivate) $('#is-private').append('<span class="text-muted" style="font-size: smaller;"><i class="fas fa-lock me-1"></i> Private</span>')
+                else $('#is-private').append('<span class="text-muted" style="font-size: smaller;"><i class="fas fa-globe-asia me-1"></i> Public</span>')
+            }
+            else{
+                if (meetings[meetingNumber].isPrivate) $('#is-private').append('<span class="text-muted" style="font-size: smaller;"><i class="fas fa-lock me-1"></i> 비공개</span>')
+                else $('#is-private').append('<span class="text-muted" style="font-size: smaller;"><i class="fas fa-globe-asia me-1"></i> 공개</span>')
+            }
+            
             $('#meeting-name').text(meetings[meetingNumber].name);
 
             $('#meeting-description').text(meetings[meetingNumber].description);
@@ -377,16 +401,36 @@ $(document).ready(function() {
             })
 
             var meetingTags;
-            if (meetings[meetingNumber].meetingPeriod.day == 0) meetingTags = `<span class="badge rounded-pill bg-light text-dark">${meetings[meetingNumber].meetingPeriod.hr}시간</span> <span style="font-size: smaller;">동안</span>`;
-            else if (meetings[meetingNumber].meetingPeriod.day == 1) meetingTags = `<span class="badge rounded-pill bg-light text-dark">하루</span> <span style="font-size: smaller;">종일</span>`;
-            else meetingTags = `<span class="badge rounded-pill bg-light text-dark">${meetings[meetingNumber].meetingPeriod.day-1}박 ${meetings[meetingNumber].meetingPeriod.day}일</span> <span style="font-size: smaller;">동안</span> `
-            if (meetings[meetingNumber].noMorePlace) {
-                var tmp = meetings[meetingNumber].place.map((x) => `<span class="badge rounded-pill bg-light text-dark">${x}</span>`).join('');
-                meetingTags += tmp + '<span style="font-size: smaller;">에서</span>';
+
+            if(lang=='ko'){
+                if (meetings[meetingNumber].meetingPeriod.day == 0) meetingTags = `<span class="badge rounded-pill bg-light text-dark ">${meetings[meetingNumber].meetingPeriod.hr}시간</span> <span style="font-size: smaller;">동안 </span>`;
+                else if (meetings[meetingNumber].meetingPeriod.day == 1) meetingTags = `<span class="badge rounded-pill bg-light text-dark ">하루</span> <span style="font-size: smaller;">종일 </span>`;
+                else meetingTags = `<span class="badge rounded-pill bg-light text-dark ">${meetings[meetingNumber].meetingPeriod.day-1}박 ${meetings[meetingNumber].meetingPeriod.day}일</span> <span style="font-size: smaller;">동안 </span> `
+                if (meetings[meetingNumber].noMorePlace) {
+                    var tmp = meetings[meetingNumber].place.map((x) => `<span class="badge rounded-pill bg-light text-dark ">${x}</span>`).join('');
+                    meetingTags += tmp + '<span style="font-size: smaller;">에서</span>';
+                }
+                if (meetings[meetingNumber].noMoreActivity) {
+                    var tmp = meetings[meetingNumber].activity.map((x) => `<span class="badge rounded-pill bg-light text-dark ">${x}</span>`).join('');
+                    meetingTags += tmp;
+                }
             }
-            if (meetings[meetingNumber].noMoreActivity) {
-                var tmp = meetings[meetingNumber].activity.map((x) => `<span class="badge rounded-pill bg-light text-dark">${x}</span>`).join('');
-                meetingTags += tmp;
+            else{
+                if (meetings[meetingNumber].noMoreActivity) {
+                    meetingTags = meetings[meetingNumber].activity.map((x) => `<span class="badge rounded-pill bg-light text-dark ">${x}</span>`).join('');
+                    
+                }
+                else{
+                    meetingTags = ``;
+                }
+
+                if (meetings[meetingNumber].noMorePlace) {
+                    var tmp = meetings[meetingNumber].place.map((x) => `<span class="badge rounded-pill bg-light text-dark ">${x}</span>`).join('');
+                    meetingTags += '<span style="font-size: smaller;">at</span>' + tmp;
+                }
+                if (meetings[meetingNumber].meetingPeriod.day == 0) meetingTags += `<span style="font-size: smaller;">for</span><span class="badge rounded-pill bg-light text-dark ">${meetings[meetingNumber].meetingPeriod.hr} hours</span>`;
+                else if (meetings[meetingNumber].meetingPeriod.day == 1) meetingTags += `<span style="font-size: smaller;">for</span><span class="badge rounded-pill bg-light text-dark ">1 day</span>`;
+                else meetingTags += `<span style="font-size: smaller;">for</span><span class="badge rounded-pill bg-light text-dark ">${meetings[meetingNumber].meetingPeriod.day} days</span> `
             }
             $('#meeting-tags').append(meetingTags);
 
