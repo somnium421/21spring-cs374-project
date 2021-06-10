@@ -6,7 +6,14 @@ const userID = Number(localStorage.getItem("family-id"));// from the local stora
 
 var availableTime = [];
 var availableDates = [];
+lang = localStorage.getItem('lang');
 
+if(lang == 'en'){
+    $('#meeting-name').attr('placeholder',  `Title of the meeting`);
+    $('#place').attr('placeholder',  `Where would you like to go? Add tags`);
+    $('#activity').attr('placeholder',  `What would you like to do? Add tags`);
+    $('#start-time').attr('placeholder',  `Please select`);
+}
 
 $("#Txt_Date").datepicker({
     format: 'd-M-yyyy',

@@ -1,6 +1,7 @@
 const familyCode = localStorage.getItem("family-code") //"00AB8"
 const userID = Number(localStorage.getItem("family-id")) // "0"
 console.log(familyCode, userID);
+lang = localStorage.getItem('lang');
 
 localStorage.removeItem("meeting-number");
 
@@ -95,18 +96,38 @@ function processData(meetingNumber, html_isPrivate, html_dueDate, html_meetingNa
 
         // console.log(meetingDue, now);
         if (meetingDue > now && meetingUserPart.filter((el) => Number(el) === Number(meetingNumber)).length === 0) {
-            html_dueDate = `<span class="text-muted" style="font-size: smaller;"><i class="fa fa-ellipsis-h" aria-hidden="true"></i> &nbsp;참여 마감 <span class="text-primary">${Math.ceil((meetingDue.getTime()-now.getTime())/(1000*3600*24))}</span>일 전</span>`
-            console.log(meetingDue.getDate()-now.getDate());
-            html_button = `<button class="btn btn-outline-primary rounded-pill participate" id="meeting-${meetingNumber}">참여 신청 &nbsp; <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`
+            if(lang == 'en'){
+                html_dueDate = `<span class="text-muted" style="font-size: smaller;"><i class="fa fa-ellipsis-h" aria-hidden="true"></i> &nbsp; <span class="text-primary">${Math.ceil((meetingDue.getTime()-now.getTime())/(1000*3600*24))}</span> days left to participate</span>`
+                console.log(meetingDue.getDate()-now.getDate());
+                html_button = `<button class="btn btn-outline-primary rounded-pill participate" id="meeting-${meetingNumber}">Participate &nbsp; <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`
+            }
+            else{
+                html_dueDate = `<span class="text-muted" style="font-size: smaller;"><i class="fa fa-ellipsis-h" aria-hidden="true"></i> &nbsp;참여 마감 <span class="text-primary">${Math.ceil((meetingDue.getTime()-now.getTime())/(1000*3600*24))}</span>일 전</span>`
+                console.log(meetingDue.getDate()-now.getDate());
+                html_button = `<button class="btn btn-outline-primary rounded-pill participate" id="meeting-${meetingNumber}">참여 신청 &nbsp; <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`
+            }
         }
         else if (meetingDue > now && meetingUserPart.filter((el) => Number(el) === Number(meetingNumber)).length !== 0){
-            html_dueDate = `<span class="text-muted" style="font-size: smaller;"><i class="fa fa-ellipsis-h" aria-hidden="true"></i> &nbsp;참여 마감 <span class="text-primary">${Math.ceil((meetingDue.getTime()-now.getTime())/(1000*3600*24))}</span>일 전</span>`
-            console.log(meetingDue.getDate()-now.getDate());
-            html_button = `<button class="btn btn-outline-primary rounded-pill participate" id="meeting-${meetingNumber}" disabled>참여 완료 &nbsp; <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`
+            if(lang == 'en'){
+                html_dueDate = `<span class="text-muted" style="font-size: smaller;"><i class="fa fa-ellipsis-h" aria-hidden="true"></i> &nbsp;<span class="text-primary">${Math.ceil((meetingDue.getTime()-now.getTime())/(1000*3600*24))}</span> days left to participate</span>`
+                console.log(meetingDue.getDate()-now.getDate());
+                html_button = `<button class="btn btn-outline-primary rounded-pill participate" id="meeting-${meetingNumber}" disabled>Done &nbsp; <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`
+            }
+            else{
+                html_dueDate = `<span class="text-muted" style="font-size: smaller;"><i class="fa fa-ellipsis-h" aria-hidden="true"></i> &nbsp;참여 마감 <span class="text-primary">${Math.ceil((meetingDue.getTime()-now.getTime())/(1000*3600*24))}</span>일 전</span>`
+                console.log(meetingDue.getDate()-now.getDate());
+                html_button = `<button class="btn btn-outline-primary rounded-pill participate" id="meeting-${meetingNumber}" disabled>참여 완료 &nbsp; <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`
+            }
         }
         else {
-            html_dueDate = `<span class="text-muted" style="font-size: smaller;"><i class="fa fa-check" aria-hidden="true"></i> &nbsp;참여 마감</span>`
-            html_button = `<button class="btn btn-primary rounded-pill result" id="meeting-${meetingNumber}" > 결과 확인 &nbsp; <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`
+            if(lang == 'en'){
+                html_dueDate = `<span class="text-muted" style="font-size: smaller;"><i class="fa fa-check" aria-hidden="true"></i> &nbsp; Closed</span>`
+                html_button = `<button class="btn btn-primary rounded-pill result" id="meeting-${meetingNumber}" > Results &nbsp; <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`
+            }
+            else{    
+                html_dueDate = `<span class="text-muted" style="font-size: smaller;"><i class="fa fa-check" aria-hidden="true"></i> &nbsp;참여 마감</span>`
+                html_button = `<button class="btn btn-primary rounded-pill result" id="meeting-${meetingNumber}" > 결과 확인 &nbsp; <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`
+            }
         }
             
         var col = "";
@@ -178,13 +199,22 @@ $(document).ready(function() {
                 meetings = doc.data().meetings;
                 members = doc.data().members;
                 if (meetings.length === 0){
-                    var htmlStr = `<p class="card-text text-muted mt-3">아직 모임계획을 세우지 않았습니다. 
-                    <br>
-                    하단 + 버튼을 눌러서 새 모임을 만들 수 있습니다.
-                    <br><br>
-                    <a href="create-new-meeting.html" class="card-link">새 모임 만들기</a>
-                    <a href="load-family-tree.html" class="card-link card-text fw-light eng-cap"><br>Add a new meeting plan.</a>
-                </p>`;
+                    if(lang == 'en'){
+                        var htmlStr = `<p class="card-text text-muted mt-3">No meeting plan yet. 
+                        <br>
+                        You can create a new meeting by pressing + button below.
+                        <br><br>
+                        <a href="create-new-meeting.html" class="card-link">Create new meeting</a>
+                        </p>`;
+                    }
+                    else{
+                        var htmlStr = `<p class="card-text text-muted mt-3">아직 모임계획을 세우지 않았습니다. 
+                        <br>
+                        하단 + 버튼을 눌러서 새 모임을 만들 수 있습니다.
+                        <br><br>
+                        <a href="create-new-meeting.html" class="card-link">새 모임 만들기</a>
+                        </p>`;
+                    }
                     $("#meeting-list, #meeting-list-part, #meeting-list-not-part").append(htmlStr);
                     $("#meeting-list, #meeting-list-part, #meeting-list-not-part, #family-tree").attr("class", "card-body overflow-auto text-center");
                     $(".meeting-card, .meeting-card-not-part, .meeting-card-part").attr("class", "card h-100 shadow pb-3 bg-light");
@@ -206,9 +236,14 @@ $(document).ready(function() {
                     
                     var html_isPrivate, html_dueDate, html_meetingName, html_meetingDescription, html_meetingParticipants, html_meetingTags, html_button, html_meetingDates;
                     
-                    if (isPrivate) html_isPrivate = '<span class="text-muted" style="font-size: smaller;"><i class="fas fa-lock me-1"></i> 비공개</span>'
-                    else html_isPrivate = '<span class="text-muted" style="font-size: smaller;"><i class="fas fa-globe-asia me-1"></i> 공개</span>'
-                    
+                    if(lang == 'en'){
+                        if (isPrivate) html_isPrivate = '<span class="text-muted" style="font-size: smaller;"><i class="fas fa-lock me-1"></i> Private</span>'
+                        else html_isPrivate = '<span class="text-muted" style="font-size: smaller;"><i class="fas fa-globe-asia me-1"></i> Public</span>'
+                    }
+                    else{
+                        if (isPrivate) html_isPrivate = '<span class="text-muted" style="font-size: smaller;"><i class="fas fa-lock me-1"></i> 공개</span>'
+                        else html_isPrivate = '<span class="text-muted" style="font-size: smaller;"><i class="fas fa-globe-asia me-1"></i> 비공개</span>'
+                    }
     
                     html_meetingDates =``
                     if(isPrivate) var isPrivateBadge = "private-badge";
@@ -234,20 +269,39 @@ $(document).ready(function() {
                     
                     var meetingTags;
                     
-    
-                    if (meetings[meetingNumber].meetingPeriod.day == 0) meetingTags = `<span class="badge rounded-pill bg-light text-dark ${isPrivateBadge}">${meetings[meetingNumber].meetingPeriod.hr}시간</span> <span style="font-size: smaller;">동안 </span>`;
-                    else if (meetings[meetingNumber].meetingPeriod.day == 1) meetingTags = `<span class="badge rounded-pill bg-light text-dark ${isPrivateBadge}">하루</span> <span style="font-size: smaller;">종일 </span>`;
-                    else meetingTags = `<span class="badge rounded-pill bg-light text-dark ${isPrivateBadge}">${meetings[meetingNumber].meetingPeriod.day-1}박 ${meetings[meetingNumber].meetingPeriod.day}일</span> <span style="font-size: smaller;">동안 </span> `
-                    if (meetings[meetingNumber].noMorePlace) {
-                        var tmp = meetings[meetingNumber].place.map((x) => `<span class="badge rounded-pill bg-light text-dark ${isPrivateBadge}">${x}</span>`).join('');
-                        meetingTags += tmp + '<span style="font-size: smaller;">에서</span>';
+                    if(lang=='ko'){
+                        if (meetings[meetingNumber].meetingPeriod.day == 0) meetingTags = `<span class="badge rounded-pill bg-light text-dark ${isPrivateBadge}">${meetings[meetingNumber].meetingPeriod.hr}시간</span> <span style="font-size: smaller;">동안 </span>`;
+                        else if (meetings[meetingNumber].meetingPeriod.day == 1) meetingTags = `<span class="badge rounded-pill bg-light text-dark ${isPrivateBadge}">하루</span> <span style="font-size: smaller;">종일 </span>`;
+                        else meetingTags = `<span class="badge rounded-pill bg-light text-dark ${isPrivateBadge}">${meetings[meetingNumber].meetingPeriod.day-1}박 ${meetings[meetingNumber].meetingPeriod.day}일</span> <span style="font-size: smaller;">동안 </span> `
+                        if (meetings[meetingNumber].noMorePlace) {
+                            var tmp = meetings[meetingNumber].place.map((x) => `<span class="badge rounded-pill bg-light text-dark ${isPrivateBadge}">${x}</span>`).join('');
+                            meetingTags += tmp + '<span style="font-size: smaller;">에서</span>';
+                        }
+                        if (meetings[meetingNumber].noMoreActivity) {
+                            var tmp = meetings[meetingNumber].activity.map((x) => `<span class="badge rounded-pill bg-light text-dark ${isPrivateBadge}">${x}</span>`).join('');
+                            meetingTags += tmp;
+                        }
+                        html_meetingTags = meetingTags;
                     }
-                    if (meetings[meetingNumber].noMoreActivity) {
-                        var tmp = meetings[meetingNumber].activity.map((x) => `<span class="badge rounded-pill bg-light text-dark ${isPrivateBadge}">${x}</span>`).join('');
-                        meetingTags += tmp;
+                    else{
+                        if (meetings[meetingNumber].noMoreActivity) {
+                            meetingTags = meetings[meetingNumber].activity.map((x) => `<span class="badge rounded-pill bg-light text-dark ${isPrivateBadge}">${x}</span>`).join('');
+                            
+                        }
+                        else{
+                            meetingTags = ``;
+                        }
+
+                        if (meetings[meetingNumber].noMorePlace) {
+                            var tmp = meetings[meetingNumber].place.map((x) => `<span class="badge rounded-pill bg-light text-dark ${isPrivateBadge}">${x}</span>`).join('');
+                            meetingTags += '<span style="font-size: smaller;">at</span>' + tmp;
+                        }
+                        if (meetings[meetingNumber].meetingPeriod.day == 0) meetingTags += `<span style="font-size: smaller;">for</span><span class="badge rounded-pill bg-light text-dark ${isPrivateBadge}">${meetings[meetingNumber].meetingPeriod.hr} hours</span>`;
+                        else if (meetings[meetingNumber].meetingPeriod.day == 1) meetingTags += `<span style="font-size: smaller;">for</span><span class="badge rounded-pill bg-light text-dark ${isPrivateBadge}">1 day</span>`;
+                        else meetingTags += `<span style="font-size: smaller;">for</span><span class="badge rounded-pill bg-light text-dark ${isPrivateBadge}">${meetings[meetingNumber].meetingPeriod.day} days</span> `
+                        
+                        html_meetingTags = meetingTags;
                     }
-                    html_meetingTags = meetingTags;
-    
                     
                     processData(meetingNumber, html_isPrivate, html_dueDate, html_meetingName, html_meetingDescription, 
                         html_meetingParticipants, html_meetingDates, html_meetingTags, html_button, isPrivate);
@@ -266,11 +320,18 @@ $(document).ready(function() {
         
         
         $("#createNewMeeting").attr("class", "btn btn-primary rounded-pill btn-lg shadow disabled")
-        $("#meeting-list, #meeting-list-part, #meeting-list-not-part").append(`<p class="card-text text-muted mt-3">가족 관계도를 생성하고 서비스를 이용해보세요! <a href="load-family-tree.html" class="card-link">생성하기</a>
+        if(lang == 'en'){
+            $("#meeting-list, #meeting-list-part, #meeting-list-not-part").append(`<p class="card-text text-muted mt-3">Create your family tree and fully use our service! <br><a href="load-family-tree.html" class="card-link">Create family tree</a>
                     <br>
-                    <a href="load-family-tree.html" class="card-link card-text fw-light eng-cap">Make a new family tree.</a>
+                    <a href="load-family-tree.html" class="card-link card-text fw-light eng-cap"></a>
                 </p>`
-        )
+            )
+        }
+        else{
+            $("#meeting-list, #meeting-list-part, #meeting-list-not-part").append(`<p class="card-text text-muted mt-3">가족 관계도를 생성하고 서비스를 이용해보세요! <a href="load-family-tree.html" class="card-link">생성하기</a>
+                </p>`
+            )
+        }
     }
 
     $(document).on('click', '.result', function() {
@@ -286,16 +347,26 @@ $(document).ready(function() {
     });
 
     if ($("#meeting-list-part").length === 0){
-        $("#meeting-list-part").append(`<p class="card-text text-muted mt-3">아직 참여한 모임이 없습니다. 
-                <br>
-                우측에 있는 여러 모임에 참여해보는건 어떨까요?
-                <br><br>
-                하단 + 버튼을 눌러서 새 모임을 만들 수 있습니다. <a href="load-family-tree.html" class="card-link">새 모임 만들기</a>
-                <br>
-                <a href="load-family-tree.html" class="card-link card-text fw-light eng-cap">Add a new meeting plan.</a>
-            </p>`)
-                $("#meeting-list-part").attr("class", "card-body overflow-auto text-center");
-                $(".meeting-card-part").attr("class", "card h-100 shadow pb-3 bg-light");
+        if(lang == 'en'){
+            $("#meeting-list-part").append(`<p class="card-text text-muted mt-3">No participated meeting yet. 
+            <br>
+            Why don't you participate in meetings on right?
+            <br><br>
+            You can create a new meeting by pressing + button below. <a href="load-family-tree.html" class="card-link">Create new meeting</a>
+            <br>
+        </p>`)
+        }
+        else{
+            $("#meeting-list-part").append(`<p class="card-text text-muted mt-3">아직 참여한 모임이 없습니다. 
+                    <br>
+                    우측에 있는 여러 모임에 참여해보는건 어떨까요?
+                    <br><br>
+                    하단 + 버튼을 눌러서 새 모임을 만들 수 있습니다. <a href="load-family-tree.html" class="card-link">새 모임 만들기</a>
+                    <br>
+                </p>`)
+        }
+        $("#meeting-list-part").attr("class", "card-body overflow-auto text-center");
+        $(".meeting-card-part").attr("class", "card h-100 shadow pb-3 bg-light");
     }
 });
 

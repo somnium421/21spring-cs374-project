@@ -7,6 +7,7 @@ const familyCode = localStorage.getItem('family-code');
 var ichart=[], docID ;
 const userID = localStorage.getItem("family-id");
 console.log(familyCode, userID);
+lang = localStorage.getItem('lang');
 
 OrgChart.templates.family_template = Object.assign({}, OrgChart.templates.ana);
 OrgChart.templates.family_template.size = [86, 86];
@@ -105,7 +106,12 @@ db.collection('families').where('code', '==', familyCode)
 // console.log("fam_mem2"+window.family_members)
 
 function setFamilyCode()  {
-    $("#family-code").append('<h5 class="mt-2">가족 코드<span class="fw-light eng-cap"> Family Code</span> : <span class="text-primary">'+familyCode+'</span></h5>');
+    if(lang =='en'){
+        $("#family-code").append('<h5 class="mt-2">Family Code : <span class="text-primary">'+familyCode+'</span></h5>');
+    }
+    else{
+        $("#family-code").append('<h5 class="mt-2">가족 코드 : <span class="text-primary">'+familyCode+'</span></h5>');
+    }
     // const code = document.getElementById('family-code');
     // code.innerHTML = '<h5 class="mt-2" id="family-code">가족코드: '+familyCode+'</h5>';
 }

@@ -8,7 +8,11 @@ var meetings, members, docID;
 
 var userAvailableDates = [];
 var userAvailableTime = [];
+lang = localStorage.getItem('lang');
 
+if(lang == 'en'){
+    $('#departure-place').attr('placeholder',  `Write your departure place.`);
+}
 var answer = {
     place: [],
     activity: [],
@@ -87,9 +91,15 @@ $(document).ready(function() {
                 }
             })
 
-            if (meetings[meetingNumber].isPrivate) $('#is-private').append('<span class="text-muted" style="font-size: smaller;"><i class="fas fa-lock me-1"></i> 비공개</span>')
-            else $('#is-private').append('<span class="text-muted" style="font-size: smaller;"><i class="fas fa-globe-asia me-1"></i> 공개</span>')
-
+            if(lang == 'en'){
+                if (meetings[meetingNumber].isPrivate) $('#is-private').append('<span class="text-muted" style="font-size: smaller;"><i class="fas fa-lock me-1"></i> Private</span>')
+                else $('#is-private').append('<span class="text-muted" style="font-size: smaller;"><i class="fas fa-globe-asia me-1"></i> Public</span>')
+            }
+            else{
+                if (meetings[meetingNumber].isPrivate) $('#is-private').append('<span class="text-muted" style="font-size: smaller;"><i class="fas fa-lock me-1"></i> 비공개</span>')
+                else $('#is-private').append('<span class="text-muted" style="font-size: smaller;"><i class="fas fa-globe-asia me-1"></i> 공개</span>')
+            }
+            
             $('#meeting-name').text(meetings[meetingNumber].name);
 
             $('#meeting-description').text(meetings[meetingNumber].description);
@@ -110,22 +120,36 @@ $(document).ready(function() {
             }
 
             var meetingTags;
-            if (meetings[meetingNumber].meetingPeriod.day == 0) {
-                meetingTags = `<span class="badge rounded-pill bg-light text-dark">${meetings[meetingNumber].meetingPeriod.hr}시간</span> <span style="font-size: smaller;">동안</span>`;
-                $("#accommodation-div").remove();
+
+            if(lang=='ko'){
+                if (meetings[meetingNumber].meetingPeriod.day == 0) meetingTags = `<span class="badge rounded-pill bg-light text-dark ">${meetings[meetingNumber].meetingPeriod.hr}시간</span> <span style="font-size: smaller;">동안 </span>`;
+                else if (meetings[meetingNumber].meetingPeriod.day == 1) meetingTags = `<span class="badge rounded-pill bg-light text-dark ">하루</span> <span style="font-size: smaller;">종일 </span>`;
+                else meetingTags = `<span class="badge rounded-pill bg-light text-dark ">${meetings[meetingNumber].meetingPeriod.day-1}박 ${meetings[meetingNumber].meetingPeriod.day}일</span> <span style="font-size: smaller;">동안 </span> `
+                if (meetings[meetingNumber].noMorePlace) {
+                    var tmp = meetings[meetingNumber].place.map((x) => `<span class="badge rounded-pill bg-light text-dark ">${x}</span>`).join('');
+                    meetingTags += tmp + '<span style="font-size: smaller;">에서</span>';
+                }
+                if (meetings[meetingNumber].noMoreActivity) {
+                    var tmp = meetings[meetingNumber].activity.map((x) => `<span class="badge rounded-pill bg-light text-dark ">${x}</span>`).join('');
+                    meetingTags += tmp;
+                }
             }
-            else if (meetings[meetingNumber].meetingPeriod.day == 1) {
-                meetingTags = `<span class="badge rounded-pill bg-light text-dark">하루</span> <span style="font-size: smaller;">종일</span>`;
-                $("#accommodation-div").remove();
-            }
-            else meetingTags = `<span class="badge rounded-pill bg-light text-dark">${meetings[meetingNumber].meetingPeriod.day-1}박 ${meetings[meetingNumber].meetingPeriod.day}일</span> <span style="font-size: smaller;">동안</span> `
-            if (meetings[meetingNumber].noMorePlace) {
-                var tmp = meetings[meetingNumber].place.map((x) => `<span class="badge rounded-pill bg-light text-dark">${x}</span>`).join('');
-                meetingTags += tmp + '<span style="font-size: smaller;">에서</span>';
-            }
-            if (meetings[meetingNumber].noMoreActivity) {
-                var tmp = meetings[meetingNumber].activity.map((x) => `<span class="badge rounded-pill bg-light text-dark">${x}</span>`).join('');
-                meetingTags += tmp;
+            else{
+                if (meetings[meetingNumber].noMoreActivity) {
+                    meetingTags = meetings[meetingNumber].activity.map((x) => `<span class="badge rounded-pill bg-light text-dark ">${x}</span>`).join('');
+                    
+                }
+                else{
+                    meetingTags = ``;
+                }
+
+                if (meetings[meetingNumber].noMorePlace) {
+                    var tmp = meetings[meetingNumber].place.map((x) => `<span class="badge rounded-pill bg-light text-dark ">${x}</span>`).join('');
+                    meetingTags += '<span style="font-size: smaller;">at</span>' + tmp;
+                }
+                if (meetings[meetingNumber].meetingPeriod.day == 0) meetingTags += `<span style="font-size: smaller;">for</span><span class="badge rounded-pill bg-light text-dark ">${meetings[meetingNumber].meetingPeriod.hr} hours</span>`;
+                else if (meetings[meetingNumber].meetingPeriod.day == 1) meetingTags += `<span style="font-size: smaller;">for</span><span class="badge rounded-pill bg-light text-dark ">1 day</span>`;
+                else meetingTags += `<span style="font-size: smaller;">for</span><span class="badge rounded-pill bg-light text-dark ">${meetings[meetingNumber].meetingPeriod.day} days</span> `
             }
             $('#meeting-tags').append(meetingTags);
             // console.log(doc.data().meetings[meetingNumber].availableTimes);
@@ -591,4 +615,5 @@ function locationClick(event) {
     $('#departure-place').val($(event.target).text());
     $(event.target).parent().remove();
 }
+
 

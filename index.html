@@ -10,7 +10,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>   
     <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-firestore.js"></script>
-    
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/i18next/17.0.18/i18next.min.js"
+        type="text/javascript"
+    ></script>
     
     <title>ToGather :: Log in</title>
 
@@ -50,22 +53,26 @@
             db.settings({timestampsInSnapshots: true});
         </script>
         <main class="form-signin">
-            <form>
+            <select id="lang-select" onchange="i18next.changeLanguage(this.value)" class="form-select" aria-label="Default select example" style="width: 105px;">
+                <option value="en">English</option>
+                <option value="ko">Korean</option>
+            </select>
+            <form class="mt-4">
                 <img class="mb-4" src="icons/logo.svg" alt="" width="139" height="43">
-                <h1 class="h3 mb-3 fw-normal">로그인 해주세요<br> <span class="fw-light eng-cap">Please log in</span></h1>
+                <h1 class="h3 mb-3 fw-normal" id="loginD">로그인 해주세요</h1>
 
                 <div class="form-floating">
                     <input type="id" class="form-control" id="userID" placeholder=" ">
-                    <label for="userId">ID</label>
+                    <label for="userId" id="idLable">ID</label>
                 </div>
                 <div class="form-floating">
                     <input type="password" class="form-control" id="userPW" placeholder="Password">
-                    <label for="userPw">Password</label>
+                    <label for="userPw" id="pwLable">Password</label>
                 </div>
 
                 <div>
-                    아직 회원이 아니신가요? 
-                    <a href="sign-in.html" class="icon-link">
+                    <span id="loginQ">아직 회원이 아니신가요? </span>
+                    <a href="sign-in.html" class="icon-link" id="signinLink">
                         Sign In
                             <use xlink:href="#chevron-right">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
@@ -83,5 +90,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js" integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc" crossorigin="anonymous"></script>
     <script src="js/login.js"></script>
+    <script src="language/index.js" defer></script>
     </body>
 </html>

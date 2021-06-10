@@ -18,6 +18,10 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css" rel="stylesheet"/>
     <link href="css/mobiscroll.jquery.min.css" rel="stylesheet" />
     <script src="js/mobiscroll.jquery.min.js"></script>
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/i18next/17.0.18/i18next.min.js"
+            type="text/javascript"
+        ></script>
     <title>ToGather :: Participate</title>
 </head>
 <body style="background-color: #f2f2f2;">
@@ -54,7 +58,7 @@
                             <path fill-rule="evenodd" d="M2 13.5V7h1v6.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7h1v6.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5zm11-11V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
                             <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
                           </svg>
-                         &nbsp; 홈
+                         &nbsp; <span id="tabHome">홈</span>
                     </a>
                 </li>
                 <li>
@@ -62,7 +66,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
                             <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275zM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/>
                         </svg>
-                         &nbsp; 우리 가족
+                         &nbsp; <span id="tabFamily">가족</span>
                     </a>
                 </li>
                 <li>
@@ -70,15 +74,15 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list-ul" viewBox="0 0 16 16">
                             <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
                         </svg>
-                        &nbsp; 모임
+                        &nbsp; <span id="tabMeeting">모임</span>
                     </a>
                 </li>
             </ul>
-            <button type="button" class="btn btn-outline-primary mb-2 mx-4 rounded-pill" data-bs-toggle="modal" data-bs-target="#logout-modal" data-bs-whatever="@mdo">로그아웃</button>        
+            <button type="button" class="btn btn-outline-primary mb-2 mx-4 rounded-pill" data-bs-toggle="modal" data-bs-target="#logout-modal" data-bs-whatever="@mdo" id="tabLogout">로그아웃</button>        
         </div>
         
         <div class="container-fluid col" style="margin-left: 200px">
-            <div class="fs-3 fw-bold mt-5 mb-4 ms-5">모임 참여 신청하기 <span class="eng-cap fw-light">Participate in the meeting</span></div>
+            <div class="fs-3 fw-bold mt-5 mb-4 ms-5" id="pagetitleParticipate">모임 참여 신청하기</div>
             <div class="card mx-5 meeting-card shadow" style="border-radius: 10px;">
                 <div class="card-header" id="is-private">                        
                 </div>
@@ -120,14 +124,14 @@
                 <div id="step-1" class="container col-lg-6 col-sm-10 row mx-auto mt-1 p-3 setup-content">
                     <div class="alert alert-primary" role="alert">
                         <p class="lh-lg text-center pt-1">
-                            <button type="button" class="tag btn btn-outline-primary btn-sm mt-2 ms-1 rounded-pill selectable data-selected=false">태그</button>
-                            <span class="align-bottom">는 <b>모임 개설자 혹은 참여자가 작성한 선택지</b>입니다. <br> 각 태그를 <b>클릭</b>해서 <b>선택 / 취소</b>하실 수 있습니다. </span>
-                            <br> <span class="align-bottom">장소 혹은 활동이 정해지지 않은 모임의 경우, </span> <button type="button" class="tag btn btn-outline-primary btn-sm mt-2 mx-1 rounded-pill selectable data-selected=false">+</button> <span class="align-bottom">버튼을 눌러 <b>추가</b>하실 수 있습니다.</span>
+                            <button type="button" class="tag btn btn-outline-primary btn-sm mt-2 ms-1 rounded-pill selectable data-selected=false" id="tagD">태그</button>
+                            <span class="align-bottom" id="step1D">는 <b>모임 개설자 혹은 참여자가 작성한 선택지</b>입니다. <br> 각 태그를 <b>클릭</b>해서 <b>선택 / 취소</b>하실 수 있습니다. </span>
+                            <br> <span class="align-bottom" id="step1D2">장소 혹은 활동이 정해지지 않은 모임의 경우, </span> <button type="button" class="tag btn btn-outline-primary btn-sm mt-2 mx-1 rounded-pill selectable data-selected=false">+</button> <span class="align-bottom" id="step1D3">버튼을 눌러 <b>추가</b>하실 수 있습니다.</span>
                         </p>
                     </div>
                     <form>
                         <div class="form-group mt-4">
-                            <label class="fw-bold fs-5" for="place">장소 선택 <span style="color: gray" class="fw-light eng-cap">Place selection</span></label>
+                            <label class="fw-bold fs-5" for="place" id="choosePlace">장소 선택</label>
                             <div id="place-tags"></div>
                             <div class="d-none input-group mt-2" id="place-input-div">
                                 <input class="form-control" placeholder="장소를 추가해보세요" id="place-input" type="place">
@@ -137,7 +141,7 @@
                             </div>
                         </div>
                         <div class="form-group mt-4">
-                            <label class="fw-bold fs-5" for="activity">활동 선택 <span style="color: gray" class="fw-light eng-cap">Activity selection</span></label>
+                            <label class="fw-bold fs-5" for="activity" id="chooseActivity">활동 선택</label>
                             <div id="activity-tags"></div>
                             <div class="d-none input-group mt-2" id="activity-input-div">
                                 <input class="form-control" placeholder="활동을 추가해보세요" id="activity-input" type="activity">
@@ -147,17 +151,17 @@
                             </div>
                         </div>
                         <div class="form-group mt-4" id="accommodation-div">
-                            <label class="fw-bold fs-5 mb-2" for="accommodation">숙소 <span style="color: gray" class="fw-light eng-cap">Accommodation</span></label>
+                            <label class="fw-bold fs-5 mb-2" for="accommodation" id="chooseAcco">숙소</label>
                             <div id="accommodation-radio"></div>
                             <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group" id="accommodation">
                                 <input type="checkbox" class="btn-check" id="호텔" autocomplete="off">
-                                <label class="btn btn-outline-primary" for="호텔">호텔</label>
+                                <label class="btn btn-outline-primary" for="호텔" id="ac1">호텔</label>
                                 <input type="checkbox" class="btn-check" id="펜션" autocomplete="off">
-                                <label class="btn btn-outline-primary" for="펜션">펜션</label>
+                                <label class="btn btn-outline-primary" for="펜션" id="ac2">펜션</label>
                                 <input type="checkbox" class="btn-check" id="리조트" autocomplete="off">
-                                <label class="btn btn-outline-primary" for="리조트">리조트</label>
+                                <label class="btn btn-outline-primary" for="리조트" id="ac3">리조트</label>
                                 <input type="checkbox" class="btn-check" id="에어비앤비" autocomplete="off">
-                                <label class="btn btn-outline-primary" for="에어비앤비">에어비앤비</label>
+                                <label class="btn btn-outline-primary" for="에어비앤비" id="ac4">에어비앤비</label>
                             </div>
                             <br>
                         </div>
@@ -170,30 +174,30 @@
                 <!-- Second Step -->
                 <div id="step-2" class="container col-lg-6 col-sm-10 row mx-auto mt-4 p-3 setup-content">
                     <div class="alert alert-primary" role="alert">
-                        <p class="lh-lg text-center" style="margin-bottom:-4px">
+                        <p class="lh-lg text-center" style="margin-bottom:-4px" id="step2D">
                             <b>도로명 주소</b>나 <b>건물 이름</b>을 작성하고 <b>엔터</b>를 눌러주세요.
                             <br>주소가 여러 개 제시되면 그 중 <b>해당하는 주소</b>를 클릭해주세요.
                         </p>
                     </div>
                     <div class="form-group">
-                        <label class="fw-bold fs-5" for="departure-place">출발 장소 <span style="color: red">*</span> <span style="color: gray" class="fw-light eng-cap">Departure place</span></label>
+                        <label class="fw-bold fs-5" for="departure-place" id="chooseDeparture">출발 장소</label><span style="color: red"> *</span>
                         <input type="text" class="input-group mt-2 mb-1 form-control" placeholder="출발 장소를 적어주세요" id="departure-place" onkeyup="if(window.event.keyCode==13)getAddr()">
                         <div class="list-group" id="list-location">
                         </div>
                         <div id="map" class="mx-auto mt-3" style="width:500px;height:300px;"></div>
                     </div>
                     <div class="form-group mt-4">
-                        <label class="fw-bold fs-5 mb-2" for="transportation">이동 수단 <span style="color: red">*</span> <span style="color: gray" class="fw-light eng-cap">Transportation</span></label>
+                        <label class="fw-bold fs-5 mb-2" for="transportation" id="chooseTrans">이동 수단</label><span style="color: red"> *</span>
                         <div id="transportation-radio"></div>
                         <div class="btn-group" role="group" aria-label="Basic radio toggle button group" id="transportation">
                             <input type="radio" class="btn-check" name="btnradio" id="대중교통" autocomplete="off">
-                            <label class="btn btn-outline-primary" for="대중교통">대중교통</label>
+                            <label class="btn btn-outline-primary" for="대중교통" id="trans1">대중교통</label>
                             <input type="radio" class="btn-check" name="btnradio" id="자가용" autocomplete="off">
-                            <label class="btn btn-outline-primary" for="자가용">자가용</label>
+                            <label class="btn btn-outline-primary" for="자가용" id="trans2">자가용</label>
                             <input type="radio" class="btn-check" name="btnradio" id="도보" autocomplete="off">
-                            <label class="btn btn-outline-primary" for="도보">도보</label>
+                            <label class="btn btn-outline-primary" for="도보" id="trans3">도보</label>
                             <input type="radio" class="btn-check" name="btnradio" id="자전거" autocomplete="off">
-                            <label class="btn btn-outline-primary" for="자전거">자전거</label>
+                            <label class="btn btn-outline-primary" for="자전거" id="trans4">자전거</label>
                         </div>
                         <br>
                     </div>
@@ -257,13 +261,13 @@
                                 
                             </div> -->
                         <div class="form-group">
-                            <label class="fw-bold fs-5" for="privacy">가능한 날짜 <span style="color: red">*</span> <span style="color: gray" class="fw-light eng-cap">  Available dates and time</span> </label>
+                            <label class="fw-bold fs-5" for="privacy" id="chooseDate">가능한 날짜</label><span style="color: red"> *</span>
                             <div class= "mt-2 datepicker" id="Txt_Date"></div>
                             <!-- <input type="text" id="Txt_Date" placeholder="Choose Date" style="cursor: pointer" class="mt-2"> -->
                         </div>
                         <div class="form-group disabled mt-3" id="available-time-form">
                             <label class = "fw-bold fs-5 mt-1" id="available-time">
-                                가능한 시간대 <span span class="fw-light eng-cap"> Available time</span>
+                                <span id="availabletime">가능한 시간대</span>
                                 <input class = "form-control" id="start-time" mbsc-input data-input-style="outline" data-label-style="stacked" placeholder="선택해 주세요" />
                             </label>
                             <!-- <label>
@@ -290,16 +294,17 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel"><b>로그아웃 하시겠습니까?</b> <span class="fw-light eng-cap">Log out?</span> </h5>
+                        <h5 class="modal-title" id="exampleModalLabel"><b>로그아웃 하시겠습니까?</b></h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="close">닫기</button>
                         <a type="button" class="btn btn-primary" data-bs-dismiss="modal" id="logout-button">로그아웃</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <script src="language/participate.js"></script>
 </body>
 </html>

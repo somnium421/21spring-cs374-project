@@ -1,7 +1,7 @@
 
 // import firebase  from "firebase";
 
-//localStorage.setItem('family-code', "00AB8");
+//torage.setItem('family-code', "00AB8");
 //var familyCode = "00AB8";
 var familyCode = localStorage.getItem('family-code');
 var userID = localStorage.getItem('family-id');
