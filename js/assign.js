@@ -162,6 +162,21 @@ $('#getfile').change(()=>{
 })
 
 $('#later').click(function(){
+    console.log("me.id: "+me.id);
+    console.log("familyCode: "+familyCode);
+    localStorage.setItem('family-id', me.id);
+    db.collection('users').where('id', '==', localStorage.getItem('id')).get()
+    .then((snapshot) => {
+        snapshot.forEach((doc) => {
+            var docID = doc.id;
+            db.collection('users').doc(docID).update({
+                'family-id': me.id,
+                'family-code': familyCode,
+                'name': me.name,
+                'img': me.img,
+            })
+        })
+    })
 
     db.collection('families').where('code', '==', familyCode)
         .get()
@@ -202,7 +217,7 @@ $('#assign-submit').click(()=> {
                 'family-id': me.id,
                 'family-code': familyCode,
                 'name': me.name,
-                'img': me.img,
+                'img': "https://cdn.balkan.app/shared/empty-img-white.svg",
             })
         })
     })

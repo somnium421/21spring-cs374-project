@@ -8,6 +8,7 @@ var ichart=[], docID ;
 const userID = localStorage.getItem("family-id");
 const userName = localStorage.getItem("name");
 const userImg = localStorage.getItem("img");
+lang = localStorage.getItem('lang');
 var imgDrawn = false;
 
 if (userImg !== undefined && userImg !== null && userImg !== 'undefined' && userImg !== ""){
