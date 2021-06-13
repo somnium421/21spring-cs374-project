@@ -235,6 +235,9 @@ $(document).ready(function() {
                         if (member.id == userID) {
                             $('#user-name').text(member.name);
                             $('#user-img').attr('src', member.img);
+                            localStorage.setItem("img", member.img);
+                            localStorage.setItem("name", member.name);
+
                         }
                     }
                 }

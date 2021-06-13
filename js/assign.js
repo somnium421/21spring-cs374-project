@@ -172,8 +172,6 @@ $('#later').click(function(){
             db.collection('users').doc(docID).update({
                 'family-id': me.id,
                 'family-code': familyCode,
-                'name': me.name,
-                'img': me.img,
             })
         })
     })
@@ -216,8 +214,6 @@ $('#assign-submit').click(()=> {
             db.collection('users').doc(docID).update({
                 'family-id': me.id,
                 'family-code': familyCode,
-                'name': me.name,
-                'img': "https://cdn.balkan.app/shared/empty-img-white.svg",
             })
         })
     })
