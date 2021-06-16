@@ -500,6 +500,7 @@ localStorage.removeItem('img');
         localStorage.removeItem('id');
         localStorage.removeItem('pw');
         location.href = "index.html";
+        localStorage.removeItem('real-family-id');
     })
 
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
