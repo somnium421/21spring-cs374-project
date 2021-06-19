@@ -1,7 +1,8 @@
 //import firebase from "firebase";
-const familyCode = !localStorage.getItem('family-code') ? '00AB8' : localStorage.getItem('family-code');
-const meetingNumber = !localStorage.getItem('meeting-number') ? 1 : Number(localStorage.getItem('meeting-number'));
-const userID = !localStorage.getItem('family-id') ? 0 : Number(localStorage.getItem('family-id'));
+var familyCode = !localStorage.getItem('family-code') ? '00AB8' : localStorage.getItem('family-code');
+var meetingNumber = !localStorage.getItem('meeting-number') ? 1 : Number(localStorage.getItem('meeting-number'));
+var userID = !localStorage.getItem('family-id') ? 0 : Number(localStorage.getItem('family-id'));
+var loggedIn = true;
 var userImg = localStorage.getItem('img');
 var userName = localStorage.getItem('name');
 var imgDrawn = false;
@@ -75,27 +76,47 @@ function tooltipSet() {
 }
 
 function bindEvents() {
-    $('#chat-button').click(() => {
-        if ($('#chat-input').val() != '') {
-            var chat = {
-                id: userID,
-                text: $('#chat-input').val(),
-                time: new Date(),
-                like: []
+    if (loggedIn) {
+        $('#chat-button').click(() => {
+            console.log('hello');
+            if ($('#chat-input').val() != '') {
+                var chat = {
+                    id: userID,
+                    text: $('#chat-input').val(),
+                    time: new Date(),
+                    like: []
+                }
+                chats.chat.push(chat);
+                // console.log(chats);
+                $('#chat-input').val('')
+                db.collection('families').doc(docID).collection('chats').doc(answerID).update({
+                    chat: chats.chat
+                })
+                .then((snapshot) => {
+                    drawChat(chats.chat.length-1);
+                });
             }
-            chats.chat.push(chat);
-            // console.log(chats);
-            $('#chat-input').val('')
+        });
+        $(document).on('click', '.bi-heart-fill', function(e){
+            e.preventDefault();
+            if ($(e.target)[0].outerHTML.slice(1,5)==="path") {
+                var idx = $(e.target).parent().data('idx');
+                if ($(e.target).css('fill') != "rgb(255, 153, 153)") { // unclicked
+                    $(e.target).css({fill: 'rgb(255, 153, 153)'});
+                    chats.chat[idx].like.push(userID);
+                    $(e.target).parent().parent().attr('data-bs-original-title', chats.chat[idx].like.map((id) => members[id].name).join(', '));
+                }
+                else { // clicked
+                    $(e.target).css({fill: 'rgb(255, 192, 203)'});
+                    chats.chat[idx].like.splice(chats.chat[idx].like.indexOf(userID), 1);
+                    $(e.target).parent().parent().attr('data-bs-original-title', chats.chat[idx].like.map((id) => members[id].name).join(', '));
+                }
+            }
             db.collection('families').doc(docID).collection('chats').doc(answerID).update({
                 chat: chats.chat
             })
-            .then((snapshot) => {
-                drawChat(chats.chat.length-1);
-                $("#chat-placeholder").remove();
-            });
-            
-        }
-    });
+        })
+    }
     $('#logout-button').click(() => {
         localStorage.removeItem('family-code');
         localStorage.removeItem('family-id');
@@ -105,28 +126,17 @@ localStorage.removeItem('img');
         localStorage.removeItem('pw');
         location.href = "index.html";
     })
+    $('#share-button').click(() => {
+        var t = document.createElement("textarea");
+        document.body.appendChild(t);
+        t.value = `http://somnium421.github.io/ToGather/result.html?familyCode=${familyCode}&meetingNumber=${meetingNumber}`;
+        t.select();
+        document.execCommand('copy');
+        document.body.removeChild(t);
+    });
     tooltipSet();
 }
 
-$(document).on('click', '.bi-heart-fill', function(e){
-    e.preventDefault();
-    if ($(e.target)[0].outerHTML.slice(1,5)==="path") {
-        var idx = $(e.target).parent().data('idx');
-        if ($(e.target).css('fill') != "rgb(255, 153, 153)") { // unclicked
-            $(e.target).css({fill: 'rgb(255, 153, 153)'});
-            chats.chat[idx].like.push(userID);
-            $(e.target).parent().parent().attr('data-bs-original-title', chats.chat[idx].like.map((id) => members[id].name).join(', '));
-        }
-        else { // clicked
-            $(e.target).css({fill: 'rgb(255, 192, 203)'});
-            chats.chat[idx].like.splice(chats.chat[idx].like.indexOf(userID), 1);
-            $(e.target).parent().parent().attr('data-bs-original-title', chats.chat[idx].like.map((id) => members[id].name).join(', '));
-        }
-    }
-    db.collection('families').doc(docID).collection('chats').doc(answerID).update({
-        chat: chats.chat
-    })
-})
 var deleteTarget;
 $(document).on('click', '.fa-times-circle', function(e){
     deleteTarget = e.target;
@@ -311,7 +321,9 @@ function processData() {
 }
 
 $(document).ready(function() {
-    
+    var params = location.search.substr(location.search.indexOf("?") + 1);
+    params = params.split("&");
+
     $('.overflow-scroll').on('mousewheel DOMMouseScroll', function(event){
 
         var delta = Math.max(-1, Math.min(1, (event.originalEvent.wheelDelta || -event.originalEvent.detail)));
@@ -320,6 +332,19 @@ $(document).ready(function() {
         event.preventDefault();
 
     });
+
+    if (params.length == 2) {
+        familyCode = params[0].split("=")[1];
+        meetingNumber = Number(params[1].split("=")[1]);
+        if (localStorage.getItem('family-id') == null || localStorage.getItem('family-id') == undefined) {            
+            $('#tabLogout').text('로그인');
+            $('#logoutModalLabel').html('<b>로그인 하시겠습니까?</b> <span class="fw-light eng-cap">Log in?</span>');
+            $('#logout-button').text('로그인');
+            $('#chat-input').attr('placeholder', '댓글을 입력하시려면 로그인이 필요합니다.')
+            loggedIn = false;
+            userID = -1;
+        }
+    }
 
     db.collection('families').where('code', '==', familyCode)
     .get()
