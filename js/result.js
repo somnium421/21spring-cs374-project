@@ -120,8 +120,8 @@ function bindEvents() {
     $('#logout-button').click(() => {
         localStorage.removeItem('family-code');
         localStorage.removeItem('family-id');
-localStorage.removeItem('name');
-localStorage.removeItem('img');
+        localStorage.removeItem('name');
+        localStorage.removeItem('img');
         localStorage.removeItem('id');
         localStorage.removeItem('pw');
         location.href = "index.html";
@@ -266,7 +266,10 @@ function processData() {
                 map: map
             });
             var infoWindow = new naver.maps.InfoWindow({
-                content: `<p style="padding-top:8px;padding-left:8px;padding-right:8px;color:white;font-size:14px">${latlngs[i].id.map(x => members[x].name).join(', ')}</p>`,
+                content: `<p style="padding-top:8px;padding-left:8px;padding-right:8px;color:white;font-size:14px">${latlngs[i].id.map(x => {
+                    console.log(members[x])
+                    return members[x].name
+                }).join(', ')}</p>`,
                 backgroundColor: "rgba(0,0,0,0.8)",
                 borderWidth: 0,
                 anchorColor: "rgba(0,0,0,0.8)",
@@ -776,8 +779,8 @@ function timeChartDraw(IDtoTime, arrAvailable) {
 $('#logout-button').click(() => {
     localStorage.removeItem('family-code');
     localStorage.removeItem('family-id');
-localStorage.removeItem('name');
-localStorage.removeItem('img');
+    localStorage.removeItem('name');
+    localStorage.removeItem('img');
     localStorage.removeItem('id');
     localStorage.removeItem('pw');
     location.href = "index.html";
