@@ -117,14 +117,17 @@ function bindEvents() {
                 var idx = $(e.target).parent().data('idx');
                 if ($(e.target).css('fill') != "rgb(255, 227, 233)") { // unclicked
                     $(e.target).css({fill: 'rgb(255, 227, 233)'});
-                    chats.chat[idx].like.push(userID);
+                    chats.chat[idx].like.splice(chats.chat[idx].like.indexOf(userID), 1);
                     $(e.target).parent().parent().attr('data-bs-original-title', chats.chat[idx].like.map((id) => members[id].name).join(', '));
+                    $(e.target).parent().parent().prev().text(Number($(e.target).parent().parent().prev().text())-1);
                 }
                 else { // clicked
                     $(e.target).css({fill: 'rgb(255, 130, 157)'});
-                    chats.chat[idx].like.splice(chats.chat[idx].like.indexOf(userID), 1);
+                    chats.chat[idx].like.push(userID);
                     $(e.target).parent().parent().attr('data-bs-original-title', chats.chat[idx].like.map((id) => members[id].name).join(', '));
+                    $(e.target).parent().parent().prev().text(Number($(e.target).parent().parent().prev().text())+1);
                 }
+                console.log(chats.chat[idx].like)
             }
             db.collection('families').doc(docID).collection('chats').doc(answerID).update({
                 chat: chats.chat
@@ -201,9 +204,10 @@ function drawChat(idx) {
             </div>
             <div class="received_msg">
                 <div class="received_withd_msg">
-                    <p style="float:left">${chat.text}</p>
+                    <p style="float:left" class="pr">${chat.text}</p>
+                    <p style="float:right;margin-top:2px;margin-left:3px;color:#747474;font-size:15px;">${chat.like.map((id) => members[id].name).length}</p> 
                     <a style="float:right;" class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="right" title="" data-bs-original-title="${chat.like.map((id) => members[id].name).join(', ')}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="${chat.like.includes(userID)?'#ff829d':'#ffe3e9'}" class="bi bi-heart-fill" viewBox="0 0 16 16" data-idx="${idx}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="${chat.like.includes(userID)?'#ff829d':'#ffe3e9'}" class="bi bi-heart-fill col" viewBox="0 0 16 16" data-idx="${idx}">
                             <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
                         </svg>
                     </a>

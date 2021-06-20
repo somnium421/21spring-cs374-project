@@ -70,7 +70,7 @@ img{ max-width:100%;}
   vertical-align: top;
   width: 70%;
  }
- .received_withd_msg p {
+ .received_withd_msg .pr {
   background: #ebebeb none repeat scroll 0 0;
   border-radius: 3px;
   color: #646464;
