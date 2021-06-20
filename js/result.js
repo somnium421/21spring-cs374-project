@@ -14,7 +14,7 @@ if (userImg !== undefined && userImg !== null && userImg !== 'undefined' && user
 }
 
 
-const placeData = [], activityData = [], markers = [], infoWindows = [], latlngs = [], answers = [];
+const placeData = [], activityData = [], accommodationData = [], markers = [], infoWindows = [], latlngs = [], answers = [];
 var meetings, members, chats,  docID, answerID;
 var hostAvailableDates = {};
 var datesChartData = {};
@@ -43,13 +43,27 @@ let activityOptions = {
     data: activityData
 }
 
+let accommodationOptions = {
+    container: {
+    },
+    tag: {
+        minFontSize: 15,
+        maxFontSize: 27,
+        format: '{tag.name}'
+    },
+    data: accommodationData
+}
+
 function resize() {
     placeOptions.container.width = $('#place-card').width();
     activityOptions.container.width = $('#activity-card').width();
+    accommodationOptions.container.width = $('#accommodation-card').width();
     $('#placeCloud').tagCloud(placeOptions);
     $('#activityCloud').tagCloud(activityOptions);
+    $('#accommodationCloud').tagCloud(accommodationOptions);
     $('#placeCloud').css("margin-top", ($('#map').height() - $('#placeCloud').height())/2 - 20);
     $('#activityCloud').css("margin-top", ($('#map').height() - $('#activityCloud').height())/2 - 20);
+    $('#accommodationCloud').css("margin-top", ($('#map').height() - $('#accommodationCloud').height())/2 - 20);
 }
 
 var map = new naver.maps.Map("map", {
@@ -220,7 +234,7 @@ function processData() {
     db.collection('families').doc(docID).collection('answers').where('meetingNumber', '==', String(meetingNumber))
     .get()
     .then((snapshot) => {
-        var placeDict = {}, activityDict = {}, availableDatesDict = {}, availableTimeArr = [];
+        var placeDict = {}, activityDict = {}, accommodationDict = {}, availableDatesDict = {}, availableTimeArr = [];
         const latlngs = [];
         snapshot.forEach((doc) => {
             for (var place of doc.data().place) {
@@ -231,14 +245,15 @@ function processData() {
                 if (activity in activityDict) activityDict[activity].push(doc.data().userID);
                 else activityDict[activity] = [doc.data().userID];
             }
-            
-                
+            for (var accommodation of doc.data().accommodation) {
+                if (accommodation in accommodationDict) accommodationDict[accommodation].push(doc.data().userID);
+                else accommodationDict[accommodation] = [doc.data().userID];
+            }
             for (var availableDates of doc.data().availableDates){
                 availableDates = codeToDate(availableDates);
                 if (availableDates in availableDatesDict) availableDatesDict[availableDates].push(doc.data().userID);
                 else availableDatesDict[availableDates] = [doc.data().userID];
             }
-
             if (doc.data().availableTime !== undefined && doc.data().availableTime.length !== 0) {
                 availableTime = doc.data().availableTime;
                 availableTime = rangeToItems(availableTime);
@@ -246,10 +261,8 @@ function processData() {
                     "name": doc.data().userID,
                     "arrTime": availableTime,
                 })
-                
-                
             };
-            
+        
             const find = latlngs.find(latlng => latlng.position[0] == doc.data().departure[1] && latlng.position[1] == doc.data().departure[0]);
             if (find) find.id.push(doc.data().userID);
             else {
@@ -258,8 +271,8 @@ function processData() {
                     id: [doc.data().userID]
                 })
             }
-        
         });
+
         for (var i=0; i<latlngs.length; i++) {
             var marker = new naver.maps.Marker({
                 position: new naver.maps.LatLng(latlngs[i].position[0], latlngs[i].position[1]),
@@ -267,8 +280,13 @@ function processData() {
             });
             var infoWindow = new naver.maps.InfoWindow({
                 content: `<p style="padding-top:8px;padding-left:8px;padding-right:8px;color:white;font-size:14px">${latlngs[i].id.map(x => {
-                    console.log(members[x])
-                    return members[x].name
+                    var transportation = answers.filter(elem => Number(elem.userID) == members[x].id)[0].transportation
+                    var icon
+                    if (transportation == "대중교통") icon = ' <i class="fas fa-bus"></i>'
+                    else if (transportation = "자가용") icon = ' <i class="fas fa-car"></i>'
+                    else if (transportation = "도보") icon = ' <i class="fas fa-walking"></i>'
+                    else icon = ' <i class="fas fa-biking"></i>'
+                    return members[x].name + icon
                 }).join(', ')}</p>`,
                 backgroundColor: "rgba(0,0,0,0.8)",
                 borderWidth: 0,
@@ -278,22 +296,25 @@ function processData() {
             markers.push(marker);
             infoWindows.push(infoWindow);
 
-
             naver.maps.Event.addListener(markers[i], 'mouseover', getClickHandler(i));
         }
         for (var place in placeDict) {
-            var tooltipTitle = place
             placeData.push({
                 name: `<a data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="${placeDict[place].map((id) => members[id].name).join(', ')}">${place}</a>`,
                 weight: placeDict[place].length
             });
         }
         for (var activity in activityDict) {
-            var tooltipTitle = place
             activityData.push({
                 name: `<a data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="${activityDict[activity].map((id) => members[id].name).join(', ')}">${activity}</a>`,
                 weight: activityDict[activity].length
             });
+        }
+        for (var accommodation in accommodationDict) {
+            accommodationData.push({
+                name: `<a data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="${accommodationDict[accommodation].map((id) => members[id].name).join(', ')}">${accommodation}</a>`,
+                weight: accommodationDict[accommodation].length
+            })
         }
         for (var availableDates in availableDatesDict){
             datesChartData[availableDates] = availableDatesDict[availableDates].map((id) => members[id].name)
@@ -374,8 +395,6 @@ $(document).ready(function() {
 
             hostAvailableTime = meetings[meetingNumber].availableTimes;
             //console.log(hostAvailableTime);
-
-            processData();
             
             db.collection('families').doc(docID).collection('chats').where('meetingNumber', '==', meetingNumber)
             .get().then((snapshot) =>{
@@ -421,7 +440,7 @@ $(document).ready(function() {
                 snapshot.forEach((doc) => {
                     answers.push(doc.data());
                 })
-                console.log(answers);
+                // console.log(answers);
                 const answered = [];
                 for (var participant of meetings[meetingNumber].participants) {
                     for (var answer of answers) {
@@ -440,6 +459,7 @@ $(document).ready(function() {
                                                         </a>`);
                     }
                 }
+                processData();
                 tooltipSet();
             })
 
