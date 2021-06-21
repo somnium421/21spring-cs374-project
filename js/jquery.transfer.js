@@ -1,6 +1,8 @@
 /**
  * jQuery transfer
  */
+
+var submitArr = [];
 ;(function($) {
 
     var Transfer = function(element, options) {
@@ -168,6 +170,40 @@
     /**
      * generate transfer
      */
+
+
+//      <div class="transfer-double-content-middle">
+//      <div class="btn-select-arrow" id="add_selected_{{= self.id }}"><i class="iconfont icon-forward"></i></div>
+//      <div class="btn-select-arrow" id="delete_selected_{{= self.id }}"><i class="iconfont icon-back"></i></div>
+//  </div>
+
+//  {{ // right part start }}
+
+//  <div class="transfer-double-content-right">
+//      <div class="transfer-double-content-param">
+//          <div class="param-item">{{= self.rightTabNameText }}</div>
+//      </div>
+//      <div class="transfer-double-selected-list">
+//          <div class="transfer-double-selected-list-header">
+//              <div class="transfer-double-selected-list-search">
+//                  <input class="transfer-double-selected-list-search-input" type="text" id="selectedListSearch_{{= self.id }}" placeholder="{{= self.searchPlaceholderText }}" value="" />
+//              </div>
+//          </div>
+//          <div class="transfer-double-selected-list-content">
+//              <div class="transfer-double-selected-list-main">
+//                  <ul class="transfer-double-selected-list-ul transfer-double-selected-list-ul-{{= self.id }}"></ul>
+//              </div>
+//          </div>
+//          <div class="transfer-double-list-footer">
+//              <div class="checkbox-group">
+//                  <input type="checkbox" class="checkbox-normal" id="rightItemSelectAll_{{= self.id }}">
+//                  <label for="rightItemSelectAll_{{= self.id }}" class="selected_total_num_{{= self.id }}"></label>
+//              </div>
+//          </div>
+//      </div>
+//  </div>
+
+//  {{ // right part end }}
     Transfer.prototype.generate_transfer = function() {
 
         var template = parseHTMLTemplate(function() {
@@ -189,38 +225,6 @@
 
                     {{ //  left part end }}
 
-                    <div class="transfer-double-content-middle">
-                        <div class="btn-select-arrow" id="add_selected_{{= self.id }}"><i class="iconfont icon-forward"></i></div>
-                        <div class="btn-select-arrow" id="delete_selected_{{= self.id }}"><i class="iconfont icon-back"></i></div>
-                    </div>
-
-                    {{ // right part start }}
-
-                    <div class="transfer-double-content-right">
-                        <div class="transfer-double-content-param">
-                            <div class="param-item">{{= self.rightTabNameText }}</div>
-                        </div>
-                        <div class="transfer-double-selected-list">
-                            <div class="transfer-double-selected-list-header">
-                                <div class="transfer-double-selected-list-search">
-                                    <input class="transfer-double-selected-list-search-input" type="text" id="selectedListSearch_{{= self.id }}" placeholder="{{= self.searchPlaceholderText }}" value="" />
-                                </div>
-                            </div>
-                            <div class="transfer-double-selected-list-content">
-                                <div class="transfer-double-selected-list-main">
-                                    <ul class="transfer-double-selected-list-ul transfer-double-selected-list-ul-{{= self.id }}"></ul>
-                                </div>
-                            </div>
-                            <div class="transfer-double-list-footer">
-                                <div class="checkbox-group">
-                                    <input type="checkbox" class="checkbox-normal" id="rightItemSelectAll_{{= self.id }}">
-                                    <label for="rightItemSelectAll_{{= self.id }}" class="selected_total_num_{{= self.id }}"></label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {{ // right part end }}
 
                 </div>
                 <div class="transfer-double-footer"></div>
@@ -547,6 +551,14 @@
             var pre_selection_num = 0;
             var total_pre_selection_num = 0;
             var remain_left_total_count = 0
+            
+            var checked_item_li = $(`${self.groupCheckboxItemClass}:checked`)
+            submitArr = [];
+            for (let i =0; i< checked_item_li.length; i++){
+                const element_obj = {"id": Number(checked_item_li[i].value)}
+                submitArr.push(element_obj);
+            }
+            console.log(submitArr)
 
             $(this).is(":checked") ? pre_selection_num++ : pre_selection_num--
 

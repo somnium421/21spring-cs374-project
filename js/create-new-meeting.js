@@ -441,7 +441,8 @@ $('#final-submit').click(function(){
     db_log_newMeeting.name = $('#meeting-name').val();
     db_log_newMeeting.description = $('#meeting-description').val();
 
-    db_log_newMeeting.participants = participants_transfer.getSelectedItems();
+    // db_log_newMeeting.participants = participants_transfer.getSelectedItems();
+    db_log_newMeeting.participants = submitArr;
 
     db_log_newMeeting.place = arrPlace;
     db_log_newMeeting.noMorePlace = $('#place-recommend').is(':checked');
