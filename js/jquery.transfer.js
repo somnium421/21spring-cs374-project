@@ -552,14 +552,6 @@ var submitArr = [];
             var total_pre_selection_num = 0;
             var remain_left_total_count = 0
             
-            var checked_item_li = $(`${self.groupCheckboxItemClass}:checked`)
-            submitArr = [];
-            for (let i =0; i< checked_item_li.length; i++){
-                const element_obj = {"id": Number(checked_item_li[i].value)}
-                submitArr.push(element_obj);
-            }
-            console.log(submitArr)
-
             $(this).is(":checked") ? pre_selection_num++ : pre_selection_num--
 
             var groupIndex = $(this).prop("id").split("_")[1];
@@ -591,6 +583,17 @@ var submitArr = [];
             } else {
                 $(self.groupItemSelectAllId).prop("checked", false);
             }
+
+
+            var checked_item_li = $(`${self.groupCheckboxItemClass}:checked`)
+            
+            submitArr = [];
+            for (let i =0; i< checked_item_li.length; i++){
+                const element_obj = {"id": Number(checked_item_li[i].value)}
+                submitArr.push(element_obj);
+            }
+            console.log(submitArr);
+
         });
     }
 
@@ -650,6 +653,16 @@ var submitArr = [];
                 }
             }
             self.$element.find(self.groupTotalNumLabelClass).text(get_total_num_text(self.default_total_num_text_template, left_pre_selection_count, left_total_count));
+        
+            var checked_item_li = $(`${self.groupCheckboxItemClass}:checked`)
+            submitArr = [];
+            for (let i =0; i< checked_item_li.length; i++){
+                const element_obj = {"id": Number(checked_item_li[i].value)}
+                submitArr.push(element_obj);
+            }
+            console.log(submitArr)
+        
+        
         });
     }
 
@@ -700,6 +713,14 @@ var submitArr = [];
                 $(self.addSelectedButtonId).removeClass("btn-arrow-active");
             }
             self.$element.find(self.groupTotalNumLabelClass).text(get_total_num_text(self.default_total_num_text_template, left_pre_selection_count, left_total_count));
+            var checked_item_li = $(`${self.groupCheckboxItemClass}:checked`)
+            submitArr = [];
+            for (let i =0; i< checked_item_li.length; i++){
+                const element_obj = {"id": Number(checked_item_li[i].value)}
+                submitArr.push(element_obj);
+            }
+            console.log(submitArr)
+        
         });
     }
 
