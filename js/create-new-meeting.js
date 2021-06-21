@@ -105,7 +105,8 @@ function validateperiod(){
 }
 
 function validateparticipants(){
-    if (participants_transfer.getSelectedItems().length ==0){
+    console.log(submitArr);
+    if (submitArr.length ==0){
         var text = `<small id="participantsHelp" class="form-text" style="color: red">필수입력 사항입니다. </small>`
         if ($("#participantsHelp").length === 0) $("#participants-transfer").append(text);        
         return false;
