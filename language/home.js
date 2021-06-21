@@ -67,14 +67,14 @@ function updateContent() {
   document.getElementById("titleFamily").innerHTML = i18next.t("family");
   document.getElementById("titleMeeting").innerHTML = i18next.t("meeting");
   document.getElementById("tabLogout").innerHTML = i18next.t("logout");
-  //document.getElementById("participateAsOther").innerHTML = i18next.t("participateAsOther");
-  //document.getElementById("goBacktoAccount").innerHTML = i18next.t("goBacktoAccount");
+  document.getElementById("participateAsOther").innerHTML = i18next.t("participateAsOther");
+  document.getElementById("goBacktoAccount").innerHTML = i18next.t("goBacktoAccount");
   document.getElementById("close").innerHTML = i18next.t("close");
   document.getElementById("logout-button").innerHTML = i18next.t("logout");
   document.getElementById("exampleModalLabel").innerHTML = i18next.t("logoutQ");
-  //document.getElementById("exampleModalLabel2").innerHTML = i18next.t("whoQ");
-  //document.getElementById("cancel-button").innerHTML = i18next.t("cancel");
-  // document.getElementById("select-account-button").innerHTML = i18next.t("done");
+  document.getElementById("whoQ").innerHTML = i18next.t("whoQ");
+  document.getElementById("cancelb").innerHTML = i18next.t("cancel");
+  document.getElementById("select-account-button").innerHTML = i18next.t("done");
   //document.getElementById("noFamilyD").innerHTML = i18next.t("noFamilyD");
   //document.getElementById("makeOne").innerHTML = i18next.t("make");
 }

@@ -71,7 +71,7 @@ function updateContent() {
   document.getElementById("tabLogout").innerHTML = i18next.t("logout");
   document.getElementById("close").innerHTML = i18next.t("close");
   document.getElementById("logout-button").innerHTML = i18next.t("logout");
-  document.getElementById("exampleModalLabel1").innerHTML = i18next.t("logoutQ");
+  document.getElementById("logoutModalLabel").innerHTML = i18next.t("logoutQ");
   document.getElementById("checkresult").innerHTML = i18next.t("checkresult");
   document.getElementById("place").innerHTML = i18next.t("place");
   document.getElementById("activity").innerHTML = i18next.t("activity");

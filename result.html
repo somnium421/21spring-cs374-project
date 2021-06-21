@@ -84,8 +84,11 @@
             </ul>
             <button type="button" class="btn btn-outline-primary mb-2 mx-4 rounded-pill" data-bs-toggle="modal" data-bs-target="#logout-modal" data-bs-whatever="@mdo" id="tabLogout">로그아웃</button>        
         </div>
-        <div class="container-fluid col" style="margin-left: 200px;">    
-            <div class="fs-3 fw-bold mt-5 mb-4 ms-5" id="pagetitleResult">설문 결과 확인하기</div>
+        <div class="container-fluid col" style="margin-left: 200px;">
+            <header class="d-flex flex-wrap align-items-center justify-content-between ms-4">
+                <div class="col fs-3 fw-bold mt-5 mb-4 ms-4" id="pagetitleResult">설문 결과 확인하기</div>
+                <button type="button" class="text-end btn btn-outline-primary mt-4 me-5" data-bs-toggle="modal" data-bs-target="#share-modal" data-bs-whatever="@mdo" id="share-button">공유하기</button>       
+            </header>
             <div class="card mx-5 meeting-card shadow mb-3" style="border-radius: 10px;">
                 <div class="card-header" id="is-private">                        
                 </div>
@@ -121,6 +124,12 @@
                                 <div class="card border-0" id="activity-card">
                                     <p class="fw-bold fs-6 card-title" id="activity">활동</p>  
                                     <div id="activityCloud"></div>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="card border-0" id="accommodation-card">
+                                    <p class="fw-bold fs-6 card-title" id="place">숙소</p>  
+                                    <div id="accommodationCloud" style="border-radius: 5px; border-width: 1px; border-color: black;"></div>
                                 </div>
                             </div>
                             <div class="col-3">
@@ -180,11 +189,11 @@
                     </div>
                 </div>
             </div>
-            <div class="modal fade" id="logout-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="logout-modal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel1"><b>로그아웃 하시겠습니까?</b></h5>
+                            <h5 class="modal-title" id="logoutModalLabel"><b>로그아웃 하시겠습니까?</b></h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-footer">
@@ -194,7 +203,19 @@
                     </div>
                 </div>
             </div>
-
+            <div class="modal fade" id="share-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel"><b>링크가 복사되었습니다. 가족들에게 공유해보세요.</b> <span class="fw-light eng-cap"></span> </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <script src="js/result.js"></script>

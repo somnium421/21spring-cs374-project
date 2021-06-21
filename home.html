@@ -100,8 +100,8 @@
                                         <h5 class="mt-2" id="titleMeeting"></h5>
                                     </span>
                                     <span>
-                                        <button id = "change_account_button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#change-account-modal"> <sapn class = "fw-light">다른 사람으로 참가하기</sapn></button>
-                                        <button id = "turn_to_origin" style="display: none;" class="btn btn-secondary" onclick="turn_to_origin()"> <sapn class = "fw-light">원래 계정으로 돌아가기</sapn></button>
+                                        <button id = "change_account_button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#change-account-modal"> <sapn id= "participateAsOther" class = "fw-light">다른 사람으로 참가하기</sapn></button>
+                                        <button id = "turn_to_origin" style="display: none;" class="btn btn-secondary" onclick="turn_to_origin()"> <sapn id= "goBacktoAccount" class = "fw-light">원래 계정으로 돌아가기</sapn></button>
                                        
                                     </span>
                                 </div>
@@ -140,7 +140,7 @@
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel2"><b>어떤 사람으로 참가하시겠습니까?</b> </h5>
+                                <h5 class="modal-title" id="exampleModalLabel2"><b id="whoQ">어떤 사람으로 참가하시겠습니까?</b> </h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body" style="height: 400px;" >
@@ -156,7 +156,7 @@
                             </div>
                             
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancelb">취소</button>
                                 <a type="button" onclick = "change_account()" class="btn btn-primary" data-bs-dismiss="modal" id="select-account-button">완료</a>
                             </div>
                         </div>

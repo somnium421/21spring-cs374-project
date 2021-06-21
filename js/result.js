@@ -1,7 +1,8 @@
 //import firebase from "firebase";
-const familyCode = !localStorage.getItem('family-code') ? '00AB8' : localStorage.getItem('family-code');
-const meetingNumber = !localStorage.getItem('meeting-number') ? 1 : Number(localStorage.getItem('meeting-number'));
-const userID = !localStorage.getItem('family-id') ? 0 : Number(localStorage.getItem('family-id'));
+var familyCode = !localStorage.getItem('family-code') ? '00AB8' : localStorage.getItem('family-code');
+var meetingNumber = !localStorage.getItem('meeting-number') ? 1 : Number(localStorage.getItem('meeting-number'));
+var userID = !localStorage.getItem('family-id') ? 0 : Number(localStorage.getItem('family-id'));
+var loggedIn = true;
 var userImg = localStorage.getItem('img');
 var userName = localStorage.getItem('name');
 var imgDrawn = false;
@@ -13,7 +14,7 @@ if (userImg !== undefined && userImg !== null && userImg !== 'undefined' && user
 }
 
 
-const placeData = [], activityData = [], markers = [], infoWindows = [], latlngs = [], answers = [];
+const placeData = [], activityData = [], accommodationData = [], markers = [], infoWindows = [], latlngs = [], answers = [];
 var meetings, members, chats,  docID, answerID;
 var hostAvailableDates = {};
 var datesChartData = {};
@@ -42,13 +43,27 @@ let activityOptions = {
     data: activityData
 }
 
+let accommodationOptions = {
+    container: {
+    },
+    tag: {
+        minFontSize: 15,
+        maxFontSize: 27,
+        format: '{tag.name}'
+    },
+    data: accommodationData
+}
+
 function resize() {
     placeOptions.container.width = $('#place-card').width();
     activityOptions.container.width = $('#activity-card').width();
+    accommodationOptions.container.width = $('#accommodation-card').width();
     $('#placeCloud').tagCloud(placeOptions);
     $('#activityCloud').tagCloud(activityOptions);
+    $('#accommodationCloud').tagCloud(accommodationOptions);
     $('#placeCloud').css("margin-top", ($('#map').height() - $('#placeCloud').height())/2 - 20);
     $('#activityCloud').css("margin-top", ($('#map').height() - $('#activityCloud').height())/2 - 20);
+    $('#accommodationCloud').css("margin-top", ($('#map').height() - $('#accommodationCloud').height())/2 - 20);
 }
 
 var map = new naver.maps.Map("map", {
@@ -75,58 +90,70 @@ function tooltipSet() {
 }
 
 function bindEvents() {
-    $('#chat-button').click(() => {
-        if ($('#chat-input').val() != '') {
-            var chat = {
-                id: userID,
-                text: $('#chat-input').val(),
-                time: new Date(),
-                like: []
+    if (loggedIn) {
+        $('#chat-button').click(() => {
+            console.log('hello');
+            if ($('#chat-input').val() != '') {
+                var chat = {
+                    id: userID,
+                    text: $('#chat-input').val(),
+                    time: new Date(),
+                    like: []
+                }
+                chats.chat.push(chat);
+                // console.log(chats);
+                $('#chat-input').val('')
+                db.collection('families').doc(docID).collection('chats').doc(answerID).update({
+                    chat: chats.chat
+                })
+                .then((snapshot) => {
+                    drawChat(chats.chat.length-1);
+                });
             }
-            chats.chat.push(chat);
-            // console.log(chats);
-            $('#chat-input').val('')
+        });
+        $(document).on('click', '.bi-heart-fill', function(e){
+            e.preventDefault();
+            if ($(e.target)[0].outerHTML.slice(1,5)==="path") {
+                var idx = $(e.target).parent().data('idx');
+                if ($(e.target).css('fill') != "rgb(255, 227, 233)") { // unclicked
+                    $(e.target).css({fill: 'rgb(255, 227, 233)'});
+                    chats.chat[idx].like.splice(chats.chat[idx].like.indexOf(userID), 1);
+                    $(e.target).parent().parent().attr('data-bs-original-title', chats.chat[idx].like.map((id) => members[id].name).join(', '));
+                    $(e.target).parent().parent().prev().text(Number($(e.target).parent().parent().prev().text())-1);
+                }
+                else { // clicked
+                    $(e.target).css({fill: 'rgb(255, 130, 157)'});
+                    chats.chat[idx].like.push(userID);
+                    $(e.target).parent().parent().attr('data-bs-original-title', chats.chat[idx].like.map((id) => members[id].name).join(', '));
+                    $(e.target).parent().parent().prev().text(Number($(e.target).parent().parent().prev().text())+1);
+                }
+                console.log(chats.chat[idx].like)
+            }
             db.collection('families').doc(docID).collection('chats').doc(answerID).update({
                 chat: chats.chat
             })
-            .then((snapshot) => {
-                drawChat(chats.chat.length-1);
-                $("#chat-placeholder").remove();
-            });
-            
-        }
-    });
+        })
+    }
     $('#logout-button').click(() => {
         localStorage.removeItem('family-code');
         localStorage.removeItem('family-id');
-localStorage.removeItem('name');
-localStorage.removeItem('img');
+        localStorage.removeItem('name');
+        localStorage.removeItem('img');
         localStorage.removeItem('id');
         localStorage.removeItem('pw');
         location.href = "index.html";
     })
+    $('#share-button').click(() => {
+        var t = document.createElement("textarea");
+        document.body.appendChild(t);
+        t.value = `http://somnium421.github.io/ToGather/result.html?familyCode=${familyCode}&meetingNumber=${meetingNumber}`;
+        t.select();
+        document.execCommand('copy');
+        document.body.removeChild(t);
+    });
     tooltipSet();
 }
 
-$(document).on('click', '.bi-heart-fill', function(e){
-    e.preventDefault();
-    if ($(e.target)[0].outerHTML.slice(1,5)==="path") {
-        var idx = $(e.target).parent().data('idx');
-        if ($(e.target).css('fill') != "rgb(255, 153, 153)") { // unclicked
-            $(e.target).css({fill: 'rgb(255, 153, 153)'});
-            chats.chat[idx].like.push(userID);
-            $(e.target).parent().parent().attr('data-bs-original-title', chats.chat[idx].like.map((id) => members[id].name).join(', '));
-        }
-        else { // clicked
-            $(e.target).css({fill: 'rgb(255, 192, 203)'});
-            chats.chat[idx].like.splice(chats.chat[idx].like.indexOf(userID), 1);
-            $(e.target).parent().parent().attr('data-bs-original-title', chats.chat[idx].like.map((id) => members[id].name).join(', '));
-        }
-    }
-    db.collection('families').doc(docID).collection('chats').doc(answerID).update({
-        chat: chats.chat
-    })
-})
 var deleteTarget;
 $(document).on('click', '.fa-times-circle', function(e){
     deleteTarget = e.target;
@@ -177,9 +204,10 @@ function drawChat(idx) {
             </div>
             <div class="received_msg">
                 <div class="received_withd_msg">
-                    <p style="float:left">${chat.text}</p>
+                    <p style="float:left" class="pr">${chat.text}</p>
+                    <p style="float:right;margin-top:2px;margin-left:3px;color:#747474;font-size:15px;">${chat.like.map((id) => members[id].name).length}</p> 
                     <a style="float:right;" class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="right" title="" data-bs-original-title="${chat.like.map((id) => members[id].name).join(', ')}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="${chat.like.includes(userID)?'#ff9999':'#ffc0cb'}" class="bi bi-heart-fill" viewBox="0 0 16 16" data-idx="${idx}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="${chat.like.includes(userID)?'#ff829d':'#ffe3e9'}" class="bi bi-heart-fill col" viewBox="0 0 16 16" data-idx="${idx}">
                             <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
                         </svg>
                     </a>
@@ -195,7 +223,7 @@ function drawChat(idx) {
                 <p style="float:left">${chat.text}</p>
                 <i style="float:right;margin-top:5px;margin-left:3px;color:tomato" class="fas fa-times-circle" data-idx="${idx}" data-bs-toggle="modal" data-bs-target="#delete-chat-modal" data-bs-whatever="@mdo"></i>
                 <a style="float:right" class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="left" title="" data-bs-original-title="${chat.like.map((id) => members[id].name).join(', ')}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffc0cb" class="bi bi-heart-fill" viewBox="0 0 16 16" data-idx="${idx}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffe3e9" class="bi bi-heart-fill" viewBox="0 0 16 16" data-idx="${idx}">
                         <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
                     </svg>
                 </a>
@@ -210,7 +238,7 @@ function processData() {
     db.collection('families').doc(docID).collection('answers').where('meetingNumber', '==', String(meetingNumber))
     .get()
     .then((snapshot) => {
-        var placeDict = {}, activityDict = {}, availableDatesDict = {}, availableTimeArr = [];
+        var placeDict = {}, activityDict = {}, accommodationDict = {}, availableDatesDict = {}, availableTimeArr = [];
         const latlngs = [];
         snapshot.forEach((doc) => {
             for (var place of doc.data().place) {
@@ -221,14 +249,15 @@ function processData() {
                 if (activity in activityDict) activityDict[activity].push(doc.data().userID);
                 else activityDict[activity] = [doc.data().userID];
             }
-            
-                
+            for (var accommodation of doc.data().accommodation) {
+                if (accommodation in accommodationDict) accommodationDict[accommodation].push(doc.data().userID);
+                else accommodationDict[accommodation] = [doc.data().userID];
+            }
             for (var availableDates of doc.data().availableDates){
                 availableDates = codeToDate(availableDates);
                 if (availableDates in availableDatesDict) availableDatesDict[availableDates].push(doc.data().userID);
                 else availableDatesDict[availableDates] = [doc.data().userID];
             }
-
             if (doc.data().availableTime !== undefined && doc.data().availableTime.length !== 0) {
                 availableTime = doc.data().availableTime;
                 availableTime = rangeToItems(availableTime);
@@ -236,10 +265,8 @@ function processData() {
                     "name": doc.data().userID,
                     "arrTime": availableTime,
                 })
-                
-                
             };
-            
+        
             const find = latlngs.find(latlng => latlng.position[0] == doc.data().departure[1] && latlng.position[1] == doc.data().departure[0]);
             if (find) find.id.push(doc.data().userID);
             else {
@@ -248,15 +275,23 @@ function processData() {
                     id: [doc.data().userID]
                 })
             }
-        
         });
+
         for (var i=0; i<latlngs.length; i++) {
             var marker = new naver.maps.Marker({
                 position: new naver.maps.LatLng(latlngs[i].position[0], latlngs[i].position[1]),
                 map: map
             });
             var infoWindow = new naver.maps.InfoWindow({
-                content: `<p style="padding-top:8px;padding-left:8px;padding-right:8px;color:white;font-size:14px">${latlngs[i].id.map(x => members[x].name).join(', ')}</p>`,
+                content: `<p style="padding-top:8px;padding-left:8px;padding-right:8px;color:white;font-size:14px">${latlngs[i].id.map(x => {
+                    var transportation = answers.filter(elem => Number(elem.userID) == members[x].id)[0].transportation
+                    var icon
+                    if (transportation == "대중교통") icon = ' <i class="fas fa-bus"></i>'
+                    else if (transportation = "자가용") icon = ' <i class="fas fa-car"></i>'
+                    else if (transportation = "도보") icon = ' <i class="fas fa-walking"></i>'
+                    else icon = ' <i class="fas fa-biking"></i>'
+                    return members[x].name + icon
+                }).join(', ')}</p>`,
                 backgroundColor: "rgba(0,0,0,0.8)",
                 borderWidth: 0,
                 anchorColor: "rgba(0,0,0,0.8)",
@@ -265,22 +300,25 @@ function processData() {
             markers.push(marker);
             infoWindows.push(infoWindow);
 
-
             naver.maps.Event.addListener(markers[i], 'mouseover', getClickHandler(i));
         }
         for (var place in placeDict) {
-            var tooltipTitle = place
             placeData.push({
                 name: `<a data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="${placeDict[place].map((id) => members[id].name).join(', ')}">${place}</a>`,
                 weight: placeDict[place].length
             });
         }
         for (var activity in activityDict) {
-            var tooltipTitle = place
             activityData.push({
                 name: `<a data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="${activityDict[activity].map((id) => members[id].name).join(', ')}">${activity}</a>`,
                 weight: activityDict[activity].length
             });
+        }
+        for (var accommodation in accommodationDict) {
+            accommodationData.push({
+                name: `<a data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="${accommodationDict[accommodation].map((id) => members[id].name).join(', ')}">${accommodation}</a>`,
+                weight: accommodationDict[accommodation].length
+            })
         }
         for (var availableDates in availableDatesDict){
             datesChartData[availableDates] = availableDatesDict[availableDates].map((id) => members[id].name)
@@ -311,7 +349,9 @@ function processData() {
 }
 
 $(document).ready(function() {
-    
+    var params = location.search.substr(location.search.indexOf("?") + 1);
+    params = params.split("&");
+
     $('.overflow-scroll').on('mousewheel DOMMouseScroll', function(event){
 
         var delta = Math.max(-1, Math.min(1, (event.originalEvent.wheelDelta || -event.originalEvent.detail)));
@@ -320,6 +360,19 @@ $(document).ready(function() {
         event.preventDefault();
 
     });
+
+    if (params.length == 2) {
+        familyCode = params[0].split("=")[1];
+        meetingNumber = Number(params[1].split("=")[1]);
+        if (localStorage.getItem('family-id') == null || localStorage.getItem('family-id') == undefined) {            
+            $('#tabLogout').text('로그인');
+            $('#logoutModalLabel').html('<b>로그인 하시겠습니까?</b> <span class="fw-light eng-cap">Log in?</span>');
+            $('#logout-button').text('로그인');
+            $('#chat-input').attr('placeholder', '댓글을 입력하시려면 로그인이 필요합니다.')
+            loggedIn = false;
+            userID = -1;
+        }
+    }
 
     db.collection('families').where('code', '==', familyCode)
     .get()
@@ -346,8 +399,6 @@ $(document).ready(function() {
 
             hostAvailableTime = meetings[meetingNumber].availableTimes;
             //console.log(hostAvailableTime);
-
-            processData();
             
             db.collection('families').doc(docID).collection('chats').where('meetingNumber', '==', meetingNumber)
             .get().then((snapshot) =>{
@@ -393,7 +444,7 @@ $(document).ready(function() {
                 snapshot.forEach((doc) => {
                     answers.push(doc.data());
                 })
-                console.log(answers);
+                // console.log(answers);
                 const answered = [];
                 for (var participant of meetings[meetingNumber].participants) {
                     for (var answer of answers) {
@@ -412,6 +463,7 @@ $(document).ready(function() {
                                                         </a>`);
                     }
                 }
+                processData();
                 tooltipSet();
             })
 
@@ -751,8 +803,8 @@ function timeChartDraw(IDtoTime, arrAvailable) {
 $('#logout-button').click(() => {
     localStorage.removeItem('family-code');
     localStorage.removeItem('family-id');
-localStorage.removeItem('name');
-localStorage.removeItem('img');
+    localStorage.removeItem('name');
+    localStorage.removeItem('img');
     localStorage.removeItem('id');
     localStorage.removeItem('pw');
     location.href = "index.html";
