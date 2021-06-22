@@ -92,7 +92,6 @@ function tooltipSet() {
 function bindEvents() {
     if (loggedIn) {
         $('#chat-button').click(() => {
-            console.log('hello');
             if ($('#chat-input').val() != '') {
                 var chat = {
                     id: userID,
@@ -127,7 +126,7 @@ function bindEvents() {
                     $(e.target).parent().parent().attr('data-bs-original-title', chats.chat[idx].like.map((id) => members[id].name).join(', '));
                     $(e.target).parent().parent().prev().text(Number($(e.target).parent().parent().prev().text())+1);
                 }
-                console.log(chats.chat[idx].like)
+                // console.log(chats.chat[idx].like)
             }
             db.collection('families').doc(docID).collection('chats').doc(answerID).update({
                 chat: chats.chat
@@ -241,6 +240,7 @@ function processData() {
         var placeDict = {}, activityDict = {}, accommodationDict = {}, availableDatesDict = {}, availableTimeArr = [];
         const latlngs = [];
         snapshot.forEach((doc) => {
+            // console.log(doc.data().userID, doc.data().accommodation)
             for (var place of doc.data().place) {
                 if (place in placeDict) placeDict[place].push(doc.data().userID);
                 else placeDict[place] = [doc.data().userID];
@@ -276,6 +276,7 @@ function processData() {
                 })
             }
         });
+        // console.log(accommodationDict)
 
         for (var i=0; i<latlngs.length; i++) {
             var marker = new naver.maps.Marker({
@@ -406,7 +407,7 @@ $(document).ready(function() {
                     $("#chat-placeholder").remove();
                     answerID = doc.id;
                     chats = doc.data();
-                    console.log(chats);
+                    // console.log(chats);
                 })
                 for (var i=0; i<chats.chat.length; i++) drawChat(i);
                 if (chats.chat.length === 0){
@@ -671,7 +672,7 @@ function makingTimeData(IDtoTime, arrAvailable){
         var numberPeople = inputData.filter(({t})=> t === i-1)[0].y;
     
         var arrName = dictToAns[String(i-1)];
-        console.log(dictToAns)
+        // console.log(dictToAns)
         if (arrSrt.filter((el) => el === i).length !== 0){
             numberPeople += arrSrt.filter((el)=> el === i).length;
             arrName = arrName.concat(IDtoTime.filter(({name, arrTime}) => arrTime[0] === i)
@@ -690,7 +691,7 @@ function makingTimeData(IDtoTime, arrAvailable){
             "t" : i,
             "y" : numberPeople, 
         })
-        console.log(inputData)
+        // console.log(inputData)
         dictToAns[String(i)] = arrName;
     }
 
@@ -727,7 +728,7 @@ function timeChartDraw(IDtoTime, arrAvailable) {
         }]
       }
 
-    console.log(inputData);
+    // console.log(inputData);
     var dictToAns = makingTimeData(IDtoTime, arrAvailable)[1];
 
     var chart = new Chart(ctx, {

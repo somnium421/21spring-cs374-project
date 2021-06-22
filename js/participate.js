@@ -468,7 +468,7 @@ function bindEvents() {
         // console.log(userAvailableDates, userAvailableTime);
         for (var checked of $("#accommodation input[type='checkbox']:checked")) answer.accommodation.push($(checked).attr('id'));
         for (var transportation of $("#transportation input[type='radio']:checked")) answer.transportation.push($(transportation).attr('id'));
-        // console.log(answer);
+        console.log(answer.accommodation);
         // userAvailableDates 는 다른곳에서 받음
         
         var batch = db.batch();
