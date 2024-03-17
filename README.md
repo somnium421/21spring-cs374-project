@@ -5,7 +5,7 @@
 20180290 Hyesoo Park  
 20180143 Jaehyun Kim  
 20180701 Heeju Choi  
-[GitHub Repository](https://somnium421.github.io/ToGather/index.html)
+[GitHub Repository](https://somnium421.github.io/ToGather/index.html)  
 [Video](https://www.youtube.com/watch?v=3gZMrlk4G8s)
 
 ----
