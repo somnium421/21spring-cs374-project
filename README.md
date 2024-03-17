@@ -6,6 +6,7 @@
 20180143 Jaehyun Kim  
 20180701 Heeju Choi  
 [GitHub Repository](https://somnium421.github.io/ToGather/index.html)
+[Video](https://www.youtube.com/watch?v=3gZMrlk4G8s)
 
 ----
 This project helps to plan meeting with family and participe in the meeting. You don't have to download any additional file to run this project. Also we recommed you to open it with ```Chrome```. And we usually used the same names for ```.js``` files to ```.html``` files.
